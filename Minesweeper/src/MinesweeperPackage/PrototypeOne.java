@@ -24,7 +24,7 @@ public class PrototypeOne
     private static int[][] grid;
     private static String[][] placeholder;
     
-    private static boolean play;
+    private static boolean play = true;
     
     private static int x = -1;
     private static int y = -1;
@@ -36,12 +36,27 @@ public class PrototypeOne
 
     private static String userChoice;
 
+    public static void main(String[] args)
+    {
+        start();
+        testAdjacent();
+        initPlaceholder();
+        //printPlaceHolder();
+        printIntArray(grid);
+        while(play)
+        {
+            select();
+            updatePlaceholder();
+            printPlaceHolder();
+        }
+    }
+    
     private static void printIntArray(int[][] o)
     {
         System.out.println();
         for (int r = 0; r < o.length; r++)
         {
-            for (int c = 0; c < o[r].length; c++)
+            for (int c = 0; c < o[1].length; c++)
             {
                 System.out.print(o[r][c]);
             }
@@ -67,7 +82,7 @@ public class PrototypeOne
         {
             if (r > -1) 
             {
-                System.out.print(r);
+                //System.out.print(r);
             }
             else 
             {
@@ -77,7 +92,7 @@ public class PrototypeOne
             {
                 if (r == -1) 
                 {
-                    System.out.print(c);
+                    //System.out.print(c);
                 }
                 else 
                 {
@@ -90,34 +105,29 @@ public class PrototypeOne
 
     private static void select()
     {
-        System.out.println("Please enter the x-coordinate of the square which you wish to uncover: ");
-        check();
         System.out.println("Please enter the y-coordinate of the square which you wish to uncover: ");
+        check();
+        System.out.println("Please enter the x-coordinate of the square which you wish to uncover: ");
         check();
     }
 
-    private static void checkLose()
+    private static void checkSpecial()
     {
         if (grid[x][y] == 9)
         {
             System.out.println("You have clicked a mine. You lose");
         }
-    }
-
-    public static void main(String[] args)
-    {
-        start();
-        testAdjacent();
-        initPlaceholder();
-        printPlaceHolder();
-        while(true)
+        else if(grid[x][y] == 0)
         {
-            select();
-            updatePlaceholder();
-            printPlaceHolder();
+            
         }
-    }
+    }    
 
+    private static void uncoverAdjacent()
+    {
+        
+    }
+    
     private static void start()
     {
         System.out.print("Hello, welcome to Minesweeper by Joseph Zhong. Please enter your desired difficulty level"
@@ -133,7 +143,7 @@ public class PrototypeOne
         userChoice = scn.next();
         userChoice = userChoice.toLowerCase().trim();
 
-        if (userChoice.equals("easy"))
+        if(userChoice.equals("easy"))
         {
             grid = new int[M_G[0][1]] [M_G[0][1]];
             generator(M_G[0][0], M_G[0][1]);
@@ -156,8 +166,7 @@ public class PrototypeOne
         {
             x = Integer.parseInt(userChoice);
         }
-            
-        else
+        else if(y == -1)
         {
             y = Integer.parseInt(userChoice);
         }
@@ -166,7 +175,7 @@ public class PrototypeOne
     private static void updatePlaceholder()
     {
         placeholder[x][y] = "" + grid[x][y];
-        checkLose();
+        checkSpecial();
         x = -1;
         y = -1;
     }
@@ -229,19 +238,16 @@ public class PrototypeOne
 
             for(int r = 0; r < 8; r++)
             {
-                    if (row_neighbor[r] >= 0 && row_neighbor[r] < grid.length
-                        && col_neighbor[r] >= 0 && col_neighbor[r] < grid[r].length)
+                if (row_neighbor[r] >= 0 && row_neighbor[r] < grid.length
+                    && col_neighbor[r] >= 0 && col_neighbor[r] < grid[r].length)
+                {
+                    if (grid[row_neighbor[r]][col_neighbor[r]] == 9)
                     {
-                        if (grid[row_neighbor[r]][col_neighbor[r]] == 9)
-                        {
-                            grid[row][col]++;
-                        }
+                        grid[row][col]++;
                     }
-
-
+                }
             }
         }
-
     }
 }
 
