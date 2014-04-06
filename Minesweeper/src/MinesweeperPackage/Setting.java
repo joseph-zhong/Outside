@@ -8,10 +8,10 @@ package MinesweeperPackage;
 /**
  *
  *  Joseph Zhong
- *  ASSIGNMENT_NUMBER
- *  PROGRAM_DESCRIPTION
- *  PROGRAM_TITLE
- *  DATE
+ *  Minesweeper - Java (v2.5)
+ *  This program is the Setting Object for my overall Minesweeper Project
+ *  Minesweeper - Setting Object 
+ *  1 April 2014
  *
  **/
 
