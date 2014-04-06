@@ -182,26 +182,31 @@ public class Grid
      * @param _x
      * @param _y 
      */
-    private void selectBox(int _x, int _y)
+    public void selectBox(int _x, int _y)
     {
         // first check for special cases 0 and 9
         if(bombs[_x][_y] == 0)
         {
             // display blank
             // call recursive selection process
+            display[_x][_y] = "";
+            adjacentBoxes(_x, _y);
         }
         else if(bombs[_x][_y] == 9)
         {
             // display bomb
             // lose game
+            display[_x][_y] = "9";
+            System.out.println("You lose"); // for now
         }
         else
         {
             // display bombs
+            display[_x][_y] = Integer.toString(bombs[_x][_y]);
         }
     }
     
-    private void adjacentBoxes(int _x, int _y)
+    private void adjacentBoxes(int _x, int _y) // stack overflow
     {
         // if the integer is not 0, return
         if(bombs[_x][_y] != 0)
@@ -248,15 +253,16 @@ public class Grid
             for(int r = 0; r < 8; r++) // iterate all sides
             {
                 if (subX[r] >= 0 && subX[r] < bombs.length
-                    && subY[r] >= 0 && subY[r] < bombs[r].length) 
-                    // check whether within boundaries of grid
+                    && subY[r] >= 0 && subY[r] < bombs[r].length 
+                        && bombs[subX[r]][subY[r]] == 0) 
+                    // check whether within boundaries of grid and is 0
+                    
+                    // FOUND THE PROBLEM - IT CHECKS THE NEIGHBOR, AND THEN CHECKS
+                    // BACK AND FORTH AND NEVER ENDS
                 {
-                    if (bombs[subX[r]][subY[r]] == 0) 
-                    {
                         // display then call recursive
                         display [subX[r]] [subY[r]] = "";
                         adjacentBoxes(subX[r], subY[r]);
-                    }
                 }
             }   
         }

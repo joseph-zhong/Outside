@@ -21,7 +21,8 @@ public class MinesweeperGUI extends javax.swing.JFrame
     /**
      * Creates new form MinesweeperGUI
      */
-    public MinesweeperGUI() {
+    public MinesweeperGUI()
+    {
         initComponents();
     }
 
