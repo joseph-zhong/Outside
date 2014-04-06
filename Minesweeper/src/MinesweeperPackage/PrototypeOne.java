@@ -11,11 +11,13 @@ import java.util.Scanner;
 /**
  *
  *  Joseph Zhong
- *  ASSIGNMENT_NUMBER
- *  PROGRAM_DESCRIPTION
- *  PROGRAM_TITLE
- *  DATE
+ *  Outside Project - Minesweeper
+ *  Minesweeper project inspired by Microsoft's Minesweeper game
+ *  Text-Based Minesweeper (v1)
+ *  2012(?)
  *
+ * All content designed and written by Joseph Zhong.
+ * 
  **/
 
 public class PrototypeOne 
@@ -130,7 +132,7 @@ public class PrototypeOne
     
     private static void start()
     {
-        System.out.print("Hello, welcome to Minesweeper by Joseph Zhong. Please enter your desired difficulty level"
+        System.out.print("Hello, welcome to Minesweeper by Joseph Zhong.\nPlease enter your desired difficulty level"
             + "(\"easy\", \"medium\", or \"hard\"): ");
         //Console.Write(userChoice);
         check();

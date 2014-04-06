@@ -5,10 +5,18 @@
 package MinesweeperPackage;
 
 /**
- *
- * @author Joseph
+ * 
+ *  Joseph Zhong
+ *  Minesweeper - Java (v2.5)
+ *  This program is the Grid Object for my overall Minesweeper Project
+ *  Minesweeper - Grid Object 
+ *  1 April 2014
+ * 
  */
-public class MinesweeperGUI extends javax.swing.JFrame {
+
+
+public class MinesweeperGUI extends javax.swing.JFrame 
+{
 
     /**
      * Creates new form MinesweeperGUI
@@ -26,7 +34,57 @@ public class MinesweeperGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jPopupMenu2 = new javax.swing.JPopupMenu();
+        jPopupMenu3 = new javax.swing.JPopupMenu();
+        jPopupMenu4 = new javax.swing.JPopupMenu();
+        jPopupMenu5 = new javax.swing.JPopupMenu();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        javax.swing.JMenu FileMenu = new javax.swing.JMenu();
+        NewGameMenu = new javax.swing.JMenu();
+        EasyButton = new javax.swing.JMenuItem();
+        MediumButton = new javax.swing.JMenuItem();
+        HardButton = new javax.swing.JMenuItem();
+        QuitButton = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+
+        jMenu3.setText("jMenu3");
+
+        jMenu4.setText("jMenu4");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        FileMenu.setText("File");
+
+        NewGameMenu.setText("New Game");
+
+        EasyButton.setText("Easy");
+        NewGameMenu.add(EasyButton);
+
+        MediumButton.setText("Medium");
+        NewGameMenu.add(MediumButton);
+
+        HardButton.setText("Hard");
+        NewGameMenu.add(HardButton);
+
+        FileMenu.add(NewGameMenu);
+
+        QuitButton.setText("Quit");
+        QuitButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                QuitButtonMouseReleased(evt);
+            }
+        });
+        FileMenu.add(QuitButton);
+
+        jMenuBar1.add(FileMenu);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -36,46 +94,85 @@ public class MinesweeperGUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 279, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     /**
+     * Exit method. 
+     *  Exits the program as does Alt+F4 or Clicking the Red X in the upper right 
+     *  corner. 
+     * @param evt User Mouse Click release.
+     */
+    private void QuitButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_QuitButtonMouseReleased
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_QuitButtonMouseReleased
+
+    /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) 
+    {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+        try 
+        {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) 
+            {
+                if ("Nimbus".equals(info.getName())) 
+                {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
+        } 
+        catch (ClassNotFoundException ex) 
+        {
             java.util.logging.Logger.getLogger(MinesweeperGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
+        }
+        catch (InstantiationException ex) 
+        {
             java.util.logging.Logger.getLogger(MinesweeperGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        }
+        catch (IllegalAccessException ex) 
+        {
             java.util.logging.Logger.getLogger(MinesweeperGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        }
+        catch (javax.swing.UnsupportedLookAndFeelException ex) 
+        {
             java.util.logging.Logger.getLogger(MinesweeperGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+        java.awt.EventQueue.invokeLater(new Runnable() 
+        {
+            public void run() 
+            {
                 new MinesweeperGUI().setVisible(true);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem EasyButton;
+    private javax.swing.JMenuItem HardButton;
+    private javax.swing.JMenuItem MediumButton;
+    private javax.swing.JMenu NewGameMenu;
+    private javax.swing.JMenuItem QuitButton;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JPopupMenu jPopupMenu2;
+    private javax.swing.JPopupMenu jPopupMenu3;
+    private javax.swing.JPopupMenu jPopupMenu4;
+    private javax.swing.JPopupMenu jPopupMenu5;
     // End of variables declaration//GEN-END:variables
 }
