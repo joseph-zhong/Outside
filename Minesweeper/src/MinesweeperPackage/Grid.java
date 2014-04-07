@@ -210,8 +210,6 @@ public class Grid
     private void adjacentBoxes(int _y, int _x) // stack overflow
     {
         // if the integer is not 0, return
-        
-        {
             // display -> subs -> recursive
             display[_y][_x] = " ";
             System.out.println(getDisplay());
@@ -232,55 +230,54 @@ public class Grid
              * [4] [r] [0]
              * [3] [2] [1]
              */
-            
-            neighborY[0] = _y + 1; 
-            neighborX[0] = _x; 
-            
-            neighborY[1] = _y + 1; 
-            neighborX[1] = _x + 1; 
-            
-            neighborY[2] = _y; 
-            neighborX[2] = _x + 1; 
-            
-            neighborY[3] = _y - 1; 
-            neighborX[3] = _x + 1; 
-            
-            neighborY[4] = _y - 1; 
-            neighborX[4] = _x; 
-            
-            neighborY[5] = _y - 1; 
-            neighborX[5] = _x - 1;
-            
-            neighborY[6] = _y; 
-            neighborX[6] = _x - 1;
-            
-            neighborY[7] = _y + 1; 
-            neighborX[7] = _x - 1;
-            
-            for(int r = 0; r < 8; r++) // iterate all sides
+
+        neighborY[0] = _y + 1; 
+        neighborX[0] = _x; 
+
+        neighborY[1] = _y + 1; 
+        neighborX[1] = _x + 1; 
+
+        neighborY[2] = _y; 
+        neighborX[2] = _x + 1; 
+
+        neighborY[3] = _y - 1; 
+        neighborX[3] = _x + 1; 
+
+        neighborY[4] = _y - 1; 
+        neighborX[4] = _x; 
+
+        neighborY[5] = _y - 1; 
+        neighborX[5] = _x - 1;
+
+        neighborY[6] = _y; 
+        neighborX[6] = _x - 1;
+
+        neighborY[7] = _y + 1; 
+        neighborX[7] = _x - 1;
+
+        for(int r = 0; r < 8; r++) // iterate all sides
+        {
+            if (neighborY[r] >= 0 && neighborY[r] < bombs.length       // within y
+                && neighborX[r] >= 0 && neighborX[r] < bombs[r].length // within x
+                //&& bombs[subX[r]][subY[r]] == 0)           // is zero?
+                && "_".equals(display[neighborY[r]][neighborX[r]]))  // is operable?
+                // check whether within boundaries of grid and is 0
+
+                // FOUND THE PROBLEM - IT CHECKS THE NEIGHBOR, AND THEN CHECKS
+                // BACK AND FORTH AND NEVER ENDS
             {
-                if (neighborY[r] >= 0 && neighborY[r] < bombs.length       // within y
-                    && neighborX[r] >= 0 && neighborX[r] < bombs[r].length // within x
-                    //&& bombs[subX[r]][subY[r]] == 0)           // is zero?
-                    && "_".equals(display[neighborY[r]][neighborX[r]]))  // is operable?
-                    // check whether within boundaries of grid and is 0
-                    
-                    // FOUND THE PROBLEM - IT CHECKS THE NEIGHBOR, AND THEN CHECKS
-                    // BACK AND FORTH AND NEVER ENDS
+                if(bombs[neighborY[r]][neighborX[r]] != 0)
                 {
-                    if(bombs[neighborY[r]][neighborX[r]] != 0)
-                    {
-                        display[neighborY[r]][neighborX[r]] = Integer.toString(bombs[neighborY[r]][neighborX[r]]);
-                        System.out.println(getDisplay());
-                    }
-                    else
-                    {
-                        // display then call recursive
-                        //display [subX[r]] [subY[r]] = "";
-                        adjacentBoxes(neighborY[r], neighborX[r]);
-                    }
+                    display[neighborY[r]][neighborX[r]] = Integer.toString(bombs[neighborY[r]][neighborX[r]]);
+                    System.out.println(getDisplay());
                 }
-            }   
+                else
+                {
+                    // display then call recursive
+                    //display [subX[r]] [subY[r]] = "";
+                    adjacentBoxes(neighborY[r], neighborX[r]);
+                }
+            }
         }
     }
     
