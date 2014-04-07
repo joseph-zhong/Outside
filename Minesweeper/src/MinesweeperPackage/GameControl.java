@@ -34,8 +34,8 @@ public class GameControl
         System.out.println(g.getBombs());
         System.out.println(g.getDisplay());
         
-        int x = scn.nextInt();
         int y = scn.nextInt();
+        int x = scn.nextInt();
         
         g.selectBox(x, y);
         

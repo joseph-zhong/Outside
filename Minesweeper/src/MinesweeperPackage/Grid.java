@@ -80,13 +80,13 @@ public class Grid
     {
         Random gen;
         gen = new Random();
-        int _x;
         int _y;
+        int _x;
         for (int i = 0; i < maxBombs; i++) // for Easy_M -> 10 bombs; etc
         {
-            _x = gen.nextInt(maxX);
-            _y = gen.nextInt(maxY);
-            bombs[_x][_y] = 9;
+            _y = gen.nextInt(maxX);
+            _x = gen.nextInt(maxY);
+            bombs[_y][_x] = 9;
         }   
     }
     
@@ -179,47 +179,50 @@ public class Grid
      *  value in the integer grid
      * PRECONDITION: @bombs array has been completed and the selected box must 
      *  be valid
-     * @param _x
-     * @param _y 
+     * @param _y
+     * @param _x 
      */
-    public void selectBox(int _x, int _y)
+    public void selectBox(int _y, int _x)
     {
         // first check for special cases 0 and 9
-        if(bombs[_x][_y] == 0)
+        if(bombs[_y][_x] == 0)
         {
-            // display blank
+            // display blank (inside recursive process)
             // call recursive selection process
-            display[_x][_y] = "";
-            adjacentBoxes(_x, _y);
+            //display[_y][_x] = "";
+            adjacentBoxes(_y, _x);
         }
-        else if(bombs[_x][_y] == 9)
+        else if(bombs[_y][_x] == 9)
         {
             // display bomb
             // lose game
-            display[_x][_y] = "9";
+            display[_y][_x] = "9";
             System.out.println("You lose"); // for now
         }
         else
         {
             // display bombs
-            display[_x][_y] = Integer.toString(bombs[_x][_y]);
+            display[_y][_x] = Integer.toString(bombs[_y][_x]);
         }
     }
     
-    private void adjacentBoxes(int _x, int _y) // stack overflow
+    private void adjacentBoxes(int _y, int _x) // stack overflow
     {
         // if the integer is not 0, return
-        if(bombs[_x][_y] != 0)
+        if(bombs[_y][_x] != 0)
         {
-            display[_x][_y] = Integer.toString(bombs[_x][_y]);
+            display[_y][_x] = Integer.toString(bombs[_y][_x]);
         }
         else // integer must be zero, find adjacent of that
         {
+            // display -> subs -> recursive
+            display[_y][_x] = " ";
+            System.out.println(getDisplay());
             // create neighbor sub-grid
             // ** REPEATED CODE HERE
             // if any of these are zero, recursive
-            int [] subX = new int [8];
-            int [] subY = new int [8];
+            int [] neighborY =  new int [8];
+            int [] neighborX = new int [8];
 
             /**
              * [x-1, y-1] [x, y-1] [x+1, y-1]
@@ -233,36 +236,52 @@ public class Grid
              * [3] [2] [1]
              */
             
-            subX[0] = _x + 1; 
-            subY[0] = _y; 
-            subX[1] = _x + 1; 
-            subY[1] = _y + 1; 
-            subX[2] = _x; 
-            subY[2] = _y + 1; 
-            subX[3] = _x - 1; 
-            subY[3] = _y + 1; 
-            subX[4] = _x - 1; 
-            subY[4] = _y; 
-            subX[5] = _x - 1; 
-            subY[5] = _y - 1;
-            subX[6] = _x; 
-            subY[6] = _y - 1;
-            subX[7] = _x + 1; 
-            subY[7] = _y - 1;
+            neighborY[0] = _y + 1; 
+            neighborX[0] = _x; 
+            
+            neighborY[1] = _y + 1; 
+            neighborX[1] = _x + 1; 
+            
+            neighborY[2] = _y; 
+            neighborX[2] = _x + 1; 
+            
+            neighborY[3] = _y - 1; 
+            neighborX[3] = _x + 1; 
+            
+            neighborY[4] = _y - 1; 
+            neighborX[4] = _x; 
+            
+            neighborY[5] = _y - 1; 
+            neighborX[5] = _x - 1;
+            
+            neighborY[6] = _y; 
+            neighborX[6] = _x - 1;
+            
+            neighborY[7] = _y + 1; 
+            neighborX[7] = _x - 1;
             
             for(int r = 0; r < 8; r++) // iterate all sides
             {
-                if (subX[r] >= 0 && subX[r] < bombs.length
-                    && subY[r] >= 0 && subY[r] < bombs[r].length 
-                        && bombs[subX[r]][subY[r]] == 0) 
+                if (neighborY[r] >= 0 && neighborY[r] < bombs.length       // within y
+                    && neighborX[r] >= 0 && neighborX[r] < bombs[r].length // within x
+                    //&& bombs[subX[r]][subY[r]] == 0)           // is zero?
+                    && "_".equals(display[neighborY[r]][neighborX[r]]));  // is operable?
                     // check whether within boundaries of grid and is 0
                     
                     // FOUND THE PROBLEM - IT CHECKS THE NEIGHBOR, AND THEN CHECKS
                     // BACK AND FORTH AND NEVER ENDS
                 {
+                    if(bombs[neighborY[r]][neighborX[r]] != 0)
+                    {
+                        display[neighborY[r]][neighborX[r]] = Integer.toString(bombs[neighborY[r]][neighborX[r]]);
+                        System.out.println(getDisplay());
+                    }
+                    else
+                    {
                         // display then call recursive
-                        display [subX[r]] [subY[r]] = "";
-                        adjacentBoxes(subX[r], subY[r]);
+                        //display [subX[r]] [subY[r]] = "";
+                        adjacentBoxes(neighborY[r], neighborX[r]);
+                    }
                 }
             }   
         }
