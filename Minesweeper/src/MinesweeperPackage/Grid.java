@@ -190,6 +190,7 @@ public class Grid
             // display blank (inside recursive process)
             // call recursive selection process
             //display[_y][_x] = "";
+            //adjacentBoxes(_y, _x);
             adjacentBoxes(_y, _x);
         }
         else if(bombs[_y][_x] == 9)
@@ -209,11 +210,7 @@ public class Grid
     private void adjacentBoxes(int _y, int _x) // stack overflow
     {
         // if the integer is not 0, return
-        if(bombs[_y][_x] != 0)
-        {
-            display[_y][_x] = Integer.toString(bombs[_y][_x]);
-        }
-        else // integer must be zero, find adjacent of that
+        
         {
             // display -> subs -> recursive
             display[_y][_x] = " ";
@@ -265,7 +262,7 @@ public class Grid
                 if (neighborY[r] >= 0 && neighborY[r] < bombs.length       // within y
                     && neighborX[r] >= 0 && neighborX[r] < bombs[r].length // within x
                     //&& bombs[subX[r]][subY[r]] == 0)           // is zero?
-                    && "_".equals(display[neighborY[r]][neighborX[r]]));  // is operable?
+                    && "_".equals(display[neighborY[r]][neighborX[r]]))  // is operable?
                     // check whether within boundaries of grid and is 0
                     
                     // FOUND THE PROBLEM - IT CHECKS THE NEIGHBOR, AND THEN CHECKS
