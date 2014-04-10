@@ -207,12 +207,17 @@ public class Grid
         }
     }
     
-    private void adjacentBoxes(int _y, int _x) // stack overflow
+    /**
+     * 
+     * @param _y
+     * @param _x 
+     */
+    private void adjacentBoxes(int _y, int _x) 
     {
         // if the integer is not 0, return
             // display -> subs -> recursive
             display[_y][_x] = " ";
-            System.out.println(getDisplay());
+            //System.out.println(getDisplay()); // debug
             // create neighbor sub-grid
             // ** REPEATED CODE HERE
             // if any of these are zero, recursive
@@ -261,15 +266,11 @@ public class Grid
                 && neighborX[r] >= 0 && neighborX[r] < bombs[r].length // within x
                 //&& bombs[subX[r]][subY[r]] == 0)           // is zero?
                 && "_".equals(display[neighborY[r]][neighborX[r]]))  // is operable?
-                // check whether within boundaries of grid and is 0
-
-                // FOUND THE PROBLEM - IT CHECKS THE NEIGHBOR, AND THEN CHECKS
-                // BACK AND FORTH AND NEVER ENDS
             {
                 if(bombs[neighborY[r]][neighborX[r]] != 0)
                 {
                     display[neighborY[r]][neighborX[r]] = Integer.toString(bombs[neighborY[r]][neighborX[r]]);
-                    System.out.println(getDisplay());
+                    //System.out.println(getDisplay()); // debug
                 }
                 else
                 {
@@ -280,7 +281,19 @@ public class Grid
             }
         }
     }
+
+    // get methods
+    public int getLength(boolean dimension)
+    {
+        if(dimension)
+        {
+            return bombs.length;
+        }
+        return bombs[1].length;
+    }
     
+    
+    // debugging methods...
     public String getBombs()
     {
         String str = "";
@@ -295,6 +308,7 @@ public class Grid
         return str;
     }
     
+    /*
     public String getDisplay()
     {
         String str = "";
@@ -307,6 +321,12 @@ public class Grid
             str += "\n";
         }
         return str;
+    }
+    */
+    
+    public String getDisplay(int r, int c)
+    {
+        return display[r][c];
     }
     
 }// end class

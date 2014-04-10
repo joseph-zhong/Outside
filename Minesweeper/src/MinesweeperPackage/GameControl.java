@@ -19,26 +19,71 @@ import java.util.Scanner;
 
 public class GameControl 
 {
+    private Grid MainGrid;
+    //private String settingKey;
     
+    
+    public GameControl(String settingKey)
+    {
+        MainGrid = new Grid(settingKey);
+        
+    }
     
     public GameControl()
     {
         
     }
     
-    public static void main(String[] args)
+//    public static void main(String[] args)
+//    {
+//        /* Testing Methods in console
+//        Scanner scn = new Scanner(System.in);
+//        
+//        Grid g = new Grid("easy");
+//        System.out.println(g.getBombs());
+//        System.out.println(g.getDisplay());
+//        
+//        int y = scn.nextInt();
+//        int x = scn.nextInt();
+//        
+//        g.selectBox(x, y);
+//        
+//        System.out.println(g.getDisplay());
+//        * */
+//        
+//        
+//    }
+    
+    /**
+     * Constructor Method.
+     * Builds a grid.
+     * @param _settingKey 
+     */
+    public void constructGrid(String _settingKey)
     {
-        Scanner scn = new Scanner(System.in);
-        
-        Grid g = new Grid("easy");
-        System.out.println(g.getBombs());
-        System.out.println(g.getDisplay());
-        
-        int y = scn.nextInt();
-        int x = scn.nextInt();
-        
-        g.selectBox(x, y);
-        
-        System.out.println(g.getDisplay());
+        MainGrid = new Grid(_settingKey);
     }
+    
+    /**
+     * Updates the Display Grid.
+     * 
+     */
+    public void updateGrid()
+    {
+        
+    }
+    
+    
+    // set methods
+    
+    
+    // get methods
+    
+    public Grid getMainGrid()
+    {
+        return MainGrid;
+    }
+    
+    
+    
 }
