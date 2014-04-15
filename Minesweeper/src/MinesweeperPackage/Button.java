@@ -17,5 +17,5 @@ package MinesweeperPackage;
 
 public class Button 
 {
-
+    
 }

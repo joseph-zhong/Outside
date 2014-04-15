@@ -5,9 +5,14 @@
 package MinesweeperPackage;
 
 import java.awt.Button;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JToggleButton;
@@ -26,8 +31,8 @@ import javax.swing.JToggleButton;
 public class MinesweeperGUI extends javax.swing.JFrame 
 {
     // visual stuff
-    private static final int EASY_X = 180;
-    private static final int EASY_Y = 330;
+    private static final int EASY_X = 500;
+    private static final int EASY_Y = 500;
     
     private static final int MEDIUM_X = 500;
     private static final int MEDIUM_Y = 500;
@@ -93,6 +98,16 @@ public class MinesweeperGUI extends javax.swing.JFrame
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                formMouseReleased(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -275,13 +290,65 @@ public class MinesweeperGUI extends javax.swing.JFrame
         MainManager.constructGrid("easy");
         ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
         // produce a GUI grid
+        
         for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
         {
             for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
             {
-                String text = MainManager.getMainGrid().getDisplay(x, y);
-                ButtonGrid[y][x] = new JToggleButton(text);
+        /*
+        for(int y = 0; y < 2; y++)
+        {
+            for(int x = 0; x < 2; x++)
+            {
+        */
+                
+                ButtonGrid[y][x] = new JToggleButton(" ");
+                ActionListener ButtonClick = new ActionListener() 
+                {
+                   @Override
+                   public void actionPerformed(ActionEvent e) 
+                   {
+                       AbstractButton abstractButton = (AbstractButton) e.getSource();
+                       /*
+                       boolean selected = abstractButton.getModel().isSelected();
+                       System.out.println("Action - selected=" + selected);
+                       * */
+                       for(int y = 0; y < ButtonGrid.length; y++)
+                       {
+                           for(int x = 0; x < ButtonGrid[1].length; x++)
+                           {
+                               if(abstractButton == ButtonGrid[y][x] && ButtonGrid[y][x].isSelected())
+                               {
+                                   String text = MainManager.getMainGrid().getBombs(y, x);
+                                   ButtonGrid[y][x].setText(text);
+                                   int height = ButtonGrid[y][x].getHeight() / 2;
+                                   Font test = (new Font("sansserif", Font.BOLD, height));
+                                   ButtonGrid[y][x].setFont(test);
+                                   ButtonGrid[y][x].setForeground(Color.red);
+                                   System.out.println("success");
+                                   
+                                   ButtonGrid[y][x].repaint();
+                                   
+                                   
+                               }
+                               else if(abstractButton == ButtonGrid[y][x] && !ButtonGrid[y][x].isSelected())
+                               {
+                                   System.out.println("ASDFASDF");
+                               }
+                           }
+                       }
+                       //ButtonGrid[y][x].setText(null);
+                       //abstractButton.setText("_");
+                       //toggleButton1.setSelected(selected);
+                   }
+                };
+                ButtonGrid[y][x].addActionListener(ButtonClick);
                 jPanel1.add(ButtonGrid[y][x]);
+                
+                
+                //ButtonGrid[y][x].setBounds(x, y, 10000, 1000);
+                
+                
                 
                 //ButtonGrid[y][x].setLocation(EASY_X / (x+1), EASY_Y / (y+1));
                 //ButtonGrid[y][x].setVisible(true);
@@ -300,21 +367,27 @@ public class MinesweeperGUI extends javax.swing.JFrame
         jPanel1.setBounds(0, jMenuBar1.getHeight(), EASY_X, EASY_Y - jMenuBar1.getHeight());
         */
         
+         
+        
         FrameSize = new Dimension(EASY_X, EASY_Y);
         PanelSize = new Dimension(EASY_X, EASY_Y - jMenuBar1.getHeight());
 //        jFrame1.setPreferredSize(FrameSize);
 //        jFrame1.setSize(FrameSize);
         
         this.setSize(FrameSize);
+        this.setLocation(300, 200);
         
         jPanel1.setPreferredSize(PanelSize);
         jPanel1.setSize(EASY_X, EASY_Y - jMenuBar1.getHeight());
         jPanel1.setLocation(0, jMenuBar1.getHeight());
         
+        
+        
         jPanel1.setLayout(new GridLayout(9, 9));
         this.setVisible(true);
         //jFrame1.setVisible(true);
-        jFrame1.pack();
+        //jFrame1.pack();
+        this.pack();
     }
     
     private void MediumButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MediumButtonMouseReleased
@@ -328,6 +401,32 @@ public class MinesweeperGUI extends javax.swing.JFrame
     private void HardButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HardButtonMouseReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_HardButtonMouseReleased
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == 113)
+        {
+            System.out.println(evt.getKeyCode());
+            EasyButtonMouseReleased(null);
+        }
+    }//GEN-LAST:event_formKeyPressed
+
+    private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
+        // TODO add your handling code here:
+        for(int r = 0; r < ButtonGrid.length; r++)
+        {
+            for(int c = 0; c < ButtonGrid[1].length; c++)
+            {
+                //if(evt.getX() > ButtonGrid[r][c].getX() && evt.getX() < ButtongGrid[r][c].getX() +  )
+                
+                {
+                    System.out.println(evt.getX() + " " + evt.getY());
+                }
+            }
+        }
+        
+        
+    }//GEN-LAST:event_formMouseReleased
 /**/
     /**
      * @param args the command line arguments
@@ -377,8 +476,12 @@ public class MinesweeperGUI extends javax.swing.JFrame
             public void run() 
             {
                 new MinesweeperGUI().setVisible(true);
+                //System.out.println("test");
             }
         });
+        
+        
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem EasyButton;

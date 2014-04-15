@@ -294,6 +294,7 @@ public class Grid
     
     
     // debugging methods...
+    /*
     public String getBombs()
     {
         String str = "";
@@ -306,6 +307,11 @@ public class Grid
             str += "\n";
         }
         return str;
+    }
+    */
+    public String getBombs(int r, int c)
+    {
+        return "" + bombs[r][c];
     }
     
     /*
