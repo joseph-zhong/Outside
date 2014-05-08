@@ -10,10 +10,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Panel;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -213,72 +219,94 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
     }//GEN-LAST:event_EasyButtonMouseReleased
 */
-       private void EasyButtonMouseReleased(java.awt.event.MouseEvent evt)
-       {
-           if(isGridConstructed)
-           {
-           }
-           else
-           {
-               isGridConstructed = true;
-               MainManager = new GameControl("easy");
+    private void EasyButtonMouseReleased(java.awt.event.MouseEvent evt)
+    {
+        if(isGridConstructed)
+        {
+        }
+        else
+        {
+            isGridConstructed = true;
+            MainManager = new GameControl("easy");
 
-                ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
-                // produce a GUI grid
+            ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
+            // produce a GUI grid
 
-                for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
-                {
-                    for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
-                    {
-                        ButtonGrid[y][x] = new JToggleButton(" ");
-                        ActionListener ButtonClick;
-                        ButtonClick = new ActionListener()
-         {
-            @Override
-            public void actionPerformed(ActionEvent e)
+            for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
             {
-                AbstractButton abstractButton = (AbstractButton) e.getSource();
-
-
-                for(int r = 0; r < ButtonGrid.length; r++)
+                for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
                 {
-                   for(int c = 0; c < ButtonGrid[1].length; c++)
-                   {
-                       // select box internally and set number externally
-                       if(abstractButton == ButtonGrid[r][c])
-                       {
-                           MainManager.getMainGrid().selectBox(r, c);
-                           String displayText = MainManager.getMainGrid().getDisplay(r, c);
-                           if(displayText.equals("9"))
-                           {
-                                ImageIcon FlagIcon; // for now... can't find a bomb for some reason
-                                FlagIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/FlagImage.png");
+                    ButtonGrid[y][x] = new JToggleButton(" ");
+                    ActionListener ButtonClick;
+                    ButtonClick = new ActionListener()
+                    {
+                         @Override
+                         public void actionPerformed(ActionEvent e)
+                     {
+                         AbstractButton abstractButton = (AbstractButton) e.getSource();
 
-                                Panel test = new Panel(new BorderLayout());
-                                JLabel test1 = new JLabel(FlagIcon);
 
-                                //test.add(test1);
-                                ButtonGrid[r][c].setBackground(Color.red);
-                                ButtonGrid[r][c].add(test1);
-                                //ButtonGrid[r][c].setIcon(FlagIcon);
-                           }
-                           else
-                           {
-                                abstractButton.setText(displayText);
+                         for(int r = 0; r < ButtonGrid.length; r++)
+                         {
 
-                                resetFont(displayText, r, c);
+                             for(int c = 0; c < ButtonGrid[1].length; c++)
+                             {
+                                 // select box internally and set number externally
+                                 if(abstractButton == ButtonGrid[r][c])
+                                 {
+                                     MainManager.getMainGrid().selectBox(r, c);
+                                     String displayText = MainManager.getMainGrid().getDisplay(r, c);
+                                     if(displayText.equals("9"))
+                                     {
+                                          ImageIcon FlagIcon; // for now... can't find a bomb for some reason
+                                          FlagIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/FlagImage.png");
 
-                                break; // apparently that made all the differnece lol
-                           }
-                       }
-//                              // check for zeros
-//                              else if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
-//                              {
-//                                  ButtonGrid[r][c].setSelected(true);
-//                                  ButtonGrid[r][c].setText(" ");
-//                                  break;
-//                              }
-                   }
+                                          ImageIcon MineIcon;
+                                          MineIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/MineImage.png");
+
+                                          ImageIcon imageIcon = new ImageIcon("./img/imageName.png"); // load the image to a imageIcon
+                                            Image image = MineIcon.getImage(); // transform it
+
+                                            int size = Math.max(ButtonGrid[r][c].getHeight(), ButtonGrid[r][c].getWidth()) / 2;
+
+                                            Image newimg = image.getScaledInstance(size, size, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+                                            imageIcon = new ImageIcon(newimg);  // transform it back
+
+                                             /*
+                                             ImageIcon resizedImage;
+                                             //resizedImage = getScaledImage(MineIcon, ButtonGrid[r][c].getWidth(), ButtonGrid[r][c].getHeight());
+                                             resizedImage = rescaleImage(new File("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/MineImage.png"),
+                                                     ButtonGrid[r][c].getHeight(), ButtonGrid[r][c].getWidth());
+
+                                             */
+
+                                             Panel test = new Panel(new BorderLayout());
+
+                                             JLabel test1 = new JLabel(imageIcon);
+
+                                             //test.add(test1);
+
+                                             ButtonGrid[r][c].setBackground(Color.red);
+                                             ButtonGrid[r][c].add(test1);
+                                             //ButtonGrid[r][c].setIcon(FlagIcon);
+                                        }
+                                        else
+                                        {
+                                             abstractButton.setText(displayText);
+
+                                             resetFont(displayText, r, c);
+
+                                             break; // apparently that made all the differnece lol
+                                        }
+                                    }
+ //                              // check for zeros
+ //                              else if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
+ //                              {
+ //                                  ButtonGrid[r][c].setSelected(true);
+ //                                  ButtonGrid[r][c].setText(" ");
+ //                                  break;
+ //                              }
+                    }
                 }
 
                 for(int r = 0; r < ButtonGrid.length; r++)
@@ -296,29 +324,6 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
                            resetFont(displayText, r, c);
                        }
-                       /**
-                        * HERE IS WHERE I MADE SOME SILLY MISTAKES AND MADE LEFT
-                        * CLICKING A BOMB A FLAG INSTEAD
-                        * DISPLAY IS A BIT UGLY
-                        *
-                        * V2 IS DONE, LOOKS A BIT BETTER, THE TRANSPERENCY WORKS
-                        */
-                       /*
-                       else if(displayText.equals("9"))
-                       {
-
-                           ImageIcon FlagIcon;
-                           FlagIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/FlagImage.png");
-
-                           Panel test = new Panel(new BorderLayout());
-                           JLabel test1 = new JLabel(FlagIcon);
-
-                           //test.add(test1);
-
-                           ButtonGrid[r][c].add(test1);
-                           //ButtonGrid[r][c].setIcon(FlagIcon);
-                       }
-                       */
                    }
                 }
 
@@ -332,36 +337,6 @@ public class MinesweeperGUI extends javax.swing.JFrame
                     System.out.println("Not Un-Selected");
                     abstractButton.setSelected(true);
                 }
-
-                /*
-                for(int y = 0; y < ButtonGrid.length; y++)
-                {
-                    for(int x = 0; x < ButtonGrid[1].length; x++)
-                    {
-                        if(abstractButton == ButtonGrid[y][x] && ButtonGrid[y][x].isSelected())
-                        {
-                            String text = MainManager.getMainGrid().getBombs(y, x);
-                            ButtonGrid[y][x].setText(text);
-                            int height = ButtonGrid[y][x].getHeight() / 2;
-                            Font test = (new Font("sansserif", Font.BOLD, height));
-                            ButtonGrid[y][x].setFont(test);
-                            ButtonGrid[y][x].setForeground(Color.red);
-                            System.out.println("success");
-
-                            ButtonGrid[y][x].repaint();
-
-
-                        }
-                        else if(abstractButton == ButtonGrid[y][x] && !ButtonGrid[y][x].isSelected())
-                        {
-                            System.out.println("ASDFASDF");
-                        }
-                    }
-                }
-                * */
-                //ButtonGrid[y][x].setText(null);
-                //abstractButton.setText("_");
-                //toggleButton1.setSelected(selected);
             }
          };
                         ButtonGrid[y][x].addActionListener(ButtonClick);
@@ -386,27 +361,92 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
                 this.pack();
            }
+    }// end easy button release - a very bulky method
+
+    private Image getScaledImage(Image srcImg, int w, int h)
+    {
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, w, h, null);
+        g2.dispose();
+        return resizedImg;
     }
 
-    private void resetFont(String displayNumber, int _r, int _c)
+    /*
+    * source File of image, maxHeight pixels of height available, maxWidth pixels of width available
+    * @return an ImageIcon for adding to a label
+    */
+    public ImageIcon rescaleImage(File source,int maxHeight, int maxWidth)
     {
-        int height = ButtonGrid[_r][_c].getHeight() / 2;
-        Font numberFont = (new Font("sansserif", Font.BOLD, height));
+        int newHeight = 0, newWidth = 0;        // Variables for the new height and width
+        int priorHeight = 0, priorWidth = 0;
+        BufferedImage image = null;
+        ImageIcon sizeImage;
 
-        ButtonGrid[_r][_c].setFont(numberFont);
+        try {
+                image = ImageIO.read(source);        // get the image
+        } catch (Exception e) {
 
-        if(displayNumber.equals("9"))
+                e.printStackTrace();
+                System.out.println("Picture upload attempted & failed");
+        }
+
+        sizeImage = new ImageIcon(image);
+
+        if(sizeImage != null)
         {
-            ButtonGrid[_r][_c].setForeground(new Color(255, 0, 0)); // 0,130,200 is a pretty and solid cyan blue
+            priorHeight = sizeImage.getIconHeight();
+            priorWidth = sizeImage.getIconWidth();
+        }
+
+        // Calculate the correct new height and width
+        if((float)priorHeight/(float)priorWidth > (float)maxHeight/(float)maxWidth)
+        {
+            newHeight = maxHeight;
+            newWidth = (int)(((float)priorWidth/(float)priorHeight)*(float)newHeight);
         }
         else
         {
-            ButtonGrid[_r][_c].setForeground(new Color(0, 130, 200)); // 0,130,200 is a pretty and solid cyan blue
+            newWidth = maxWidth;
+            newHeight = (int)(((float)priorHeight/(float)priorWidth)*(float)newWidth);
         }
 
 
-        ButtonGrid[_r][_c].repaint();
+        // Resize the image
+
+        // 1. Create a new Buffered Image and Graphic2D object
+        BufferedImage resizedImg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        // 2. Use the Graphic object to draw a new image to the image in the buffer
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(image, 0, 0, newWidth, newHeight, null);
+        g2.dispose();
+
+        // 3. Convert the buffered image into an ImageIcon for return
+        return (new ImageIcon(resizedImg));
     }
+
+     private void resetFont(String displayNumber, int _r, int _c)
+     {
+         int height = ButtonGrid[_r][_c].getHeight() / 2;
+         Font numberFont = (new Font("sansserif", Font.BOLD, height));
+
+         ButtonGrid[_r][_c].setFont(numberFont);
+
+         if(displayNumber.equals("9"))
+         {
+             ButtonGrid[_r][_c].setForeground(new Color(255, 0, 0)); // 0,130,200 is a pretty and solid cyan blue
+         }
+         else
+         {
+             ButtonGrid[_r][_c].setForeground(new Color(0, 130, 200)); // 0,130,200 is a pretty and solid cyan blue
+         }
+
+
+         ButtonGrid[_r][_c].repaint();
+     }
 
     private void MediumButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MediumButtonMouseReleased
         // TODO add your handling code here:
