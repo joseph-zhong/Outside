@@ -4,50 +4,54 @@
  */
 package MinesweeperPackage;
 
+import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.AbstractButton;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JToggleButton;
 
 /**
- * 
+ *
  *  Joseph Zhong
- *  Minesweeper - Java (v2.5)
+ *  Minesweeper - Java (v2.85)
  *  This program is the GUI Object for my overall Minesweeper Project
- *  Minesweeper - GUI Object 
+ *  Minesweeper - GUI Object
  *  1 April 2014
- * 
+ *
  */
 
 
-public class MinesweeperGUI extends javax.swing.JFrame 
+public class MinesweeperGUI extends javax.swing.JFrame
 {
     // visual stuff
     private static final int EASY_X = 500;
     private static final int EASY_Y = 500;
-    
-    private static final int MEDIUM_X = 500;
-    private static final int MEDIUM_Y = 500;
-    
+
+    private static final int MEDIUM_X = 700;
+    private static final int MEDIUM_Y = 700;
+
     private static final int HARD_X = 1024;
     private static final int HARD_Y = 640;
-    
+
     private static Dimension FrameSize;
     private static Dimension PanelSize;
-    
+
     private static GameControl MainManager;
     private static JToggleButton[][] ButtonGrid;
 
     private static boolean isGridConstructed;
-    
+
     /**
      * Creates new form MinesweeperGUI
      */
@@ -55,6 +59,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
     {
         isGridConstructed = false;
         initComponents();
+        this.setTitle("Minesweeper");
     }
 
     /**
@@ -187,9 +192,9 @@ public class MinesweeperGUI extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Exit method. 
-     *  Exits the program as does Alt+F4 or Clicking the Red X in the upper right 
-     *  corner. 
+     * Exit method.
+     *  Exits the program as does Alt+F4 or Clicking the Red X in the upper right
+     *  corner.
      * @param evt User Mouse Click release.
      */
     private void QuitButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_QuitButtonMouseReleased
@@ -200,34 +205,213 @@ public class MinesweeperGUI extends javax.swing.JFrame
     /**
      * Constructor Method.
      * Constructs the easy grid.
-     * @param evt 
+     * @param evt
      */
+
     /*
     private void EasyButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EasyButtonMouseReleased
 
     }//GEN-LAST:event_EasyButtonMouseReleased
-*/   
-       private void EasyButtonMouseReleased(java.awt.event.MouseEvent evt) 
-       {        
+*/
+       private void EasyButtonMouseReleased(java.awt.event.MouseEvent evt)
+       {
            if(isGridConstructed)
            {
            }
            else
            {
                isGridConstructed = true;
-               MainManager.constructGrid("easy");
+               MainManager = new GameControl("easy");
+
                 ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
                 // produce a GUI grid
 
                 for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
                 {
                     for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
-                    {               
+                    {
                         ButtonGrid[y][x] = new JToggleButton(" ");
-                        ActionListener ButtonClick = new ActionListener() 
+                        ActionListener ButtonClick;
+                        ButtonClick = new ActionListener()
+         {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                AbstractButton abstractButton = (AbstractButton) e.getSource();
+
+
+                for(int r = 0; r < ButtonGrid.length; r++)
+                {
+                   for(int c = 0; c < ButtonGrid[1].length; c++)
+                   {
+                       // select box internally and set number externally
+                       if(abstractButton == ButtonGrid[r][c])
+                       {
+                           MainManager.getMainGrid().selectBox(r, c);
+                           String displayText = MainManager.getMainGrid().getDisplay(r, c);
+                           abstractButton.setText(displayText);
+
+                           resetFont(displayText, r, c);
+
+                           break; // apparently that made all the differnece lol
+                       }
+//                              // check for zeros
+//                              else if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
+//                              {
+//                                  ButtonGrid[r][c].setSelected(true);
+//                                  ButtonGrid[r][c].setText(" ");
+//                                  break;
+//                              }
+                   }
+                }
+
+                for(int r = 0; r < ButtonGrid.length; r++)
+                {
+                   for(int c = 0; c < ButtonGrid[1].length; c++)
+                   {
+                       // check for zeros
+                       //if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
+                       String displayText;
+                       if(!(displayText = MainManager.getMainGrid().getDisplay(r, c)).equals("_")
+                               && !displayText.equals("9"))
+                       {
+                           ButtonGrid[r][c].setSelected(true);
+                           ButtonGrid[r][c].setText(displayText);
+
+                           resetFont(displayText, r, c);
+                       }
+                       /**
+                        * HERE IS WHERE I MADE SOME SILLY MISTAKES AND MADE LEFT
+                        * CLICKING A BOMB A FLAG INSTEAD
+                        * DISPLAY IS A BIT UGLY
+                        *
+                        * V2 IS DONE, LOOKS A BIT BETTER, THE TRANSPERENCY WORKS
+                        */
+
+                       else if(displayText.equals("9"))
+                       {
+                           ImageIcon FlagIcon;
+                           FlagIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/FlagImage.png");
+
+                           Panel test = new Panel(new BorderLayout());
+                           JLabel test1 = new JLabel(FlagIcon);
+
+                           //test.add(test1);
+
+                           ButtonGrid[r][c].add(test1);
+                           //ButtonGrid[r][c].setIcon(FlagIcon);
+                       }
+                   }
+                }
+
+
+                if(abstractButton.isSelected())
+                {
+                    System.out.println("Selected");
+                }
+                else
+                {
+                    System.out.println("Not Un-Selected");
+                    abstractButton.setSelected(true);
+                }
+
+                /*
+                for(int y = 0; y < ButtonGrid.length; y++)
+                {
+                    for(int x = 0; x < ButtonGrid[1].length; x++)
+                    {
+                        if(abstractButton == ButtonGrid[y][x] && ButtonGrid[y][x].isSelected())
+                        {
+                            String text = MainManager.getMainGrid().getBombs(y, x);
+                            ButtonGrid[y][x].setText(text);
+                            int height = ButtonGrid[y][x].getHeight() / 2;
+                            Font test = (new Font("sansserif", Font.BOLD, height));
+                            ButtonGrid[y][x].setFont(test);
+                            ButtonGrid[y][x].setForeground(Color.red);
+                            System.out.println("success");
+
+                            ButtonGrid[y][x].repaint();
+
+
+                        }
+                        else if(abstractButton == ButtonGrid[y][x] && !ButtonGrid[y][x].isSelected())
+                        {
+                            System.out.println("ASDFASDF");
+                        }
+                    }
+                }
+                * */
+                //ButtonGrid[y][x].setText(null);
+                //abstractButton.setText("_");
+                //toggleButton1.setSelected(selected);
+            }
+         };
+                        ButtonGrid[y][x].addActionListener(ButtonClick);
+                        jPanel1.add(ButtonGrid[y][x]);
+
+                        System.out.println(y + ", " + x); // debug
+                    }
+                }
+
+                FrameSize = new Dimension(EASY_X, EASY_Y);
+                PanelSize = new Dimension(EASY_X, EASY_Y - jMenuBar1.getHeight());
+
+                this.setSize(FrameSize);
+                this.setLocation(300, 200);
+
+                jPanel1.setPreferredSize(PanelSize);
+                jPanel1.setSize(EASY_X, EASY_Y - jMenuBar1.getHeight());
+                jPanel1.setLocation(0, jMenuBar1.getHeight());
+
+                jPanel1.setLayout(new GridLayout(MainManager.getMainGrid().getLength(true), MainManager.getMainGrid().getLength(false)));
+                this.setVisible(true);
+
+                this.pack();
+           }
+    }
+
+    private void resetFont(String displayNumber, int _r, int _c)
+    {
+        int height = ButtonGrid[_r][_c].getHeight() / 2;
+        Font numberFont = (new Font("sansserif", Font.BOLD, height));
+
+        ButtonGrid[_r][_c].setFont(numberFont);
+
+        if(displayNumber.equals("9"))
+        {
+            ButtonGrid[_r][_c].setForeground(new Color(255, 0, 0)); // 0,130,200 is a pretty and solid cyan blue
+        }
+        else
+        {
+            ButtonGrid[_r][_c].setForeground(new Color(0, 130, 200)); // 0,130,200 is a pretty and solid cyan blue
+        }
+
+
+        ButtonGrid[_r][_c].repaint();
+    }
+
+    private void MediumButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MediumButtonMouseReleased
+        // TODO add your handling code here:
+        if(isGridConstructed)
+           {
+           }
+           else
+           {
+               isGridConstructed = true;
+               MainManager = new GameControl("medium");
+
+                ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
+                // produce a GUI grid
+
+                for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
+                {
+                    for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
+                    {
+                        ButtonGrid[y][x] = new JToggleButton(" ");
+                        ActionListener ButtonClick = new ActionListener()
                         {
                            @Override
-                           public void actionPerformed(ActionEvent e) 
+                           public void actionPerformed(ActionEvent e)
                            {
                                AbstractButton abstractButton = (AbstractButton) e.getSource();
 
@@ -240,17 +424,11 @@ public class MinesweeperGUI extends javax.swing.JFrame
                                       if(abstractButton == ButtonGrid[r][c])
                                       {
                                           MainManager.getMainGrid().selectBox(r, c);
-                                          String textFromDisplay = MainManager.getMainGrid().getDisplay(r, c);
-                                          abstractButton.setText(textFromDisplay);
-                                          
-                                          int height = ButtonGrid[r][c].getHeight() / 2;
-                                          Font numberFont = (new Font("sansserif", Font.BOLD, height));
-                                          
-                                          ButtonGrid[r][c].setFont(numberFont);
-                                          ButtonGrid[r][c].setForeground(new Color(0, 130, 200)); // 0,130,200 is a pretty and solid cyan blue
+                                          String displayText = MainManager.getMainGrid().getDisplay(r, c);
+                                          abstractButton.setText(displayText);
 
-                                          ButtonGrid[r][c].repaint();
-                                          
+                                          resetFont(displayText, r, c);
+
                                           break; // apparently that made all the differnece lol
                                       }
         //                              // check for zeros
@@ -268,10 +446,14 @@ public class MinesweeperGUI extends javax.swing.JFrame
                                   for(int c = 0; c < ButtonGrid[1].length; c++)
                                   {
                                       // check for zeros
-                                      if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
+                                      //if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
+                                      String displayText;
+                                      if(!(displayText = MainManager.getMainGrid().getDisplay(r, c)).equals("_"))
                                       {
                                           ButtonGrid[r][c].setSelected(true);
-                                          ButtonGrid[r][c].setText(" ");   
+                                          ButtonGrid[r][c].setText(displayText);
+
+                                          resetFont(displayText, r, c);
                                       }
                                   }
                                }
@@ -325,35 +507,32 @@ public class MinesweeperGUI extends javax.swing.JFrame
                     }
                 }
 
-                FrameSize = new Dimension(EASY_X, EASY_Y);
-                PanelSize = new Dimension(EASY_X, EASY_Y - jMenuBar1.getHeight());
+                FrameSize = new Dimension(MEDIUM_X, MEDIUM_Y);
+                PanelSize = new Dimension(MEDIUM_X, MEDIUM_Y - jMenuBar1.getHeight());
 
                 this.setSize(FrameSize);
                 this.setLocation(300, 200);
 
                 jPanel1.setPreferredSize(PanelSize);
-                jPanel1.setSize(EASY_X, EASY_Y - jMenuBar1.getHeight());
+                jPanel1.setSize(MEDIUM_Y, MEDIUM_Y - jMenuBar1.getHeight());
                 jPanel1.setLocation(0, jMenuBar1.getHeight());
 
-
-
-                jPanel1.setLayout(new GridLayout(9, 9));
+                jPanel1.setLayout(new GridLayout(MainManager.getMainGrid().getLength(true), MainManager.getMainGrid().getLength(false)));
                 this.setVisible(true);
 
                 this.pack();
-           }      
-    }
-    
-    private void MediumButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MediumButtonMouseReleased
-        // TODO add your handling code here:
+           }
     }//GEN-LAST:event_MediumButtonMouseReleased
 
     private void HardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HardButtonActionPerformed
         // TODO add your handling code here:
+
+
     }//GEN-LAST:event_HardButtonActionPerformed
 
     private void HardButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HardButtonMouseReleased
         // TODO add your handling code here:
+        MainManager = new GameControl("hard");
     }//GEN-LAST:event_HardButtonMouseReleased
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
@@ -370,67 +549,64 @@ public class MinesweeperGUI extends javax.swing.JFrame
         for(int r = 0; r < ButtonGrid.length; r++)
         {
             for(int c = 0; c < ButtonGrid[1].length; c++)
-            {                
+            {
                 {
                     System.out.println(evt.getX() + " " + evt.getY());
                 }
             }
         }
-        
-        
+
+
     }//GEN-LAST:event_formMouseReleased
 /**/
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) 
+    public static void main(String args[])
     {
-        MainManager = new GameControl();
-        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
-        try 
+        try
         {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) 
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
             {
-                if ("Nimbus".equals(info.getName())) 
+                if ("Nimbus".equals(info.getName()))
                 {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } 
-        catch (ClassNotFoundException ex) 
+        }
+        catch (ClassNotFoundException ex)
         {
             java.util.logging.Logger.getLogger(MinesweeperGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        catch (InstantiationException ex) 
+        catch (InstantiationException ex)
         {
             java.util.logging.Logger.getLogger(MinesweeperGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        catch (IllegalAccessException ex) 
+        catch (IllegalAccessException ex)
         {
             java.util.logging.Logger.getLogger(MinesweeperGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        catch (javax.swing.UnsupportedLookAndFeelException ex) 
+        catch (javax.swing.UnsupportedLookAndFeelException ex)
         {
             java.util.logging.Logger.getLogger(MinesweeperGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() 
+        java.awt.EventQueue.invokeLater(new Runnable()
         {
             @Override
-            public void run() 
+            public void run()
             {
                 new MinesweeperGUI().setVisible(true);
-                //System.out.println("test");
             }
-        });        
+        });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem EasyButton;
