@@ -45,13 +45,15 @@ public class MinesweeperGUI extends javax.swing.JFrame
     
     private static GameControl MainManager;
     private static JToggleButton[][] ButtonGrid;
-//    private static Container test;
+
+    private static boolean isGridConstructed;
     
     /**
      * Creates new form MinesweeperGUI
      */
     public MinesweeperGUI()
     {
+        isGridConstructed = false;
         initComponents();
     }
 
@@ -207,123 +209,139 @@ public class MinesweeperGUI extends javax.swing.JFrame
 */   
        private void EasyButtonMouseReleased(java.awt.event.MouseEvent evt) 
        {        
-        MainManager.constructGrid("easy");
-        ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
-        // produce a GUI grid
-        
-        for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
-        {
-            for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
-            {               
-                ButtonGrid[y][x] = new JToggleButton(" ");
-                ActionListener ButtonClick = new ActionListener() 
+           if(isGridConstructed)
+           {
+           }
+           else
+           {
+               isGridConstructed = true;
+               MainManager.constructGrid("easy");
+                ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
+                // produce a GUI grid
+
+                for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
                 {
-                   @Override
-                   public void actionPerformed(ActionEvent e) 
-                   {
-                       AbstractButton abstractButton = (AbstractButton) e.getSource();
-                       
-                       
-                       for(int r = 0; r < ButtonGrid.length; r++)
-                       {
-                          for(int c = 0; c < ButtonGrid[1].length; c++)
-                          {
-                              // select box internally and set number externally
-                              if(abstractButton == ButtonGrid[r][c])
-                              {
-                                  MainManager.getMainGrid().selectBox(r, c);
-                                  String textFromDisplay = MainManager.getMainGrid().getDisplay(r, c);
-                                  abstractButton.setText(textFromDisplay);
-                                  break; // apparently that made all the differnece lol
-                              }
-//                              // check for zeros
-//                              else if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
-//                              {
-//                                  ButtonGrid[r][c].setSelected(true);
-//                                  ButtonGrid[r][c].setText(" ");
-//                                  break;
-//                              }
-                          }
-                       }
-                       
-                       for(int r = 0; r < ButtonGrid.length; r++)
-                       {
-                          for(int c = 0; c < ButtonGrid[1].length; c++)
-                          {
-                              // check for zeros
-                              if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
-                              {
-                                  ButtonGrid[r][c].setSelected(true);
-                                  ButtonGrid[r][c].setText(" ");
-                              }
-                          }
-                       }
-                       
-                       
-                       if(abstractButton.isSelected())
-                       {
-                           System.out.println("Selected");
-                       }
-                       else
-                       {
-                           System.out.println("Not Un-Selected");
-                           abstractButton.setSelected(true);
-                       }
-                       
-                       /*
-                       for(int y = 0; y < ButtonGrid.length; y++)
-                       {
-                           for(int x = 0; x < ButtonGrid[1].length; x++)
+                    for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
+                    {               
+                        ButtonGrid[y][x] = new JToggleButton(" ");
+                        ActionListener ButtonClick = new ActionListener() 
+                        {
+                           @Override
+                           public void actionPerformed(ActionEvent e) 
                            {
-                               if(abstractButton == ButtonGrid[y][x] && ButtonGrid[y][x].isSelected())
+                               AbstractButton abstractButton = (AbstractButton) e.getSource();
+
+
+                               for(int r = 0; r < ButtonGrid.length; r++)
                                {
-                                   String text = MainManager.getMainGrid().getBombs(y, x);
-                                   ButtonGrid[y][x].setText(text);
-                                   int height = ButtonGrid[y][x].getHeight() / 2;
-                                   Font test = (new Font("sansserif", Font.BOLD, height));
-                                   ButtonGrid[y][x].setFont(test);
-                                   ButtonGrid[y][x].setForeground(Color.red);
-                                   System.out.println("success");
-                                   
-                                   ButtonGrid[y][x].repaint();
-                                   
-                                   
+                                  for(int c = 0; c < ButtonGrid[1].length; c++)
+                                  {
+                                      // select box internally and set number externally
+                                      if(abstractButton == ButtonGrid[r][c])
+                                      {
+                                          MainManager.getMainGrid().selectBox(r, c);
+                                          String textFromDisplay = MainManager.getMainGrid().getDisplay(r, c);
+                                          abstractButton.setText(textFromDisplay);
+                                          
+                                          int height = ButtonGrid[r][c].getHeight() / 2;
+                                          Font numberFont = (new Font("sansserif", Font.BOLD, height));
+                                          
+                                          ButtonGrid[r][c].setFont(numberFont);
+                                          ButtonGrid[r][c].setForeground(new Color(0, 130, 200)); // 0,130,200 is a pretty and solid cyan blue
+
+                                          ButtonGrid[r][c].repaint();
+                                          
+                                          break; // apparently that made all the differnece lol
+                                      }
+        //                              // check for zeros
+        //                              else if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
+        //                              {
+        //                                  ButtonGrid[r][c].setSelected(true);
+        //                                  ButtonGrid[r][c].setText(" ");
+        //                                  break;
+        //                              }
+                                  }
                                }
-                               else if(abstractButton == ButtonGrid[y][x] && !ButtonGrid[y][x].isSelected())
+
+                               for(int r = 0; r < ButtonGrid.length; r++)
                                {
-                                   System.out.println("ASDFASDF");
+                                  for(int c = 0; c < ButtonGrid[1].length; c++)
+                                  {
+                                      // check for zeros
+                                      if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
+                                      {
+                                          ButtonGrid[r][c].setSelected(true);
+                                          ButtonGrid[r][c].setText(" ");   
+                                      }
+                                  }
                                }
+
+
+                               if(abstractButton.isSelected())
+                               {
+                                   System.out.println("Selected");
+                               }
+                               else
+                               {
+                                   System.out.println("Not Un-Selected");
+                                   abstractButton.setSelected(true);
+                               }
+
+                               /*
+                               for(int y = 0; y < ButtonGrid.length; y++)
+                               {
+                                   for(int x = 0; x < ButtonGrid[1].length; x++)
+                                   {
+                                       if(abstractButton == ButtonGrid[y][x] && ButtonGrid[y][x].isSelected())
+                                       {
+                                           String text = MainManager.getMainGrid().getBombs(y, x);
+                                           ButtonGrid[y][x].setText(text);
+                                           int height = ButtonGrid[y][x].getHeight() / 2;
+                                           Font test = (new Font("sansserif", Font.BOLD, height));
+                                           ButtonGrid[y][x].setFont(test);
+                                           ButtonGrid[y][x].setForeground(Color.red);
+                                           System.out.println("success");
+
+                                           ButtonGrid[y][x].repaint();
+
+
+                                       }
+                                       else if(abstractButton == ButtonGrid[y][x] && !ButtonGrid[y][x].isSelected())
+                                       {
+                                           System.out.println("ASDFASDF");
+                                       }
+                                   }
+                               }
+                               * */
+                               //ButtonGrid[y][x].setText(null);
+                               //abstractButton.setText("_");
+                               //toggleButton1.setSelected(selected);
                            }
-                       }
-                       * */
-                       //ButtonGrid[y][x].setText(null);
-                       //abstractButton.setText("_");
-                       //toggleButton1.setSelected(selected);
-                   }
-                };
-                ButtonGrid[y][x].addActionListener(ButtonClick);
-                jPanel1.add(ButtonGrid[y][x]);
-              
-                System.out.println(y + ", " + x); // debug
-            }
-        }
-        
-        FrameSize = new Dimension(EASY_X, EASY_Y);
-        PanelSize = new Dimension(EASY_X, EASY_Y - jMenuBar1.getHeight());
-        
-        this.setSize(FrameSize);
-        this.setLocation(300, 200);
-        
-        jPanel1.setPreferredSize(PanelSize);
-        jPanel1.setSize(EASY_X, EASY_Y - jMenuBar1.getHeight());
-        jPanel1.setLocation(0, jMenuBar1.getHeight());
-        
-        
-        
-        jPanel1.setLayout(new GridLayout(9, 9));
-        this.setVisible(true);
-        
-        this.pack();
+                        };
+                        ButtonGrid[y][x].addActionListener(ButtonClick);
+                        jPanel1.add(ButtonGrid[y][x]);
+
+                        System.out.println(y + ", " + x); // debug
+                    }
+                }
+
+                FrameSize = new Dimension(EASY_X, EASY_Y);
+                PanelSize = new Dimension(EASY_X, EASY_Y - jMenuBar1.getHeight());
+
+                this.setSize(FrameSize);
+                this.setLocation(300, 200);
+
+                jPanel1.setPreferredSize(PanelSize);
+                jPanel1.setSize(EASY_X, EASY_Y - jMenuBar1.getHeight());
+                jPanel1.setLocation(0, jMenuBar1.getHeight());
+
+
+
+                jPanel1.setLayout(new GridLayout(9, 9));
+                this.setVisible(true);
+
+                this.pack();
+           }      
     }
     
     private void MediumButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MediumButtonMouseReleased
