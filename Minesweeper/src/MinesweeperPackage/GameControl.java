@@ -26,7 +26,6 @@ public class GameControl
     public GameControl(String settingKey)
     {
         MainGrid = new Grid(settingKey);
-        
     }
     
     public GameControl()
@@ -34,25 +33,22 @@ public class GameControl
         
     }
     
-//    public static void main(String[] args)
-//    {
-//        /* Testing Methods in console
-//        Scanner scn = new Scanner(System.in);
-//        
-//        Grid g = new Grid("easy");
-//        System.out.println(g.getBombs());
-//        System.out.println(g.getDisplay());
-//        
-//        int y = scn.nextInt();
-//        int x = scn.nextInt();
-//        
-//        g.selectBox(x, y);
-//        
-//        System.out.println(g.getDisplay());
-//        * */
-//        
-//        
-//    }
+    public static void main(String[] args)
+    {
+        //Testing Methods in console
+        Scanner scn = new Scanner(System.in);
+        
+        Grid g = new Grid("easy");
+        System.out.println(g.printBombs());
+        System.out.println(g.printDisplay());
+        
+        int y = scn.nextInt();
+        int x = scn.nextInt();
+        
+        g.selectBox(x, y);
+        
+        System.out.println(g.printDisplay());   
+    }
     
     /**
      * Constructor Method.

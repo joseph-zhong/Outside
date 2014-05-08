@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -125,17 +127,21 @@ public class Calculator extends javax.swing.JFrame
         });
 
         MRButton.setText("MR");
-        MRButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        //MRButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        MRButton.setFont(new Font("Calibri", Font.PLAIN, MRButton.getHeight() / 3));
         MRButton.setMaximumSize(new java.awt.Dimension(21, 19));
         MRButton.setMinimumSize(new java.awt.Dimension(21, 19));
         MRButton.setPreferredSize(new java.awt.Dimension(21, 19));
 
+
         MSButton.setText("MS");
+        MSButton.setFont(new Font("Calibri", Font.PLAIN, MRButton.getHeight() / 3));
         MSButton.setAlignmentY(0.0F);
         MSButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         MSButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         MplusButton.setText("M+");
+        MplusButton.setFont(new Font("Calibri", Font.PLAIN, MRButton.getHeight() / 3));
         MplusButton.setAlignmentY(0.0F);
         MplusButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         MplusButton.setMargin(new java.awt.Insets(0, 0, 0, 0));

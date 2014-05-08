@@ -294,8 +294,8 @@ public class Grid
     
     
     // debugging methods...
-    /*
-    public String getBombs()
+    
+    public String printBombs()
     {
         String str = "";
         for(int r = 0; r < bombs.length; r++)
@@ -308,14 +308,14 @@ public class Grid
         }
         return str;
     }
-    */
+    
     public String getBombs(int r, int c)
     {
         return "" + bombs[r][c];
     }
     
-    /*
-    public String getDisplay()
+    
+    public String printDisplay()
     {
         String str = "";
         for(int r = 0; r < display.length; r++)
@@ -328,7 +328,7 @@ public class Grid
         }
         return str;
     }
-    */
+    
     
     public String getDisplay(int r, int c)
     {

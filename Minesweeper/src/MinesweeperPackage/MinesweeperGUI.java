@@ -174,15 +174,11 @@ public class MinesweeperGUI extends javax.swing.JFrame
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 137, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 133, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -206,87 +202,11 @@ public class MinesweeperGUI extends javax.swing.JFrame
      */
     /*
     private void EasyButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EasyButtonMouseReleased
-        // TODO add your handling code here:
-        this.setSize(EASY_X, EASY_Y);
-        //this.add(new JFrame());
-        
-        MainManager.constructGrid("easy");
-        ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
-        // produce a GUI grid
-        for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
-        {
-            for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
-            {
-                ButtonGrid[y][x] = new javax.swing.JToggleButton();
-                jFrame1.add(ButtonGrid[y][x]);
-                jFrame1.setLayout(new FlowLayout());
-                ButtonGrid[y][x].setLocation(EASY_X / (x+1), EASY_Y / (y+1));
-                //ButtonGrid[y][x].setVisible(true);
-                jFrame1.setVisible(true);
-                //jPanel1.add(ButtonGrid[y][x]);
-                System.out.println(y + ", " + x);
-            }
-        }
+
     }//GEN-LAST:event_EasyButtonMouseReleased
-*/
-    /*
-    private void EasyButtonMouseReleased(java.awt.event.MouseEvent evt) {
-        // TODO add your handling code here:
-        //this.setSize(EASY_X, EASY_Y);
-        //jFrame1.setSize(EASY_X, EASY_Y);
-        
-        FrameSize = new Dimension(EASY_X, EASY_Y);
-        jFrame1.setPreferredSize(FrameSize);
-        jFrame1.setSize(FrameSize);
-        jPanel1.setSize(EASY_X, EASY_Y - jMenuBar1.getHeight());
-        jPanel1.setLocation(0, jMenuBar1.getHeight());
-        
-        //this.add(new JFrame());
-        
-        MainManager.constructGrid("easy");
-        ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
-        // produce a GUI grid
-        for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
-        {
-            for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
-            {
-                ButtonGrid[y][x] = new javax.swing.JToggleButton();
-                jPanel1.add(ButtonGrid[y][x]);
-                
-                //ButtonGrid[y][x].setLocation(EASY_X / (x+1), EASY_Y / (y+1));
-                //ButtonGrid[y][x].setVisible(true);
-                
-                jPanel1.setVisible(true);
-                //this.setVisible(true);
-                //jPanel1.add(ButtonGrid[y][x]);
-                System.out.println(y + ", " + x); // debug
-            }
-        }
-        //this.setSize(EASY_X, EASY_Y);
-        
-        //jFrame1.setSize(EASY_X, EASY_Y - jMenuBar1.getHeight());
-        
-        jPanel1.setPreferredSize(FrameSize);
-        jPanel1.setBounds(0, jMenuBar1.getHeight(), EASY_X, EASY_Y - jMenuBar1.getHeight());
-        
-        jPanel1.setLayout(new GridLayout(9, 9));
-        jFrame1.pack();
-    }
-    */
-    
-       private void EasyButtonMouseReleased(java.awt.event.MouseEvent evt) {
-        // TODO add your handling code here:
-        //this.setSize(EASY_X, EASY_Y);
-        //jFrame1.setSize(EASY_X, EASY_Y);
-        /*
-        FrameSize = new Dimension(EASY_X, EASY_Y);
-        jFrame1.setPreferredSize(FrameSize);
-        jFrame1.setSize(FrameSize);
-        jPanel1.setSize(EASY_X, EASY_Y - jMenuBar1.getHeight());
-        jPanel1.setLocation(0, jMenuBar1.getHeight());
-        */
-        //this.add(new JFrame());
-        
+*/   
+       private void EasyButtonMouseReleased(java.awt.event.MouseEvent evt) 
+       {        
         MainManager.constructGrid("easy");
         ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
         // produce a GUI grid
@@ -294,14 +214,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
         for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
         {
             for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
-            {
-        /*
-        for(int y = 0; y < 2; y++)
-        {
-            for(int x = 0; x < 2; x++)
-            {
-        */
-                
+            {               
                 ButtonGrid[y][x] = new JToggleButton(" ");
                 ActionListener ButtonClick = new ActionListener() 
                 {
@@ -309,10 +222,55 @@ public class MinesweeperGUI extends javax.swing.JFrame
                    public void actionPerformed(ActionEvent e) 
                    {
                        AbstractButton abstractButton = (AbstractButton) e.getSource();
+                       
+                       
+                       for(int r = 0; r < ButtonGrid.length; r++)
+                       {
+                          for(int c = 0; c < ButtonGrid[1].length; c++)
+                          {
+                              // select box internally and set number externally
+                              if(abstractButton == ButtonGrid[r][c])
+                              {
+                                  MainManager.getMainGrid().selectBox(r, c);
+                                  String textFromDisplay = MainManager.getMainGrid().getDisplay(r, c);
+                                  abstractButton.setText(textFromDisplay);
+                                  break; // apparently that made all the differnece lol
+                              }
+//                              // check for zeros
+//                              else if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
+//                              {
+//                                  ButtonGrid[r][c].setSelected(true);
+//                                  ButtonGrid[r][c].setText(" ");
+//                                  break;
+//                              }
+                          }
+                       }
+                       
+                       for(int r = 0; r < ButtonGrid.length; r++)
+                       {
+                          for(int c = 0; c < ButtonGrid[1].length; c++)
+                          {
+                              // check for zeros
+                              if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
+                              {
+                                  ButtonGrid[r][c].setSelected(true);
+                                  ButtonGrid[r][c].setText(" ");
+                              }
+                          }
+                       }
+                       
+                       
+                       if(abstractButton.isSelected())
+                       {
+                           System.out.println("Selected");
+                       }
+                       else
+                       {
+                           System.out.println("Not Un-Selected");
+                           abstractButton.setSelected(true);
+                       }
+                       
                        /*
-                       boolean selected = abstractButton.getModel().isSelected();
-                       System.out.println("Action - selected=" + selected);
-                       * */
                        for(int y = 0; y < ButtonGrid.length; y++)
                        {
                            for(int x = 0; x < ButtonGrid[1].length; x++)
@@ -337,6 +295,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
                                }
                            }
                        }
+                       * */
                        //ButtonGrid[y][x].setText(null);
                        //abstractButton.setText("_");
                        //toggleButton1.setSelected(selected);
@@ -344,35 +303,13 @@ public class MinesweeperGUI extends javax.swing.JFrame
                 };
                 ButtonGrid[y][x].addActionListener(ButtonClick);
                 jPanel1.add(ButtonGrid[y][x]);
-                
-                
-                //ButtonGrid[y][x].setBounds(x, y, 10000, 1000);
-                
-                
-                
-                //ButtonGrid[y][x].setLocation(EASY_X / (x+1), EASY_Y / (y+1));
-                //ButtonGrid[y][x].setVisible(true);
-                
-                //jPanel1.setVisible(true);
-                //this.setVisible(true);
-                //jPanel1.add(ButtonGrid[y][x]);
+              
                 System.out.println(y + ", " + x); // debug
             }
         }
-        //this.setSize(EASY_X, EASY_Y);
-        
-        //jFrame1.setSize(EASY_X, EASY_Y - jMenuBar1.getHeight());
-        /*
-        jPanel1.setPreferredSize(FrameSize);
-        jPanel1.setBounds(0, jMenuBar1.getHeight(), EASY_X, EASY_Y - jMenuBar1.getHeight());
-        */
-        
-         
         
         FrameSize = new Dimension(EASY_X, EASY_Y);
         PanelSize = new Dimension(EASY_X, EASY_Y - jMenuBar1.getHeight());
-//        jFrame1.setPreferredSize(FrameSize);
-//        jFrame1.setSize(FrameSize);
         
         this.setSize(FrameSize);
         this.setLocation(300, 200);
@@ -385,8 +322,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
         
         jPanel1.setLayout(new GridLayout(9, 9));
         this.setVisible(true);
-        //jFrame1.setVisible(true);
-        //jFrame1.pack();
+        
         this.pack();
     }
     
@@ -416,9 +352,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
         for(int r = 0; r < ButtonGrid.length; r++)
         {
             for(int c = 0; c < ButtonGrid[1].length; c++)
-            {
-                //if(evt.getX() > ButtonGrid[r][c].getX() && evt.getX() < ButtongGrid[r][c].getX() +  )
-                
+            {                
                 {
                     System.out.println(evt.getX() + " " + evt.getY());
                 }
@@ -478,10 +412,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
                 new MinesweeperGUI().setVisible(true);
                 //System.out.println("test");
             }
-        });
-        
-        
-        
+        });        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem EasyButton;
