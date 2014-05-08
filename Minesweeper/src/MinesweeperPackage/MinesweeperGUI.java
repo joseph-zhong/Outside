@@ -249,11 +249,27 @@ public class MinesweeperGUI extends javax.swing.JFrame
                        {
                            MainManager.getMainGrid().selectBox(r, c);
                            String displayText = MainManager.getMainGrid().getDisplay(r, c);
-                           abstractButton.setText(displayText);
+                           if(displayText.equals("9"))
+                           {
+                                ImageIcon FlagIcon; // for now... can't find a bomb for some reason
+                                FlagIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/FlagImage.png");
 
-                           resetFont(displayText, r, c);
+                                Panel test = new Panel(new BorderLayout());
+                                JLabel test1 = new JLabel(FlagIcon);
 
-                           break; // apparently that made all the differnece lol
+                                //test.add(test1);
+                                ButtonGrid[r][c].setBackground(Color.red);
+                                ButtonGrid[r][c].add(test1);
+                                //ButtonGrid[r][c].setIcon(FlagIcon);
+                           }
+                           else
+                           {
+                                abstractButton.setText(displayText);
+
+                                resetFont(displayText, r, c);
+
+                                break; // apparently that made all the differnece lol
+                           }
                        }
 //                              // check for zeros
 //                              else if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
@@ -287,9 +303,10 @@ public class MinesweeperGUI extends javax.swing.JFrame
                         *
                         * V2 IS DONE, LOOKS A BIT BETTER, THE TRANSPERENCY WORKS
                         */
-
+                       /*
                        else if(displayText.equals("9"))
                        {
+
                            ImageIcon FlagIcon;
                            FlagIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/FlagImage.png");
 
@@ -301,6 +318,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
                            ButtonGrid[r][c].add(test1);
                            //ButtonGrid[r][c].setIcon(FlagIcon);
                        }
+                       */
                    }
                 }
 
