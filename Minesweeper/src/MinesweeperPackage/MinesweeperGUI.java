@@ -191,7 +191,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -227,205 +227,129 @@ public class MinesweeperGUI extends javax.swing.JFrame
         else
         {
             isGridConstructed = true;
-            MainManager = new GameControl("easy");
-
-            ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
-            // produce a GUI grid
-
-            for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
-            {
-                for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
-                {
-                    ButtonGrid[y][x] = new JToggleButton(" ");
-                    ActionListener ButtonClick;
-                    ButtonClick = new ActionListener()
-                    {
-                         @Override
-                         public void actionPerformed(ActionEvent e)
-                     {
-                         AbstractButton abstractButton = (AbstractButton) e.getSource();
-
-
-                         for(int r = 0; r < ButtonGrid.length; r++)
-                         {
-
-                             for(int c = 0; c < ButtonGrid[1].length; c++)
-                             {
-                                 // select box internally and set number externally
-                                 if(abstractButton == ButtonGrid[r][c])
-                                 {
-                                     MainManager.getMainGrid().selectBox(r, c);
-                                     String displayText = MainManager.getMainGrid().getDisplay(r, c);
-                                     if(displayText.equals("9"))
-                                     {
-                                          ImageIcon FlagIcon; // for now... can't find a bomb for some reason
-                                          FlagIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/FlagImage.png");
-
-                                          ImageIcon MineIcon;
-                                          MineIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/MineImage.png");
-
-                                          ImageIcon imageIcon = new ImageIcon("./img/imageName.png"); // load the image to a imageIcon
-                                            Image image = MineIcon.getImage(); // transform it
-
-                                            int size = Math.max(ButtonGrid[r][c].getHeight(), ButtonGrid[r][c].getWidth()) / 2;
-
-                                            Image newimg = image.getScaledInstance(size, size, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-                                            imageIcon = new ImageIcon(newimg);  // transform it back
-
-                                             /*
-                                             ImageIcon resizedImage;
-                                             //resizedImage = getScaledImage(MineIcon, ButtonGrid[r][c].getWidth(), ButtonGrid[r][c].getHeight());
-                                             resizedImage = rescaleImage(new File("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/MineImage.png"),
-                                                     ButtonGrid[r][c].getHeight(), ButtonGrid[r][c].getWidth());
-
-                                             */
-
-                                             Panel test = new Panel(new BorderLayout());
-
-                                             JLabel test1 = new JLabel(imageIcon);
-
-                                             //test.add(test1);
-
-                                             ButtonGrid[r][c].setBackground(Color.red);
-                                             ButtonGrid[r][c].add(test1);
-                                             //ButtonGrid[r][c].setIcon(FlagIcon);
-                                        }
-                                        else
-                                        {
-                                             abstractButton.setText(displayText);
-
-                                             resetFont(displayText, r, c);
-
-                                             break; // apparently that made all the differnece lol
-                                        }
-                                    }
- //                              // check for zeros
- //                              else if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
- //                              {
- //                                  ButtonGrid[r][c].setSelected(true);
- //                                  ButtonGrid[r][c].setText(" ");
- //                                  break;
- //                              }
-                    }
-                }
-
-                for(int r = 0; r < ButtonGrid.length; r++)
-                {
-                   for(int c = 0; c < ButtonGrid[1].length; c++)
-                   {
-                       // check for zeros
-                       //if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
-                       String displayText;
-                       if(!(displayText = MainManager.getMainGrid().getDisplay(r, c)).equals("_")
-                               && !displayText.equals("9"))
-                       {
-                           ButtonGrid[r][c].setSelected(true);
-                           ButtonGrid[r][c].setText(displayText);
-
-                           resetFont(displayText, r, c);
-                       }
-                   }
-                }
-
-
-                if(abstractButton.isSelected())
-                {
-                    System.out.println("Selected");
-                }
-                else
-                {
-                    System.out.println("Not Un-Selected");
-                    abstractButton.setSelected(true);
-                }
-            }
-         };
-                        ButtonGrid[y][x].addActionListener(ButtonClick);
-                        jPanel1.add(ButtonGrid[y][x]);
-
-                        System.out.println(y + ", " + x); // debug
-                    }
-                }
-
-                FrameSize = new Dimension(EASY_X, EASY_Y);
-                PanelSize = new Dimension(EASY_X, EASY_Y - jMenuBar1.getHeight());
-
-                this.setSize(FrameSize);
-                this.setLocation(300, 200);
-
-                jPanel1.setPreferredSize(PanelSize);
-                jPanel1.setSize(EASY_X, EASY_Y - jMenuBar1.getHeight());
-                jPanel1.setLocation(0, jMenuBar1.getHeight());
-
-                jPanel1.setLayout(new GridLayout(MainManager.getMainGrid().getLength(true), MainManager.getMainGrid().getLength(false)));
-                this.setVisible(true);
-
-                this.pack();
-           }
+            constructMinesweeper("easy");
+        }
     }// end easy button release - a very bulky method
 
-    private Image getScaledImage(Image srcImg, int w, int h)
+    private void constructMinesweeper(String difficulty)
     {
-        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImg, 0, 0, w, h, null);
-        g2.dispose();
-        return resizedImg;
+        MainManager = new GameControl(difficulty);
+
+        ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
+    // produce a GUI grid
+
+    for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
+    {
+        for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
+        {
+            ButtonGrid[y][x] = new JToggleButton(" ");
+            ActionListener ButtonClick;
+            ButtonClick = new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    AbstractButton abstractButton = (AbstractButton) e.getSource();
+                    for(int r = 0; r < ButtonGrid.length; r++)
+                    {
+                        for(int c = 0; c < ButtonGrid[1].length; c++)
+                        {
+                            // select box internally and set number externally
+                            if(abstractButton == ButtonGrid[r][c])
+                            {
+                                MainManager.getMainGrid().selectBox(r, c);
+                                String displayText = MainManager.getMainGrid().getDisplay(r, c);
+                                if(displayText.equals("9"))
+                                {
+                                    ImageIcon FlagIcon; // for now... can't find a bomb for some reason
+                                    FlagIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/FlagImage.png");
+
+                                    ImageIcon MineIcon;
+                                    MineIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/MineImage.png");
+
+                                    ImageIcon imageIcon = new ImageIcon("./img/imageName.png"); // load the image to a imageIcon
+                                    Image image = MineIcon.getImage(); // transform it
+
+                                    int size = Math.max(ButtonGrid[r][c].getHeight(), ButtonGrid[r][c].getWidth()) / 2;
+
+                                    Image newimg = image.getScaledInstance(size, size, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+                                    imageIcon = new ImageIcon(newimg);  // transform it back
+                                    Panel test = new Panel(new BorderLayout());
+
+                                    JLabel test1 = new JLabel(imageIcon);
+
+                                    //test.add(test1);
+
+                                    ButtonGrid[r][c].setBackground(Color.red);
+                                    ButtonGrid[r][c].add(test1);
+                                    //ButtonGrid[r][c].setIcon(FlagIcon);
+                                }
+                                else
+                                {
+                                     abstractButton.setText(displayText);
+
+                                     resetFont(displayText, r, c);
+
+                                     break; // apparently that made all the differnece lol
+                                }
+                            }
+                        }
+                    }
+
+                    for(int r = 0; r < ButtonGrid.length; r++)
+                    {
+
+                        for(int c = 0; c < ButtonGrid[1].length; c++)
+                        {
+                            // check for zeros
+                            //if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
+                            String displayText;
+                            if(!(displayText = MainManager.getMainGrid().getDisplay(r, c)).equals("_")
+                                    && !displayText.equals("9"))
+                            {
+                                ButtonGrid[r][c].setSelected(true);
+                                ButtonGrid[r][c].setText(displayText);
+
+                                resetFont(displayText, r, c);
+                            }
+                        }
+                    }
+
+                    if(abstractButton.isSelected())
+                    {
+                        System.out.println("Selected");
+                    }
+                    else
+                    {
+                        System.out.println("Not Un-Selected");
+                        abstractButton.setSelected(true);
+                    }
+                }
+            };
+
+            ButtonGrid[y][x].addActionListener(ButtonClick);
+            jPanel1.add(ButtonGrid[y][x]);
+
+            System.out.println(y + ", " + x); // debug
+        }
     }
 
-    /*
-    * source File of image, maxHeight pixels of height available, maxWidth pixels of width available
-    * @return an ImageIcon for adding to a label
-    */
-    public ImageIcon rescaleImage(File source,int maxHeight, int maxWidth)
-    {
-        int newHeight = 0, newWidth = 0;        // Variables for the new height and width
-        int priorHeight = 0, priorWidth = 0;
-        BufferedImage image = null;
-        ImageIcon sizeImage;
+        FrameSize = new Dimension(EASY_X, EASY_Y);
+        PanelSize = new Dimension(EASY_X, EASY_Y);
 
-        try {
-                image = ImageIO.read(source);        // get the image
-        } catch (Exception e) {
+        this.setSize(FrameSize);
+        this.setLocation(300, 100);
 
-                e.printStackTrace();
-                System.out.println("Picture upload attempted & failed");
-        }
+        jPanel1.setPreferredSize(PanelSize);
+        //jPanel1.setSize(EASY_X, EASY_Y/* - jMenuBar1.getHeight()*/);
+        //jPanel1.setLocation(0, jMenuBar1.getHeight());
 
-        sizeImage = new ImageIcon(image);
+        jPanel1.setLayout(new GridLayout(MainManager.getMainGrid().getLength(true), MainManager.getMainGrid().getLength(false)));
+        this.setVisible(true);
 
-        if(sizeImage != null)
-        {
-            priorHeight = sizeImage.getIconHeight();
-            priorWidth = sizeImage.getIconWidth();
-        }
+        this.setResizable(false); // APPARENTLY THIS WORKS AND OUTSIDE DOESN'T
 
-        // Calculate the correct new height and width
-        if((float)priorHeight/(float)priorWidth > (float)maxHeight/(float)maxWidth)
-        {
-            newHeight = maxHeight;
-            newWidth = (int)(((float)priorWidth/(float)priorHeight)*(float)newHeight);
-        }
-        else
-        {
-            newWidth = maxWidth;
-            newHeight = (int)(((float)priorHeight/(float)priorWidth)*(float)newWidth);
-        }
-
-
-        // Resize the image
-
-        // 1. Create a new Buffered Image and Graphic2D object
-        BufferedImage resizedImg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-
-        // 2. Use the Graphic object to draw a new image to the image in the buffer
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(image, 0, 0, newWidth, newHeight, null);
-        g2.dispose();
-
-        // 3. Convert the buffered image into an ImageIcon for return
-        return (new ImageIcon(resizedImg));
+        this.pack();
     }
 
      private void resetFont(String displayNumber, int _r, int _c)
