@@ -17,6 +17,7 @@ import java.awt.Panel;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -122,6 +123,12 @@ public class MinesweeperGUI extends javax.swing.JFrame
             }
         });
 
+        jPanel1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel1KeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -223,116 +230,119 @@ public class MinesweeperGUI extends javax.swing.JFrame
     {
         if(isGridConstructed)
         {
+            jPanel1.removeAll();
+            constructMinesweeper("easy");
         }
         else
         {
             isGridConstructed = true;
             constructMinesweeper("easy");
         }
-    }// end easy button release - a very bulky method
+    }
 
     private void constructMinesweeper(String difficulty)
     {
         MainManager = new GameControl(difficulty);
 
         ButtonGrid = new JToggleButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
-    // produce a GUI grid
+       // produce a GUI grid
 
-    for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
-    {
-        for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
+        for(int y = 0; y < MainManager.getMainGrid().getLength(false); y++)
         {
-            ButtonGrid[y][x] = new JToggleButton(" ");
-            ActionListener ButtonClick;
-            ButtonClick = new ActionListener()
+            for(int x = 0; x < MainManager.getMainGrid().getLength(true); x++)
             {
-                @Override
-                public void actionPerformed(ActionEvent e)
+                ButtonGrid[y][x] = new JToggleButton(" ");
+                ActionListener ButtonClick;
+                ButtonClick = new ActionListener()
                 {
-                    AbstractButton abstractButton = (AbstractButton) e.getSource();
-                    for(int r = 0; r < ButtonGrid.length; r++)
+                    @Override
+                    public void actionPerformed(ActionEvent e)
                     {
-                        for(int c = 0; c < ButtonGrid[1].length; c++)
+                        AbstractButton abstractButton = (AbstractButton) e.getSource();
+                        for(int r = 0; r < ButtonGrid.length; r++)
                         {
-                            // select box internally and set number externally
-                            if(abstractButton == ButtonGrid[r][c])
+                            for(int c = 0; c < ButtonGrid[1].length; c++)
                             {
-                                MainManager.getMainGrid().selectBox(r, c);
-                                String displayText = MainManager.getMainGrid().getDisplay(r, c);
-                                if(displayText.equals("9"))
+                                // select box internally and set number externally
+                                if(abstractButton == ButtonGrid[r][c])
                                 {
-                                    ImageIcon FlagIcon; // for now... can't find a bomb for some reason
-                                    FlagIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/FlagImage.png");
+                                    MainManager.getMainGrid().selectBox(r, c);
+                                    String displayText = MainManager.getMainGrid().getDisplay(r, c);
+                                    if(displayText.equals("9"))
+                                    {
+                                        ImageIcon FlagIcon;
+                                        FlagIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/FlagImage.png");
 
-                                    ImageIcon MineIcon;
-                                    MineIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/MineImage.png");
+                                        ImageIcon MineIcon;
+                                        MineIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/MineImage.png");
 
-                                    ImageIcon imageIcon = new ImageIcon("./img/imageName.png"); // load the image to a imageIcon
-                                    Image image = MineIcon.getImage(); // transform it
+                                        ImageIcon imageIcon;
+                                        Image image = MineIcon.getImage(); // transform it
 
-                                    int size = Math.max(ButtonGrid[r][c].getHeight(), ButtonGrid[r][c].getWidth()) / 2;
+                                        int size = Math.max(ButtonGrid[r][c].getHeight(), ButtonGrid[r][c].getWidth()) / 2;
 
-                                    Image newimg = image.getScaledInstance(size, size, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-                                    imageIcon = new ImageIcon(newimg);  // transform it back
-                                    Panel test = new Panel(new BorderLayout());
+                                        Image newimg = image.getScaledInstance(size, size, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+                                        imageIcon = new ImageIcon(newimg);  // transform it back
+                                        Panel test = new Panel(new BorderLayout());
 
-                                    JLabel test1 = new JLabel(imageIcon);
+                                        JLabel test1 = new JLabel(imageIcon);
 
-                                    //test.add(test1);
+                                        //test.add(test1);
 
-                                    ButtonGrid[r][c].setBackground(Color.red);
-                                    ButtonGrid[r][c].add(test1);
-                                    //ButtonGrid[r][c].setIcon(FlagIcon);
-                                }
-                                else
-                                {
-                                     abstractButton.setText(displayText);
+                                        ButtonGrid[r][c].setBackground(Color.red);
+                                        ButtonGrid[r][c].add(test1);
+                                        //ButtonGrid[r][c].setIcon(FlagIcon);
+                                    }
+                                    else
+                                    {
+                                         abstractButton.setText(displayText);
 
-                                     resetFont(displayText, r, c);
+                                         resetFont(displayText, r, c);
 
-                                     break; // apparently that made all the differnece lol
+                                         break; // apparently that made all the differnece lol
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    for(int r = 0; r < ButtonGrid.length; r++)
-                    {
-
-                        for(int c = 0; c < ButtonGrid[1].length; c++)
+                        for(int r = 0; r < ButtonGrid.length; r++)
                         {
-                            // check for zeros
-                            //if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
-                            String displayText;
-                            if(!(displayText = MainManager.getMainGrid().getDisplay(r, c)).equals("_")
-                                    && !displayText.equals("9"))
-                            {
-                                ButtonGrid[r][c].setSelected(true);
-                                ButtonGrid[r][c].setText(displayText);
 
-                                resetFont(displayText, r, c);
+                            for(int c = 0; c < ButtonGrid[1].length; c++)
+                            {
+                                // check for zeros
+                                //if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
+                                String displayText;
+                                if(!(displayText = MainManager.getMainGrid().getDisplay(r, c)).equals("_")
+                                        && !displayText.equals("9"))
+                                {
+                                    ButtonGrid[r][c].setSelected(true);
+                                    ButtonGrid[r][c].setText(displayText);
+
+                                    resetFont(displayText, r, c);
+                                }
                             }
                         }
-                    }
 
-                    if(abstractButton.isSelected())
-                    {
-                        System.out.println("Selected");
+                        if(abstractButton.isSelected())
+                        {
+                            System.out.println("Selected");
+                        }
+                        else
+                        {
+                            System.out.println("Not Un-Selected");
+                            abstractButton.setSelected(true);
+                        }
                     }
-                    else
-                    {
-                        System.out.println("Not Un-Selected");
-                        abstractButton.setSelected(true);
-                    }
-                }
-            };
+                };
 
-            ButtonGrid[y][x].addActionListener(ButtonClick);
-            jPanel1.add(ButtonGrid[y][x]);
+                ButtonGrid[y][x].addActionListener(ButtonClick);
+                jPanel1.add(ButtonGrid[y][x]);
 
-            System.out.println(y + ", " + x); // debug
+                System.out.println(y + ", " + x); // debug
+            }
         }
-    }
+        this.setResizable(false); // MUST PUT THIS LINE BEFORE BOUNDS AND SIZES ARE SET
 
         FrameSize = new Dimension(EASY_X, EASY_Y);
         PanelSize = new Dimension(EASY_X, EASY_Y);
@@ -346,8 +356,6 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
         jPanel1.setLayout(new GridLayout(MainManager.getMainGrid().getLength(true), MainManager.getMainGrid().getLength(false)));
         this.setVisible(true);
-
-        this.setResizable(false); // APPARENTLY THIS WORKS AND OUTSIDE DOESN'T
 
         this.pack();
     }
@@ -519,11 +527,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == 113)
-        {
-            System.out.println(evt.getKeyCode());
-            EasyButtonMouseReleased(null);
-        }
+        checkF2Key(evt);
     }//GEN-LAST:event_formKeyPressed
 
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
@@ -540,7 +544,22 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
 
     }//GEN-LAST:event_formMouseReleased
-/**/
+
+    private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
+        // TODO add your handling code here:
+        checkF2Key(evt);
+    }//GEN-LAST:event_jPanel1KeyPressed
+
+    private void checkF2Key(KeyEvent evt)
+    {
+        if(evt.getKeyCode() == 113)
+        {
+            System.out.println(evt.getKeyCode());
+            EasyButtonMouseReleased(null);
+        }
+    }
+
+
     /**
      * @param args the command line arguments
      */
