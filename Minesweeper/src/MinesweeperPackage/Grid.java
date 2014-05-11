@@ -13,20 +13,20 @@ import java.util.Random;
  *  Joseph Zhong
  *  Minesweeper - Java (v2.5)
  *  This program is the Grid Object for my overall Minesweeper Project
- *  Minesweeper - Grid Object 
+ *  Minesweeper - Grid Object
  *  1 April 2014
  *
  **/
 
-public class Grid 
+public class Grid
 {
     /**
-     * @bombs is a two dimensional integer array which acts as the actual grid which 
+     * @bombs is a two dimensional integer array which acts as the actual grid which
      *  holds values of integers resembling the field
      * 0 is an empty slot, while 9 resembles the bomb
      */
     private int[][] bombs;
-    
+
     /**
      * @display is a two dimensional char array which acts as the field which the
      *  user sees - a bunch of x that hide the actual values of the grid
@@ -34,7 +34,7 @@ public class Grid
      *      value after selection
      */
     private String[][] display;
-    
+
     /**
      * @setting is a map of grid specs, accessed by a string key - resembling a
      *  game-mode difficulty level.
@@ -43,7 +43,7 @@ public class Grid
      * hard - 99 m, 16*30 grid
      */
     private HashMap<String, Setting> settings;
-    
+
     /**
      * Constructor.
      * @param choice is a user input that chooses which grid size to use
@@ -54,22 +54,22 @@ public class Grid
         settings.put("easy", new Setting(10, 9, 9));
         settings.put("medium", new Setting(40, 16, 16));
         settings.put("hard", new Setting(99, 16, 30));
-        
+
         if(choice.equals("easy") || choice.equals("medium") || choice.equals("hard"))
         {
             bombs = new int[settings.get(choice).getX()][settings.get(choice).getY()];
             generateBombs(settings.get((choice)).getMines(), settings.get(choice).getX(),
                     settings.get(choice).getY());
         }
-        
+
         addBombInformation();
-        
+
         generateDisplay();
     }
-    
+
     /**
-     * Constructor Helper-Method (v2: Modified from v1.2). 
-     *  This method produces the bombs for the integer array. 
+     * Constructor Helper-Method (v2: Modified from v1.2).
+     *  This method produces the bombs for the integer array.
      * PRECONDITION: @bombs is null
      * @param maxBombs is an integer value - resembles the maximum number of bombs
      *  for the given grid
@@ -87,9 +87,9 @@ public class Grid
             _y = gen.nextInt(maxX);
             _x = gen.nextInt(maxY);
             bombs[_y][_x] = 9;
-        }   
+        }
     }
-    
+
     /**
      * Constructor Helper-Method (Taken from v1.2).
      *  This method traverses through the grid and adds information to each box
@@ -108,8 +108,8 @@ public class Grid
 
     /**
      * Constructor Helper-Method (Taken from v1.2).
-     *  This method takes the coordinates of the grid, creates a sub-grid of 
-     *  adjacent "neighbors". For each "bomb" in the sub-grid, the core value 
+     *  This method takes the coordinates of the grid, creates a sub-grid of
+     *  adjacent "neighbors". For each "bomb" in the sub-grid, the core value
      *  increases.
      * PRECONDITION: bombs are set
      * @param row integer value resembling the x coordinate in the grid
@@ -129,21 +129,21 @@ public class Grid
             int [] row_neighbor = new int [8];
             int [] col_neighbor = new int [8];
 
-            row_neighbor[0] = row+1; 
-            col_neighbor[0] = col; 
-            row_neighbor[1] = row+1; 
-            col_neighbor[1] = col+1; 
-            row_neighbor[2] = row; 
-            col_neighbor[2] = col+1; 
-            row_neighbor[3] = row-1; 
-            col_neighbor[3] = col+1; 
-            row_neighbor[4] = row-1; 
-            col_neighbor[4] = col; 
-            row_neighbor[5] = row-1; 
+            row_neighbor[0] = row+1;
+            col_neighbor[0] = col;
+            row_neighbor[1] = row+1;
+            col_neighbor[1] = col+1;
+            row_neighbor[2] = row;
+            col_neighbor[2] = col+1;
+            row_neighbor[3] = row-1;
+            col_neighbor[3] = col+1;
+            row_neighbor[4] = row-1;
+            col_neighbor[4] = col;
+            row_neighbor[5] = row-1;
             col_neighbor[5] = col-1;
-            row_neighbor[6] = row; 
+            row_neighbor[6] = row;
             col_neighbor[6] = col-1;
-            row_neighbor[7] = row+1; 
+            row_neighbor[7] = row+1;
             col_neighbor[7] = col-1;
 
             for(int r = 0; r < 8; r++)
@@ -159,7 +159,7 @@ public class Grid
             }
         }
     }
-    
+
     private void generateDisplay()
     {
         display = new String[bombs.length][bombs[1].length];
@@ -171,16 +171,16 @@ public class Grid
             }
         }
     }
-    
+
     /**
      * Modifier method.
-     *  This method takes input from the user 
+     *  This method takes input from the user
      * The grid that is selected changes the display char to display the integer
      *  value in the integer grid
-     * PRECONDITION: @bombs array has been completed and the selected box must 
+     * PRECONDITION: @bombs array has been completed and the selected box must
      *  be valid
      * @param _y
-     * @param _x 
+     * @param _x
      */
     public void selectBox(int _y, int _x)
     {
@@ -206,13 +206,13 @@ public class Grid
             display[_y][_x] = Integer.toString(bombs[_y][_x]);
         }
     }
-    
+
     /**
-     * 
+     *
      * @param _y
-     * @param _x 
+     * @param _x
      */
-    private void adjacentBoxes(int _y, int _x) 
+    private void adjacentBoxes(int _y, int _x)
     {
         // if the integer is not 0, return
             // display -> subs -> recursive
@@ -227,37 +227,37 @@ public class Grid
             /**
              * [x-1, y-1] [x, y-1] [x+1, y-1]
              * [x-1, y]   [x,y]    [x+1, y]
-             * [x-1, y+1] [x, y+1] [x+1, y+1] 
+             * [x-1, y+1] [x, y+1] [x+1, y+1]
              */
-            
+
             /**
-             * [5] [6] [7] 
+             * [5] [6] [7]
              * [4] [r] [0]
              * [3] [2] [1]
              */
 
-        neighborY[0] = _y + 1; 
-        neighborX[0] = _x; 
+        neighborY[0] = _y + 1;
+        neighborX[0] = _x;
 
-        neighborY[1] = _y + 1; 
-        neighborX[1] = _x + 1; 
+        neighborY[1] = _y + 1;
+        neighborX[1] = _x + 1;
 
-        neighborY[2] = _y; 
-        neighborX[2] = _x + 1; 
+        neighborY[2] = _y;
+        neighborX[2] = _x + 1;
 
-        neighborY[3] = _y - 1; 
-        neighborX[3] = _x + 1; 
+        neighborY[3] = _y - 1;
+        neighborX[3] = _x + 1;
 
-        neighborY[4] = _y - 1; 
-        neighborX[4] = _x; 
+        neighborY[4] = _y - 1;
+        neighborX[4] = _x;
 
-        neighborY[5] = _y - 1; 
+        neighborY[5] = _y - 1;
         neighborX[5] = _x - 1;
 
-        neighborY[6] = _y; 
+        neighborY[6] = _y;
         neighborX[6] = _x - 1;
 
-        neighborY[7] = _y + 1; 
+        neighborY[7] = _y + 1;
         neighborX[7] = _x - 1;
 
         for(int r = 0; r < 8; r++) // iterate all sides
@@ -291,10 +291,10 @@ public class Grid
         }
         return bombs[1].length;
     }
-    
-    
+
+
     // debugging methods...
-    
+
     public String printBombs()
     {
         String str = "";
@@ -308,14 +308,15 @@ public class Grid
         }
         return str;
     }
-    
+
     public String getBombs(int r, int c)
     {
         return "" + bombs[r][c];
     }
-    
-    
-    public String printDisplay()
+
+
+    @Override
+    public String toString()
     {
         String str = "";
         for(int r = 0; r < display.length; r++)
@@ -328,11 +329,11 @@ public class Grid
         }
         return str;
     }
-    
-    
+
+
     public String getDisplay(int r, int c)
     {
         return display[r][c];
     }
-    
+
 }// end class

@@ -40,14 +40,14 @@ public class GameControl
 
         Grid g = new Grid("easy");
         System.out.println(g.printBombs());
-        System.out.println(g.printDisplay());
+        System.out.println(g.toString());
 
         int y = scn.nextInt();
         int x = scn.nextInt();
 
         g.selectBox(x, y);
 
-        System.out.println(g.printDisplay());
+        System.out.println(g.toString());
     }
 
     /**

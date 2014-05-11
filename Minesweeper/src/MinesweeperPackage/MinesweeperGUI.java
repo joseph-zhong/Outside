@@ -18,6 +18,9 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -27,6 +30,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -253,6 +257,61 @@ public class MinesweeperGUI extends javax.swing.JFrame
             {
                 ButtonGrid[y][x] = new JToggleButton(" ");
                 ActionListener ButtonClick;
+                MouseListener MouseClick;
+
+                MouseClick =  new MouseListener()
+                {
+                    boolean pressed;
+                    
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                throw new UnsupportedOperationException("Not supported yet.");
+                            }
+
+                            @Override
+                            public void mousePressed(MouseEvent e)
+                            {
+                                ButtonGrid[r][c].getModel().setArmed(true);
+                                ButtonGrid[r][c].getModel().setPressed(true);
+                                pressed = true;
+                            }
+
+                            @Override
+                            public void mouseReleased(MouseEvent e)
+                            {
+                                //if(isRightButtonPressed) {underlyingButton.getModel().setPressed(true));
+                                ButtonGrid[r][c].getModel().setArmed(false);
+                                ButtonGrid[r][c].getModel().setPressed(false);
+
+                                if (pressed)
+                                {
+                                    if (SwingUtilities.isRightMouseButton(e))
+                                    {
+                                        ButtonGrid[r][c].setText("F");
+                                    }
+                                    else
+                                    {
+                                        ButtonGrid[r][c].setText("X");
+                                    }
+                                }
+                                pressed = false;
+
+                            }
+
+                            @Override
+                            public void mouseEntered(MouseEvent e)
+                            {
+                                throw new UnsupportedOperationException("Not supported yet.");
+                            }
+
+                            @Override
+                            public void mouseExited(MouseEvent e)
+                            {
+                                pressed = false;
+                            }
+                });
+
+
                 ButtonClick = new ActionListener()
                 {
                     @Override
