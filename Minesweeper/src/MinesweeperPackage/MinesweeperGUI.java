@@ -351,55 +351,50 @@ public class MinesweeperGUI extends javax.swing.JFrame
                             * */
 
                         }
-                        else
+                        else if(SwingUtilities.isLeftMouseButton(e)
+                                && !ButtonGrid[y][x].getIsFlagged())
                         {
                             // leftClick
-                            if(!ButtonGrid[y][x].getIsFlagged())
+                            MainManager.getMainGrid().selectBox(y, x);
+                            String displayText = MainManager.getMainGrid().getDisplay(y, x);
+                            if(displayText.equals("9"))
                             {
-                                MainManager.getMainGrid().selectBox(y, x);
-                                String displayText = MainManager.getMainGrid().getDisplay(y, x);
-                                if(displayText.equals("9"))
-                                {
-                                    rescaledImage = MineImage.getScaledInstance(maxSize, maxSize, Image.SCALE_SMOOTH); // scale it the smooth way
-                                    imageIcon = new ImageIcon(rescaledImage);  // transform it back
+                                rescaledImage = MineImage.getScaledInstance(maxSize, maxSize, Image.SCALE_SMOOTH); // scale it the smooth way
+                                imageIcon = new ImageIcon(rescaledImage);  // transform it back
 
-                                    JLabel test1 = new JLabel(imageIcon);
+                                JLabel test1 = new JLabel(imageIcon);
 
-                                    abstractButton.setBackground(Color.red);
-                                    abstractButton.add(test1);
-                                }
-                                else
-                                {
-                                     abstractButton.setText(displayText);
-
-                                     resetFont(displayText, y, x);
-
-                                     //break; // apparently that made all the differnece lol
-                                }
+                                abstractButton.setBackground(Color.red);
+                                abstractButton.add(test1);
                             }
-                            else
-                            {
-                                abstractButton.setSelected(false);
-                            }
+                            abstractButton.setText(displayText);
 
-                            for(int r = 0; r < ButtonGrid.length; r++)
+                            resetFont(displayText, y, x);
+
+                                 //break; // apparently that made all the differnece lol
+
+                        }
+                        else
+                        {
+                            abstractButton.setSelected(false);
+                        }
+
+                        for(int r = 0; r < ButtonGrid.length; r++)
+                        {
+                            for(int c = 0; c < ButtonGrid[1].length; c++)
                             {
-                                for(int c = 0; c < ButtonGrid[1].length; c++)
+                                // check for zeros
+                                String displayText = MainManager.getMainGrid().getDisplay(r, c);
+                                if(!(displayText.equals("_"))
+                                        && !displayText.equals("!"))
                                 {
-                                    // check for zeros
-                                    String displayText = MainManager.getMainGrid().getDisplay(r, c);
-                                    if(!(displayText.equals("_"))
-                                            && !displayText.equals("9"))
-                                    {
-                                        ButtonGrid[r][c].setSelected(true);
-                                        ButtonGrid[r][c].setText(displayText);
+                                    ButtonGrid[r][c].setSelected(true);
+                                    ButtonGrid[r][c].setText(displayText);
 
-                                        resetFont(displayText, r, c);
-                                    }
+                                    resetFont(displayText, r, c);
                                 }
                             }
                         }
-
                     }
 
                     @Override
