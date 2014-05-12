@@ -207,13 +207,20 @@ public class Grid
     }
 
     /**
-     * 
+     *
      * @param _y
      * @param _x
      */
     public void markBox(int _y, int _x)
     {
-        display[_y][_x] = "!";
+        if(display[_y][_x].equals("!"))
+        {
+           display[_y][_x] = "_";
+        }
+        else
+        {
+            display[_y][_x] = "!";
+        }
     }
 
     /**

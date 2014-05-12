@@ -31,6 +31,7 @@ public class MinesweeperButton extends JToggleButton
     public MinesweeperButton(String str)
     {
         super(str);
+        isFlagged = false;
     }
 
     public boolean getIsFlagged()
