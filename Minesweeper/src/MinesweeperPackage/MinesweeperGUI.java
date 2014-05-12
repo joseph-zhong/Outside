@@ -261,55 +261,145 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
                 MouseClick =  new MouseListener()
                 {
-                    boolean pressed;
-                    
+                    //boolean pressed;
+
                             @Override
-                            public void mouseClicked(MouseEvent e) {
-                                throw new UnsupportedOperationException("Not supported yet.");
+                            public void mouseClicked(MouseEvent e)
+                            {
+//                                throw new UnsupportedOperationException("Not supported yet.");
+                                System.out.println("Click Successful");
                             }
 
                             @Override
                             public void mousePressed(MouseEvent e)
                             {
-                                ButtonGrid[r][c].getModel().setArmed(true);
-                                ButtonGrid[r][c].getModel().setPressed(true);
-                                pressed = true;
+                                AbstractButton abstractButton = (AbstractButton) e.getSource();
+                                abstractButton.getModel().setArmed(true);
+                                abstractButton.getModel().setPressed(true);
+
                             }
 
                             @Override
                             public void mouseReleased(MouseEvent e)
                             {
-                                //if(isRightButtonPressed) {underlyingButton.getModel().setPressed(true));
-                                ButtonGrid[r][c].getModel().setArmed(false);
-                                ButtonGrid[r][c].getModel().setPressed(false);
+                                AbstractButton abstractButton = (AbstractButton) e.getSource();
 
-                                if (pressed)
+                                ImageIcon FlagIcon;
+                                FlagIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/FlagImage.png");
+
+                                ImageIcon MineIcon;
+                                MineIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/MineImage.png");
+
+                                Image MineImage = MineIcon.getImage(); // transform it
+                                Image FlagImage = FlagIcon.getImage();
+
+                                int maxSize = Math.max(abstractButton.getHeight(), abstractButton.getWidth()) / 2;
+
+                                Image rescaledImage;
+                                ImageIcon imageIcon;
+
+                                if(SwingUtilities.isRightMouseButton(e) && !abstractButton.isSelected())
                                 {
-                                    if (SwingUtilities.isRightMouseButton(e))
+                                    if(abstractButton.isEnabled())
                                     {
-                                        ButtonGrid[r][c].setText("F");
+                                        rescaledImage = FlagImage.getScaledInstance(maxSize, maxSize, Image.SCALE_SMOOTH);
+                                        imageIcon = new ImageIcon(rescaledImage);
+                                        JLabel iconLabel = new JLabel(imageIcon);
+                                        abstractButton.add(iconLabel);
+
+                                        abstractButton.setEnabled(false);
                                     }
-                                    else
+                                    else if(!abstractButton.isEnabled())
                                     {
-                                        ButtonGrid[r][c].setText("X");
+                                        abstractButton.setEnabled(true);
+                                        abstractButton.removeAll();
                                     }
                                 }
-                                pressed = false;
+                                else
+                                {
+                                    if(SwingUtilities.isLeftMouseButton(e) && abstractButton.isEnabled())
+                                    {
+                                        for(int r = 0; r < ButtonGrid.length; r++)
+                                        {
+                                            for(int c = 0; c < ButtonGrid[1].length; c++)
+                                            {
+                                                // select box internally and set number externally
+                                                if(abstractButton == ButtonGrid[r][c])
+                                                {
+                                                    MainManager.getMainGrid().selectBox(r, c);
+                                                    String displayText = MainManager.getMainGrid().getDisplay(r, c);
+                                                    if(displayText.equals("9"))
+                                                    {
+                                                        rescaledImage = MineImage.getScaledInstance(maxSize, maxSize, Image.SCALE_SMOOTH); // scale it the smooth way
+                                                        imageIcon = new ImageIcon(rescaledImage);  // transform it back
+
+                                                        JLabel test1 = new JLabel(imageIcon);
+
+                                                        ButtonGrid[r][c].setBackground(Color.red);
+                                                        ButtonGrid[r][c].add(test1);
+                                                    }
+                                                    else
+                                                    {
+                                                         abstractButton.setText(displayText);
+
+                                                         resetFont(displayText, r, c);
+
+                                                         break; // apparently that made all the differnece lol
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        for(int r = 0; r < ButtonGrid.length; r++)
+                                        {
+
+                                            for(int c = 0; c < ButtonGrid[1].length; c++)
+                                            {
+                                                // check for zeros
+                                                String displayText = MainManager.getMainGrid().getDisplay(r, c);
+                                                if(!(displayText.equals("_"))
+                                                        && !displayText.equals("9"))
+                                                {
+                                                    ButtonGrid[r][c].setSelected(true);
+                                                    ButtonGrid[r][c].setText(displayText);
+
+                                                    resetFont(displayText, r, c);
+                                                }
+                                            }
+                                        }
+
+                                        if(abstractButton.isSelected())
+                                        {
+                                            System.out.println("Selected");
+                                        }
+                                        else
+                                        {
+                                            System.out.println("Not Un-Selected");
+                                            abstractButton.setSelected(true);
+                                        }
+                                    }
+                                }
+
 
                             }
+
 
                             @Override
                             public void mouseEntered(MouseEvent e)
                             {
-                                throw new UnsupportedOperationException("Not supported yet.");
+                                //throw new UnsupportedOperationException("Not supported yet.");
+                                AbstractButton abstractButton = (AbstractButton) e.getSource();
+                                abstractButton.getModel().setArmed(true);
                             }
 
                             @Override
                             public void mouseExited(MouseEvent e)
                             {
-                                pressed = false;
+                                //throw new UnsupportedOperationException("Not supported yet.");
+                                AbstractButton abstractButton = (AbstractButton) e.getSource();
+                                abstractButton.getModel().setArmed(false);
                             }
-                });
+                };
 
 
                 ButtonClick = new ActionListener()
@@ -317,85 +407,11 @@ public class MinesweeperGUI extends javax.swing.JFrame
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
-                        AbstractButton abstractButton = (AbstractButton) e.getSource();
-                        for(int r = 0; r < ButtonGrid.length; r++)
-                        {
-                            for(int c = 0; c < ButtonGrid[1].length; c++)
-                            {
-                                // select box internally and set number externally
-                                if(abstractButton == ButtonGrid[r][c])
-                                {
-                                    MainManager.getMainGrid().selectBox(r, c);
-                                    String displayText = MainManager.getMainGrid().getDisplay(r, c);
-                                    if(displayText.equals("9"))
-                                    {
-                                        ImageIcon FlagIcon;
-                                        FlagIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/FlagImage.png");
-
-                                        ImageIcon MineIcon;
-                                        MineIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/MineImage.png");
-
-                                        ImageIcon imageIcon;
-                                        Image image = MineIcon.getImage(); // transform it
-
-                                        int size = Math.max(ButtonGrid[r][c].getHeight(), ButtonGrid[r][c].getWidth()) / 2;
-
-                                        Image newimg = image.getScaledInstance(size, size, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-                                        imageIcon = new ImageIcon(newimg);  // transform it back
-                                        Panel test = new Panel(new BorderLayout());
-
-                                        JLabel test1 = new JLabel(imageIcon);
-
-                                        //test.add(test1);
-
-                                        ButtonGrid[r][c].setBackground(Color.red);
-                                        ButtonGrid[r][c].add(test1);
-                                        //ButtonGrid[r][c].setIcon(FlagIcon);
-                                    }
-                                    else
-                                    {
-                                         abstractButton.setText(displayText);
-
-                                         resetFont(displayText, r, c);
-
-                                         break; // apparently that made all the differnece lol
-                                    }
-                                }
-                            }
-                        }
-
-                        for(int r = 0; r < ButtonGrid.length; r++)
-                        {
-
-                            for(int c = 0; c < ButtonGrid[1].length; c++)
-                            {
-                                // check for zeros
-                                //if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
-                                String displayText;
-                                if(!(displayText = MainManager.getMainGrid().getDisplay(r, c)).equals("_")
-                                        && !displayText.equals("9"))
-                                {
-                                    ButtonGrid[r][c].setSelected(true);
-                                    ButtonGrid[r][c].setText(displayText);
-
-                                    resetFont(displayText, r, c);
-                                }
-                            }
-                        }
-
-                        if(abstractButton.isSelected())
-                        {
-                            System.out.println("Selected");
-                        }
-                        else
-                        {
-                            System.out.println("Not Un-Selected");
-                            abstractButton.setSelected(true);
-                        }
                     }
                 };
 
-                ButtonGrid[y][x].addActionListener(ButtonClick);
+//                ButtonGrid[y][x].addActionListener(ButtonClick);
+                ButtonGrid[y][x].addMouseListener(MouseClick);
                 jPanel1.add(ButtonGrid[y][x]);
 
                 System.out.println(y + ", " + x); // debug
@@ -480,13 +496,6 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
                                           break; // apparently that made all the differnece lol
                                       }
-        //                              // check for zeros
-        //                              else if(MainManager.getMainGrid().getDisplay(r, c).equals(" "))
-        //                              {
-        //                                  ButtonGrid[r][c].setSelected(true);
-        //                                  ButtonGrid[r][c].setText(" ");
-        //                                  break;
-        //                              }
                                   }
                                }
 
@@ -517,36 +526,6 @@ public class MinesweeperGUI extends javax.swing.JFrame
                                    System.out.println("Not Un-Selected");
                                    abstractButton.setSelected(true);
                                }
-
-                               /*
-                               for(int y = 0; y < ButtonGrid.length; y++)
-                               {
-                                   for(int x = 0; x < ButtonGrid[1].length; x++)
-                                   {
-                                       if(abstractButton == ButtonGrid[y][x] && ButtonGrid[y][x].isSelected())
-                                       {
-                                           String text = MainManager.getMainGrid().getBombs(y, x);
-                                           ButtonGrid[y][x].setText(text);
-                                           int height = ButtonGrid[y][x].getHeight() / 2;
-                                           Font test = (new Font("sansserif", Font.BOLD, height));
-                                           ButtonGrid[y][x].setFont(test);
-                                           ButtonGrid[y][x].setForeground(Color.red);
-                                           System.out.println("success");
-
-                                           ButtonGrid[y][x].repaint();
-
-
-                                       }
-                                       else if(abstractButton == ButtonGrid[y][x] && !ButtonGrid[y][x].isSelected())
-                                       {
-                                           System.out.println("ASDFASDF");
-                                       }
-                                   }
-                               }
-                               * */
-                               //ButtonGrid[y][x].setText(null);
-                               //abstractButton.setText("_");
-                               //toggleButton1.setSelected(selected);
                            }
                         };
                         ButtonGrid[y][x].addActionListener(ButtonClick);
@@ -607,6 +586,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
     private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
         // TODO add your handling code here:
         checkF2Key(evt);
+        //checkTestCMD(evt);
     }//GEN-LAST:event_jPanel1KeyPressed
 
     private void checkF2Key(KeyEvent evt)
@@ -618,6 +598,15 @@ public class MinesweeperGUI extends javax.swing.JFrame
         }
     }
 
+    private void checkTestCMD(KeyEvent evt)
+    {
+        if(evt.getKeyCode() == 114)
+        {
+            System.out.println(evt.getKeyCode());
+            jPanel1.removeAll();
+            constructMinesweeper("test");
+        }
+    }
 
     /**
      * @param args the command line arguments

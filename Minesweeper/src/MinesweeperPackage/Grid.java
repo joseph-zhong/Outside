@@ -54,8 +54,9 @@ public class Grid
         settings.put("easy", new Setting(10, 9, 9));
         settings.put("medium", new Setting(40, 16, 16));
         settings.put("hard", new Setting(99, 16, 30));
+        settings.put("test", new Setting(1, 3, 3));
 
-        if(choice.equals("easy") || choice.equals("medium") || choice.equals("hard"))
+        if(choice.equals("easy") || choice.equals("medium") || choice.equals("hard") || choice.equals("test"))
         {
             bombs = new int[settings.get(choice).getX()][settings.get(choice).getY()];
             generateBombs(settings.get((choice)).getMines(), settings.get(choice).getX(),
