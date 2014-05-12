@@ -6,6 +6,7 @@
 package MinesweeperPackage;
 
 import javax.swing.AbstractButton;
+import javax.swing.JToggleButton;
 
 /**
  *
@@ -17,7 +18,28 @@ import javax.swing.AbstractButton;
  *
  **/
 
-public class MinesweeperButton extends AbstractButton
+public class MinesweeperButton extends JToggleButton
 {
-    
+    private boolean isFlagged;
+
+    public MinesweeperButton()
+    {
+        super();
+        isFlagged = false;
+    }
+
+    public MinesweeperButton(String str)
+    {
+        super(str);
+    }
+
+    public boolean getIsFlagged()
+    {
+        return isFlagged;
+    }
+
+    public void setIsFlagged(boolean b)
+    {
+        isFlagged = b;
+    }
 }

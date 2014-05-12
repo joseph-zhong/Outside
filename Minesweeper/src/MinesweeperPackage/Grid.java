@@ -190,8 +190,6 @@ public class Grid
         {
             // display blank (inside recursive process)
             // call recursive selection process
-            //display[_y][_x] = "";
-            //adjacentBoxes(_y, _x);
             adjacentBoxes(_y, _x);
         }
         else if(bombs[_y][_x] == 9)
@@ -206,6 +204,16 @@ public class Grid
             // display bombs
             display[_y][_x] = Integer.toString(bombs[_y][_x]);
         }
+    }
+
+    /**
+     * 
+     * @param _y
+     * @param _x
+     */
+    public void markBox(int _y, int _x)
+    {
+        display[_y][_x] = "!";
     }
 
     /**
