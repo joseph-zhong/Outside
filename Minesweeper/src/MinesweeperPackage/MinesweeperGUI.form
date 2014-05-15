@@ -71,6 +71,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="FileMenuMouseClicked"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
@@ -83,6 +86,9 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="EasyButton">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="F2"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Easy"/>
                   </Properties>
                   <Events>
@@ -91,6 +97,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="MediumButton">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="F3"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Medium"/>
                   </Properties>
                   <Events>
@@ -99,6 +108,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="HardButton">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="F4"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Hard"/>
                   </Properties>
                   <Events>

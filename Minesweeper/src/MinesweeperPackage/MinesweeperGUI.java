@@ -23,12 +23,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 
@@ -70,7 +73,29 @@ public class MinesweeperGUI extends javax.swing.JFrame
     {
         isGridConstructed = false;
         initComponents();
-        this.setTitle("Minesweeper");
+        this.setTitle("asdf");
+        JTextArea test = new JTextArea(instructions(), 5, 35);
+        //jPanel1.add(test);
+
+        StringBuilder sb = new StringBuilder(64);
+        sb.append("<html>I have something to say, it's beter to burn out then to fade away.").
+                        append("  This is a very long String to see if you can wrap with in").
+                        append("the available space</html>");
+
+        JLabel label = new JLabel(sb.toString());
+        label.setBounds(WIDTH/2, WIDTH/2, WIDTH, WIDTH);
+        this.add(label);
+
+        this.setVisible(true);
+        this.repaint();
+    }
+
+    private String instructions()
+    {
+        String instructions = "\t\tWelcome to MiArcade (v0.0.2)! "
+                + "\nClick on File to get started, or Help for more information."
+                + "\n\n\t Keyboard Shortcuts: F2 for New Game";
+        return instructions;
     }
 
     /**
@@ -145,9 +170,15 @@ public class MinesweeperGUI extends javax.swing.JFrame
         );
 
         FileMenu.setText("File");
+        FileMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FileMenuMouseClicked(evt);
+            }
+        });
 
         NewGameMenu.setText("New Game");
 
+        EasyButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         EasyButton.setText("Easy");
         EasyButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -156,6 +187,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
         });
         NewGameMenu.add(EasyButton);
 
+        MediumButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
         MediumButton.setText("Medium");
         MediumButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -164,6 +196,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
         });
         NewGameMenu.add(MediumButton);
 
+        HardButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
         HardButton.setText("Hard");
         HardButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -240,6 +273,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
         else
         {
             isGridConstructed = true;
+            //jPanel1.removeAll();
             constructMinesweeper("easy");
         }
     }
@@ -282,6 +316,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
                     public void mouseReleased(MouseEvent e)
                     {
                         AbstractButton abstractButton = (AbstractButton) e.getSource();
+                        ArrayList<Object> MouseClickCollection = new ArrayList<>();
 
                         int y = 0; int x = 0;
                         outerloop:
@@ -313,8 +348,21 @@ public class MinesweeperGUI extends javax.swing.JFrame
                         Image rescaledImage;
                         ImageIcon imageIcon;
 
+
+
+                        MouseClickCollection.add(e.getButton());
+                        System.out.println(Arrays.toString(MouseClickCollection.toArray()));
+
+                        int bothMask = MouseEvent.BUTTON1_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK;
+                        if ((e.getModifiersEx() & bothMask) == bothMask)
+                        {
+                            System.out.println("Both down");
+                        }
+
                         // right click flag
-                        if(SwingUtilities.isRightMouseButton(e) && !abstractButton.isSelected())
+                        if(SwingUtilities.isRightMouseButton(e)
+                                && !SwingUtilities.isLeftMouseButton(e)
+                                && !abstractButton.isSelected())
                         {
                             if(!ButtonGrid[y][x].getIsFlagged())
                             {
@@ -352,6 +400,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
                         }
                         else if(SwingUtilities.isLeftMouseButton(e)
+                                && !SwingUtilities.isRightMouseButton(e)
                                 && !ButtonGrid[y][x].getIsFlagged())
                         {
                             // leftClick
@@ -412,10 +461,6 @@ public class MinesweeperGUI extends javax.swing.JFrame
                         AbstractButton abstractButton = (AbstractButton) e.getSource();
                         abstractButton.getModel().setArmed(false);
                     }
-
-
-
-
                 };
 
                 ButtonGrid[y][x].addMouseListener(MouseClick);
@@ -444,88 +489,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
     private void leftClick(MouseEvent e)
     {
-        /**
-         *
-        if(SwingUtilities.isLeftMouseButton(e) && abstractButton.isEnabled())
-        {
-            for(int r = 0; r < ButtonGrid.length; r++)
-            {
-                for(int c = 0; c < ButtonGrid[1].length; c++)
-                {
-                    // select box internally and set number externally
-                    if(abstractButton.equals(ButtonGrid[r][c]))
-                    {
-                         String displayText = MainManager.getMainGrid().getDisplay(r, c);
-                        if(displayText.equals("9"))
-                        {
-                            rescaledImage = MineImage.getScaledInstance(maxSize, maxSize, Image.SCALE_SMOOTH); // scale it the smooth way
-                            imageIcon = new ImageIcon(rescaledImage);  // transform it back
 
-                            JLabel test1 = new JLabel(imageIcon);
-
-                            ButtonGrid[r][c].setBackground(Color.red);
-                            ButtonGrid[r][c].add(test1);
-                        }
-                        else
-                        {
-                             abstractButton.setText(displayText);
-
-                             resetFont(displayText, r, c);
-
-                             break; // apparently that made all the differnece lol
-                        }
-                        * MainManager.getMainGrid().selectBox(r, c);
-                        String displayText = MainManager.getMainGrid().getDisplay(r, c);
-                        if(displayText.equals("9"))
-                        {
-                            rescaledImage = MineImage.getScaledInstance(maxSize, maxSize, Image.SCALE_SMOOTH); // scale it the smooth way
-                            imageIcon = new ImageIcon(rescaledImage);  // transform it back
-
-                            JLabel test1 = new JLabel(imageIcon);
-
-                            ButtonGrid[r][c].setBackground(Color.red);
-                            ButtonGrid[r][c].add(test1);
-                        }
-                        else
-                        {
-                             abstractButton.setText(displayText);
-
-                             resetFont(displayText, r, c);
-
-                             break; // apparently that made all the differnece lol
-                        }
-                    }
-                }
-            }
-
-            for(int r = 0; r < ButtonGrid.length; r++)
-            {
-                for(int c = 0; c < ButtonGrid[1].length; c++)
-                {
-                    // check for zeros
-                    String displayText = MainManager.getMainGrid().getDisplay(r, c);
-                    if(!(displayText.equals("_"))
-                            && !displayText.equals("9"))
-                    {
-                        ButtonGrid[r][c].setSelected(true);
-                        ButtonGrid[r][c].setText(displayText);
-
-                        resetFont(displayText, r, c);
-                    }
-                }
-            }
-
-            if(abstractButton.isSelected())
-            {
-                System.out.println("Selected");
-            }
-            else
-            {
-                System.out.println("Not Un-Selected");
-                abstractButton.setSelected(true);
-            }
-        }
-         */
     }
 
      private void resetFont(String displayNumber, int _r, int _c)
@@ -565,7 +529,8 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         // TODO add your handling code here:
-        checkF2Key(evt);
+        //checkF2Key(evt);
+        //checkTestCMD(evt);
     }//GEN-LAST:event_formKeyPressed
 
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
@@ -585,16 +550,23 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
     private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
         // TODO add your handling code here:
-        checkF2Key(evt);
+        //checkF2Key(evt);
         //checkTestCMD(evt);
     }//GEN-LAST:event_jPanel1KeyPressed
+
+    private void FileMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FileMenuMouseClicked
+        // TODO add your handling code here:
+
+        System.out.println("FileMenu Clicked");
+    }//GEN-LAST:event_FileMenuMouseClicked
 
     private void checkF2Key(KeyEvent evt)
     {
         if(evt.getKeyCode() == 113)
         {
             System.out.println(evt.getKeyCode());
-            EasyButtonMouseReleased(null);
+            //EasyButtonMouseReleased(null);
+            FileMenuMouseClicked(null);
         }
     }
 

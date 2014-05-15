@@ -4,36 +4,11 @@
  */
 package MinesweeperPackage;
 
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Panel;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import javax.imageio.ImageIO;
-import javax.swing.AbstractButton;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import java.util.logging.*;
+import javax.swing.*;
 
 /**
  *
@@ -73,7 +48,7 @@ public class MinesweeperForm2 extends javax.swing.JFrame
     {
         isGridConstructed = false;
         initComponents();
-        this.setTitle("Minesweeper");
+        this.setTitle("asdf");
         JTextArea test = new JTextArea(instructions(), 5, 35);
         //jPanel1.add(test);
 
@@ -105,7 +80,8 @@ public class MinesweeperForm2 extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
-    private void initComponents() {
+    private void initComponents()
+    {
 
 
         jMenu3 = new javax.swing.JMenu();
@@ -115,7 +91,7 @@ public class MinesweeperForm2 extends javax.swing.JFrame
         javax.swing.JMenu FileMenu = new javax.swing.JMenu();
         NewGameMenu = new javax.swing.JMenu();
         EasyButton = new javax.swing.JMenuItem();
-        MediumButton = new javax.swing.JMenuItem();
+        //MediumButton = new JMenuItem();
         HardButton = new javax.swing.JMenuItem();
         QuitButton = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -136,19 +112,25 @@ public class MinesweeperForm2 extends javax.swing.JFrame
         );
 */
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
+        addMouseListener(new MouseAdapter()
+        {
+            public void mouseReleased(MouseEvent evt)
+            {
                 formMouseReleased(evt);
             }
         });
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        addKeyListener(new KeyAdapter()
+        {
+            public void keyPressed(KeyEvent evt)
+            {
                 formKeyPressed(evt);
             }
         });
 
-        jPanel1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        jPanel1.addKeyListener(new KeyAdapter()
+        {
+            public void keyPressed(KeyEvent evt)
+            {
                 jPanel1KeyPressed(evt);
             }
         });
@@ -165,41 +147,47 @@ public class MinesweeperForm2 extends javax.swing.JFrame
         );
 
         FileMenu.setText("File");
-        FileMenu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        FileMenu.addMouseListener(new MouseAdapter()
+        {
+            public void mouseClicked(MouseEvent evt)
+            {
                 FileMenuMouseClicked(evt);
             }
         });
 
         NewGameMenu.setText("New Game");
 
-        EasyButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
+        EasyButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
         EasyButton.setText("Easy");
-        EasyButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
+        EasyButton.addMouseListener(new MouseAdapter()
+        {
+            public void mouseReleased(MouseEvent evt)
+            {
                 EasyButtonMouseReleased(evt);
             }
         });
         NewGameMenu.add(EasyButton);
 
-        MediumButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
+        /*
+        MediumButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
         MediumButton.setText("Medium");
-        MediumButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
+        MediumButton.addMouseListener(new MouseAdapter() {
+            public void mouseReleased(MouseEvent evt) {
                 MediumButtonMouseReleased(evt);
             }
         });
         NewGameMenu.add(MediumButton);
+        */
 
-        HardButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
+        HardButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
         HardButton.setText("Hard");
-        HardButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
+        HardButton.addMouseListener(new MouseAdapter() {
+            public void mouseReleased(MouseEvent evt) {
                 HardButtonMouseReleased(evt);
             }
         });
-        HardButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        HardButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 HardButtonActionPerformed(evt);
             }
         });
@@ -208,8 +196,8 @@ public class MinesweeperForm2 extends javax.swing.JFrame
         FileMenu.add(NewGameMenu);
 
         QuitButton.setText("Quit");
-        QuitButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
+        QuitButton.addMouseListener(new MouseAdapter() {
+            public void mouseReleased(MouseEvent evt) {
                 QuitButtonMouseReleased(evt);
             }
         });
@@ -242,7 +230,7 @@ public class MinesweeperForm2 extends javax.swing.JFrame
      *  corner.
      * @param evt User Mouse Click release.
      */
-    private void QuitButtonMouseReleased(java.awt.event.MouseEvent evt) {
+    private void QuitButtonMouseReleased(MouseEvent evt) {
         // TODO add your handling code here:
         this.dispose();
     }
@@ -254,11 +242,11 @@ public class MinesweeperForm2 extends javax.swing.JFrame
      */
 
     /*
-    private void EasyButtonMouseReleased(java.awt.event.MouseEvent evt) {
+    private void EasyButtonMouseReleased(MouseEvent evt) {
 
     }
 */
-    private void EasyButtonMouseReleased(java.awt.event.MouseEvent evt)
+    private void EasyButtonMouseReleased(MouseEvent evt)
     {
         if(isGridConstructed)
         {
@@ -507,28 +495,28 @@ public class MinesweeperForm2 extends javax.swing.JFrame
          ButtonGrid[_r][_c].repaint();
      }
 
-    private void MediumButtonMouseReleased(java.awt.event.MouseEvent evt) {
+    private void MediumButtonMouseReleased(MouseEvent evt) {
         // TODO add your handling code here:
     }
 
-    private void HardButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void HardButtonActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
 
 
     }
 
-    private void HardButtonMouseReleased(java.awt.event.MouseEvent evt) {
+    private void HardButtonMouseReleased(MouseEvent evt) {
         // TODO add your handling code here:
         MainManager = new GameControl("hard");
     }
 
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {
+    private void formKeyPressed(KeyEvent evt) {
         // TODO add your handling code here:
         //checkF2Key(evt);
         //checkTestCMD(evt);
     }
 
-    private void formMouseReleased(java.awt.event.MouseEvent evt) {
+    private void formMouseReleased(MouseEvent evt) {
         // TODO add your handling code here:
         for(int r = 0; r < ButtonGrid.length; r++)
         {
@@ -543,13 +531,13 @@ public class MinesweeperForm2 extends javax.swing.JFrame
 
     }
 
-    private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {
+    private void jPanel1KeyPressed(KeyEvent evt) {
         // TODO add your handling code here:
         //checkF2Key(evt);
         //checkTestCMD(evt);
     }
 
-    private void FileMenuMouseClicked(java.awt.event.MouseEvent evt) {
+    private void FileMenuMouseClicked(MouseEvent evt) {
         // TODO add your handling code here:
 
         System.out.println("FileMenu Clicked");
@@ -580,42 +568,38 @@ public class MinesweeperForm2 extends javax.swing.JFrame
      */
     public static void main(String args[])
     {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
+        // Set Nimbus and Feel
         try
         {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
             {
                 if ("Nimbus".equals(info.getName()))
                 {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
         }
         catch (ClassNotFoundException ex)
         {
-            java.util.logging.Logger.getLogger(MinesweeperGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(MinesweeperForm2.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (InstantiationException ex)
         {
-            java.util.logging.Logger.getLogger(MinesweeperGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(MinesweeperForm2.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IllegalAccessException ex)
         {
-            java.util.logging.Logger.getLogger(MinesweeperGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(MinesweeperForm2.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (javax.swing.UnsupportedLookAndFeelException ex)
+        catch (UnsupportedLookAndFeelException ex)
         {
-            java.util.logging.Logger.getLogger(MinesweeperGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(MinesweeperForm2.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable()
+        EventQueue.invokeLater(new Runnable()
         {
             @Override
             public void run()
@@ -625,16 +609,16 @@ public class MinesweeperForm2 extends javax.swing.JFrame
         });
     }
     // Variables declaration - do not modify
-    private javax.swing.JMenuItem EasyButton;
-    private javax.swing.JMenuItem HardButton;
-    private javax.swing.JMenuItem MediumButton;
-    private javax.swing.JMenu NewGameMenu;
-    private javax.swing.JMenuItem QuitButton;
-    private javax.swing.JFrame jFrame1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
+    private JMenuItem EasyButton;
+    private JMenuItem HardButton;
+    private MenuItem MediumButton;
+    private JMenu NewGameMenu;
+    private JMenuItem QuitButton;
+    private JFrame jFrame1;
+    private JMenu jMenu2;
+    private JMenu jMenu3;
+    private JMenu jMenu4;
+    private JMenuBar jMenuBar1;
+    private JPanel jPanel1;
     // End of variables declaration
 }
