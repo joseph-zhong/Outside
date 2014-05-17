@@ -73,7 +73,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
     {
         isGridConstructed = false;
         initComponents();
-        this.setTitle("asdf");
+        this.setTitle("Minesweeper v1");
         JTextArea test = new JTextArea(instructions(), 5, 35);
         //jPanel1.add(test);
 
@@ -116,6 +116,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
         jPopupMenu5 = new javax.swing.JPopupMenu();
         jFrame1 = new javax.swing.JFrame();
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         javax.swing.JMenu FileMenu = new javax.swing.JMenu();
         NewGameMenu = new javax.swing.JMenu();
@@ -152,21 +153,23 @@ public class MinesweeperGUI extends javax.swing.JFrame
             }
         });
 
-        jPanel1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jPanel1KeyPressed(evt);
-            }
-        });
+        jLabel1.setText("jLabel1");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 438, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(jLabel1)
+                .addContainerGap(314, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 331, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(54, 54, 54)
+                .addComponent(jLabel1)
+                .addContainerGap(263, Short.MAX_VALUE))
         );
 
         FileMenu.setText("File");
@@ -231,11 +234,11 @@ public class MinesweeperGUI extends javax.swing.JFrame
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -548,12 +551,6 @@ public class MinesweeperGUI extends javax.swing.JFrame
 
     }//GEN-LAST:event_formMouseReleased
 
-    private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
-        // TODO add your handling code here:
-        //checkF2Key(evt);
-        //checkTestCMD(evt);
-    }//GEN-LAST:event_jPanel1KeyPressed
-
     private void FileMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FileMenuMouseClicked
         // TODO add your handling code here:
 
@@ -636,6 +633,7 @@ public class MinesweeperGUI extends javax.swing.JFrame
     private javax.swing.JMenu NewGameMenu;
     private javax.swing.JMenuItem QuitButton;
     private javax.swing.JFrame jFrame1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
