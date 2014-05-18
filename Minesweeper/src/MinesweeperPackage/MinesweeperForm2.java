@@ -59,10 +59,11 @@ public class MinesweeperForm2 extends JFrame
 
     private static boolean isGridConstructed;
 
-    // clicky stuff
+    // simul clicky stuff
     private static final int B1DM = MouseEvent.BUTTON1_DOWN_MASK;
     private static final int B3DM = MouseEvent.BUTTON3_DOWN_MASK;
     private boolean bothWereDown;
+    int flaggedNeighbors;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -416,19 +417,26 @@ public class MinesweeperForm2 extends JFrame
                             row_neighbor[7] = r + 1;
                             col_neighbor[7] = c - 1;
 
-                            int flaggedNeighbors = 0;
+                            flaggedNeighbors = 0;
 
                             for(int s = 0; s < 8; s++) // iterate all sides
                             {
                                 if (row_neighbor[s] >= 0 && row_neighbor[s] < ButtonGrid.length       // within y
-                                    && col_neighbor[r] >= 0 && col_neighbor[r] < ButtonGrid[1].length // within x
+                                    && col_neighbor[s] >= 0 && col_neighbor[s] < ButtonGrid[1].length // within x
                                     && !ButtonGrid[row_neighbor[s]][col_neighbor[s]].isSelected()
                                     && ButtonGrid[row_neighbor[s]][col_neighbor[s]].getIsFlagged())
                                 {
                                     flaggedNeighbors++;
                                 }
+                                else if(row_neighbor[s] >= 0 && row_neighbor[s] < ButtonGrid.length       // within y
+                                    && col_neighbor[s] >= 0 && col_neighbor[s] < ButtonGrid[1].length // within x
+                                    && !ButtonGrid[row_neighbor[s]][col_neighbor[s]].isSelected())
+                                {
+                                    ButtonGrid[row_neighbor[s]][col_neighbor[s]].getModel().setArmed(true);
+                                    ButtonGrid[row_neighbor[s]][col_neighbor[s]].getModel().setPressed(true);
+                                }
                             }
-                            
+
                             System.out.println("Flagged Neighbors: " + flaggedNeighbors);
                             System.out.println("Simultaneous click successful");
                         }
@@ -474,9 +482,59 @@ public class MinesweeperForm2 extends JFrame
                         System.out.println(Arrays.toString(MouseClickCollection.toArray()));
 
                         int bothMask = MouseEvent.BUTTON1_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK;
-                        if ((e.getModifiersEx() & bothMask) == bothMask)
+                        if (bothWereDown)
                         {
                             System.out.println("Both down");
+                            int row = getButtonCoordinates(e)[0];
+                            int col = getButtonCoordinates(e)[1];
+
+                            int [] row_neighbor = new int [8];
+                            int [] col_neighbor = new int [8];
+
+                            row_neighbor[0] = row+1;
+                            col_neighbor[0] = col;
+                            row_neighbor[1] = row+1;
+                            col_neighbor[1] = col+1;
+                            row_neighbor[2] = row;
+                            col_neighbor[2] = col+1;
+                            row_neighbor[3] = row-1;
+                            col_neighbor[3] = col+1;
+                            row_neighbor[4] = row-1;
+                            col_neighbor[4] = col;
+                            row_neighbor[5] = row-1;
+                            col_neighbor[5] = col-1;
+                            row_neighbor[6] = row;
+                            col_neighbor[6] = col-1;
+                            row_neighbor[7] = row+1;
+                            col_neighbor[7] = col-1;
+
+                            MinesweeperButton saveTypingButton;
+                            for(int s = 0; s < 8; s++)
+                            {
+                                if(row_neighbor[s] >= 0 && row_neighbor[s] < ButtonGrid.length
+                                    && col_neighbor[s] >= 0 && col_neighbor[s] < ButtonGrid[1].length
+                                    && !(saveTypingButton = ButtonGrid[row_neighbor[s]][col_neighbor[s]]).getIsFlagged()
+                                    /*&& !saveTypingButton.isSelected()*/
+                                    && flaggedNeighbors == Integer.parseInt(ButtonGrid[y][x].getText()))
+                                {
+
+                                    MainManager.getMainGrid().selectBox(row_neighbor[s], col_neighbor[s]);
+                                    String displayText = MainManager.getMainGrid().getDisplay(row_neighbor[s], col_neighbor[s]);
+                                    if(displayText.equals("9"))
+                                    {
+                                        rescaledImage = MineImage.getScaledInstance(maxSize, maxSize, Image.SCALE_SMOOTH); // scale it the smooth way
+                                        imageIcon = new ImageIcon(rescaledImage);  // transform it back
+
+                                        JLabel test1 = new JLabel(imageIcon);
+
+                                        saveTypingButton.setBackground(Color.red);
+                                        saveTypingButton.add(test1);
+                                    }
+                                    saveTypingButton.setText(displayText);
+
+                                    resetFont(displayText, row_neighbor[s], col_neighbor[s]);
+                                }
+                            }
                         }
 
                         // right click flag
@@ -530,6 +588,7 @@ public class MinesweeperForm2 extends JFrame
                             abstractButton.setSelected(false);
                         }
 
+                        // update everything
                         for(int r = 0; r < ButtonGrid.length; r++)
                         {
                             for(int c = 0; c < ButtonGrid[1].length; c++)
@@ -542,8 +601,11 @@ public class MinesweeperForm2 extends JFrame
                                     ButtonGrid[r][c].setSelected(true);
                                     ButtonGrid[r][c].setText(displayText);
 
+
                                     resetFont(displayText, r, c);
                                 }
+                                ButtonGrid[r][c].getModel().setArmed(false);
+                                ButtonGrid[r][c].getModel().setPressed(false);
                             }
                         }
 
@@ -563,7 +625,8 @@ public class MinesweeperForm2 extends JFrame
                     {
                         //throw new UnsupportedOperationException("Not supported yet.");
                         AbstractButton abstractButton = (AbstractButton) e.getSource();
-                        abstractButton.getModel().setArmed(false);
+                        //abstractButton.getModel().setArmed(false);
+                        //abstractButton.getModel().setPressed(false);
                     }
                 };
 
@@ -685,7 +748,7 @@ public class MinesweeperForm2 extends JFrame
     private void formKeyPressed(KeyEvent evt)
     {
         // TODO add your handling code here:
-        //checkF2Key(evt);
+        checkF2Key(evt);
         //checkTestCMD(evt);
         System.out.println("Form detected a key press: " + evt.getKeyLocation() + ": " + evt.getKeyCode() + " - " + evt.getKeyChar());
 
