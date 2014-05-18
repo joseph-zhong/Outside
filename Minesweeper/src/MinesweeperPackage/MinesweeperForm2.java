@@ -94,9 +94,6 @@ public class MinesweeperForm2 extends JFrame
         MessageLabel = new JLabel(sb.toString());
 
 
-
-        jMenu3 = new JMenu();
-        jMenu4 = new JMenu();
         jPanel1 = new JPanel();
         jMenuBar1 = new JMenuBar();
         JMenu FileMenu = new JMenu();
@@ -106,10 +103,6 @@ public class MinesweeperForm2 extends JFrame
         HardButton = new JMenuItem();
         QuitButton = new JMenuItem();
         jMenu2 = new JMenu();
-
-        jMenu3.setText("jMenu3");
-
-        jMenu4.setText("jMenu4");
 
         // frame things
         GroupLayout mainFrameLayout = new GroupLayout(mainFrame.getContentPane());
@@ -478,9 +471,6 @@ public class MinesweeperForm2 extends JFrame
                         Image rescaledImage;
                         ImageIcon imageIcon;
 
-                        MouseClickCollection.add(e.getButton());
-                        System.out.println(Arrays.toString(MouseClickCollection.toArray()));
-
                         int bothMask = MouseEvent.BUTTON1_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK;
                         if (bothWereDown)
                         {
@@ -529,6 +519,9 @@ public class MinesweeperForm2 extends JFrame
 
                                         saveTypingButton.setBackground(Color.red);
                                         saveTypingButton.add(test1);
+
+                                        // initiate losing
+                                        losing();
                                     }
                                     saveTypingButton.setText(displayText);
 
@@ -576,6 +569,9 @@ public class MinesweeperForm2 extends JFrame
 
                                 abstractButton.setBackground(Color.red);
                                 abstractButton.add(test1);
+
+                                //intiate losing
+                                losing();
                             }
                             abstractButton.setText(displayText);
 
@@ -653,6 +649,27 @@ public class MinesweeperForm2 extends JFrame
         this.setVisible(true);
 
         this.pack();
+    }
+
+    private void losing()
+    {
+        for(int r = 0; r < ButtonGrid.length; r++)
+        {
+            for(int c = 0; c < ButtonGrid[1].length; c++)
+            {
+                if(MainManager.getMainGrid().getBombs(r, c) == 9)
+                {
+                    ButtonGrid[r][c].setSelected(true);
+                    // put in icons...
+                }
+                //ButtonGrid[r][c].setSelected(true);
+
+            }
+        }
+
+        JOptionPane.showMessageDialog(rootPane, "AS;DLFKJAS;DLKFJ");
+        //System.out.println("You lost by flagging incorrectly");
+        System.out.println("You lose");
     }
 
     private void makeNeighborCoordinates(int row, int col)

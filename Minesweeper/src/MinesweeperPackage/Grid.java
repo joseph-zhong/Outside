@@ -325,9 +325,9 @@ public class Grid
         return str;
     }
 
-    public String getBombs(int r, int c)
+    public int getBombs(int r, int c)
     {
-        return "" + bombs[r][c];
+        return bombs[r][c];
     }
 
 
