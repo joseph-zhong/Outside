@@ -418,27 +418,6 @@ public class MinesweeperForm2 extends JFrame
 
                             int flaggedNeighbors = 0;
 
-                            /*
-                            for(int y = 0; y < row_neighbor.length; y++)
-                            {
-                                for(int x = 0; x < col_neighbor.length; x++)
-                                {
-                                    // When simul clicked: flags must equal shown integer
-                                    // count valid neighbor flags
-                                    // if flags == integer -> select valid, !flag, !selected
-
-                                    if (row_neighbor[y] >= 0 && row_neighbor[y] < ButtonGrid.length
-                                        && col_neighbor[x] >= 0 && col_neighbor[x] < ButtonGrid[1].length
-                                        && !ButtonGrid[row_neighbor[y]][col_neighbor[x]].isSelected()
-                                        && ButtonGrid[row_neighbor[y]][col_neighbor[x]].getIsFlagged())
-                                    {
-                                        flaggedNeighbors++;
-                                    }
-
-                                }
-                            }
-                            * */
-
                             for(int s = 0; s < 8; s++) // iterate all sides
                             {
                                 if (row_neighbor[s] >= 0 && row_neighbor[s] < ButtonGrid.length       // within y
@@ -449,7 +428,7 @@ public class MinesweeperForm2 extends JFrame
                                     flaggedNeighbors++;
                                 }
                             }
-
+                            
                             System.out.println("Flagged Neighbors: " + flaggedNeighbors);
                             System.out.println("Simultaneous click successful");
                         }
