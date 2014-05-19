@@ -439,7 +439,6 @@ public class MinesweeperForm2 extends JFrame
                     public void mouseReleased(MouseEvent e)
                     {
                         AbstractButton abstractButton = (AbstractButton) e.getSource();
-                        ArrayList<Object> MouseClickCollection = new ArrayList<>();
 
                         int y = 0; int x = 0;
                         outerloop:
@@ -660,14 +659,33 @@ public class MinesweeperForm2 extends JFrame
                 if(MainManager.getMainGrid().getBombs(r, c) == 9)
                 {
                     ButtonGrid[r][c].setSelected(true);
-                    // put in icons...
+                     // prepare special icons
+
+                    ImageIcon MineIcon;
+                    MineIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/MineImage.png");
+
+                    // prepare resize
+                    Image MineImage = MineIcon.getImage(); // transform it
+
+                    int maxSize = Math.max(ButtonGrid[r][c].getHeight(), ButtonGrid[r][c].getWidth()) / 2;
+
+                    Image rescaledImage;
+                    ImageIcon imageIcon;
+
+                    rescaledImage = MineImage.getScaledInstance(maxSize, maxSize, Image.SCALE_SMOOTH); // scale it the smooth way
+                    imageIcon = new ImageIcon(rescaledImage);  // transform it back
+
+                    JLabel test1 = new JLabel(imageIcon);
+
+                    ButtonGrid[r][c].add(test1);
+                    ButtonGrid[r][c].repaint();
                 }
                 //ButtonGrid[r][c].setSelected(true);
 
             }
         }
 
-        JOptionPane.showMessageDialog(rootPane, "AS;DLFKJAS;DLKFJ");
+        JOptionPane.showMessageDialog(rootPane, "asdfasdf", "asdf", JOptionPane.YES_NO_CANCEL_OPTION);
         //System.out.println("You lost by flagging incorrectly");
         System.out.println("You lose");
     }
