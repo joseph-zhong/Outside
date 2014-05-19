@@ -320,7 +320,9 @@ public class MinesweeperForm2 extends JFrame
     private void constructMinesweeper(String difficulty)
     {
         MainManager = new GameControl(difficulty);
-        safeButtonsLeft = MainManager.getMainGrid().getLength(true) * MainManager.getMainGrid().getLength(false);
+        safeButtonsLeft = MainManager.getMainGrid().getLength(true)
+                * MainManager.getMainGrid().getLength(false)
+                - MainManager.getMainGrid().getCurrentSetting(difficulty).getMines();
 
         ButtonGrid = new MinesweeperButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
        // produce a GUI grid
@@ -544,13 +546,13 @@ public class MinesweeperForm2 extends JFrame
                                 JLabel iconLabel = new JLabel(imageIcon);
                                 abstractButton.add(iconLabel);
                                 ButtonGrid[y][x].setIsFlagged(true);
-                                MainManager.getMainGrid().markBox(y, x);
+                                MainManager.getMainGrid().flagBox(y, x);
                                 resetFont("", y, x);
                             }
                             else
                             {
                                 ButtonGrid[y][x].setIsFlagged(false);
-                                MainManager.getMainGrid().markBox(y, x);
+                                MainManager.getMainGrid().flagBox(y, x);
                                 ButtonGrid[y][x].removeAll();
                                 resetFont("", y, x);
                             }
