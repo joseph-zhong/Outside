@@ -63,7 +63,10 @@ public class MinesweeperForm2 extends JFrame
     private static final int B1DM = MouseEvent.BUTTON1_DOWN_MASK;
     private static final int B3DM = MouseEvent.BUTTON3_DOWN_MASK;
     private boolean bothWereDown;
-    int flaggedNeighbors;
+    private int flaggedNeighbors;
+
+    // winning stuff
+    private int safeButtonsLeft;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -263,9 +266,6 @@ public class MinesweeperForm2 extends JFrame
         bothWereDown = false;
         initComponents();
         this.setTitle("Minesweeper v2");
-        JTextArea test = new JTextArea(instructions(), 5, 35);
-        //jPanel1.add(test);
-
 
         JLabel label = new JLabel(sb.toString());
         //label.setBounds(WIDTH/2, WIDTH/2, WIDTH, WIDTH);
@@ -320,6 +320,7 @@ public class MinesweeperForm2 extends JFrame
     private void constructMinesweeper(String difficulty)
     {
         MainManager = new GameControl(difficulty);
+        safeButtonsLeft = MainManager.getMainGrid().getLength(true) * MainManager.getMainGrid().getLength(false);
 
         ButtonGrid = new MinesweeperButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
        // produce a GUI grid
@@ -508,6 +509,8 @@ public class MinesweeperForm2 extends JFrame
                                 {
 
                                     MainManager.getMainGrid().selectBox(row_neighbor[s], col_neighbor[s]);
+                                    safeButtonsLeft--;
+                                    System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                                     String displayText = MainManager.getMainGrid().getDisplay(row_neighbor[s], col_neighbor[s]);
                                     if(displayText.equals("9"))
                                     {
@@ -558,6 +561,8 @@ public class MinesweeperForm2 extends JFrame
                         {
                             // leftClick
                             MainManager.getMainGrid().selectBox(y, x);
+                            safeButtonsLeft--;
+                            System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                             String displayText = MainManager.getMainGrid().getDisplay(y, x);
                             if(displayText.equals("9"))
                             {
@@ -656,7 +661,7 @@ public class MinesweeperForm2 extends JFrame
         {
             for(int c = 0; c < ButtonGrid[1].length; c++)
             {
-                if(MainManager.getMainGrid().getBombs(r, c) == 9)
+                if(MainManager.getMainGrid().getAdjacentMines(r, c) == 9)
                 {
                     ButtonGrid[r][c].setSelected(true);
                      // prepare special icons
@@ -681,8 +686,6 @@ public class MinesweeperForm2 extends JFrame
                     //ButtonGrid[r][c].repaint();
                     resetFont("", r, c);
                 }
-                //ButtonGrid[r][c].setSelected(true);
-
             }
         }
 

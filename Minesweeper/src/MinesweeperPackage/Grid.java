@@ -21,11 +21,11 @@ import java.util.Random;
 public class Grid
 {
     /**
-     * @bombs is a two dimensional integer array which acts as the actual grid which
+     * @Mines is a two dimensional integer array which acts as the actual grid which
      *  holds values of integers resembling the field
      * 0 is an empty slot, while 9 resembles the bomb
      */
-    private int[][] bombs;
+    private int[][] Mines;
 
     /**
      * @display is a two dimensional char array which acts as the field which the
@@ -58,8 +58,8 @@ public class Grid
 
         if(choice.equals("easy") || choice.equals("medium") || choice.equals("hard") || choice.equals("test"))
         {
-            bombs = new int[settings.get(choice).getX()][settings.get(choice).getY()];
-            generateBombs(settings.get((choice)).getMines(), settings.get(choice).getX(),
+            Mines = new int[settings.get(choice).getX()][settings.get(choice).getY()];
+            generateMines(settings.get((choice)).getMines(), settings.get(choice).getX(),
                     settings.get(choice).getY());
         }
 
@@ -70,24 +70,24 @@ public class Grid
 
     /**
      * Constructor Helper-Method (v2: Modified from v1.2).
-     *  This method produces the bombs for the integer array.
-     * PRECONDITION: @bombs is null
-     * @param maxBombs is an integer value - resembles the maximum number of bombs
+     *  This method produces the Mines for the integer array.
+     * PRECONDITION: @Mines is null
+     * @param maxMines is an integer value - resembles the maximum number of Mines
      *  for the given grid
      * @param maxX is an integer value - resembles the maximum horizontal size
      * @param maxY is an integer value - resembles the maximum vertical size
      */
-    private void generateBombs(int maxBombs, int maxX, int maxY)
+    private void generateMines(int maxMines, int maxX, int maxY)
     {
         Random gen;
         gen = new Random();
         int _y;
         int _x;
-        for (int i = 0; i < maxBombs; i++) // for Easy_M -> 10 bombs; etc
+        for (int i = 0; i < maxMines; i++) // for Easy_M -> 10 Mines; etc
         {
             _y = gen.nextInt(maxX);
             _x = gen.nextInt(maxY);
-            bombs[_y][_x] = 9;
+            Mines[_y][_x] = 9;
         }
     }
 
@@ -98,9 +98,9 @@ public class Grid
      */
     private void addBombInformation()
     {
-        for (int r = 0; r < bombs.length; r++)
+        for (int r = 0; r < Mines.length; r++)
         {
-            for (int c = 0; c < bombs[1].length; c++)
+            for (int c = 0; c < Mines[1].length; c++)
             {
                 addAdjacent(r, c);
             }
@@ -112,20 +112,20 @@ public class Grid
      *  This method takes the coordinates of the grid, creates a sub-grid of
      *  adjacent "neighbors". For each "bomb" in the sub-grid, the core value
      *  increases.
-     * PRECONDITION: bombs are set
+     * PRECONDITION: Mines are set
      * @param row integer value resembling the x coordinate in the grid
      * @param col integer value resembling the y coordinate in the grid
      */
     private void addAdjacent(int row,  int col)
     {
         //if mine, adjacent needs to ++
-        if (bombs[row][col] == 9)
+        if (Mines[row][col] == 9)
         {
             return;
         }
         else
         {
-            bombs[row][col] = 0;
+            Mines[row][col] = 0;
 
             int [] row_neighbor = new int [8];
             int [] col_neighbor = new int [8];
@@ -149,12 +149,12 @@ public class Grid
 
             for(int r = 0; r < 8; r++)
             {
-                if (row_neighbor[r] >= 0 && row_neighbor[r] < bombs.length
-                    && col_neighbor[r] >= 0 && col_neighbor[r] < bombs[r].length)
+                if (row_neighbor[r] >= 0 && row_neighbor[r] < Mines.length
+                    && col_neighbor[r] >= 0 && col_neighbor[r] < Mines[r].length)
                 {
-                    if (bombs[row_neighbor[r]][col_neighbor[r]] == 9)
+                    if (Mines[row_neighbor[r]][col_neighbor[r]] == 9)
                     {
-                        bombs[row][col]++;
+                        Mines[row][col]++;
                     }
                 }
             }
@@ -163,10 +163,10 @@ public class Grid
 
     private void generateDisplay()
     {
-        display = new String[bombs.length][bombs[1].length];
-        for(int r = 0; r < bombs.length; r++)
+        display = new String[Mines.length][Mines[1].length];
+        for(int r = 0; r < Mines.length; r++)
         {
-            for(int c = 0; c < bombs[r].length; c++)
+            for(int c = 0; c < Mines[r].length; c++)
             {
                 display[r][c] = "_"; // for now
             }
@@ -178,7 +178,7 @@ public class Grid
      *  This method takes input from the user
      * The grid that is selected changes the display char to display the integer
      *  value in the integer grid
-     * PRECONDITION: @bombs array has been completed and the selected box must
+     * PRECONDITION: @Mines array has been completed and the selected box must
      *  be valid
      * @param _y
      * @param _x
@@ -186,13 +186,13 @@ public class Grid
     public void selectBox(int _y, int _x)
     {
         // first check for special cases 0 and 9
-        if(bombs[_y][_x] == 0)
+        if(Mines[_y][_x] == 0)
         {
             // display blank (inside recursive process)
             // call recursive selection process
             adjacentBoxes(_y, _x);
         }
-        else if(bombs[_y][_x] == 9)
+        else if(Mines[_y][_x] == 9)
         {
             // display bomb
             // lose game
@@ -201,8 +201,8 @@ public class Grid
         }
         else
         {
-            // display bombs
-            display[_y][_x] = Integer.toString(bombs[_y][_x]);
+            // display Mines
+            display[_y][_x] = Integer.toString(Mines[_y][_x]);
         }
     }
 
@@ -278,14 +278,14 @@ public class Grid
 
         for(int r = 0; r < 8; r++) // iterate all sides
         {
-            if (neighborY[r] >= 0 && neighborY[r] < bombs.length       // within y
-                && neighborX[r] >= 0 && neighborX[r] < bombs[r].length // within x
-                //&& bombs[subX[r]][subY[r]] == 0)           // is zero?
+            if (neighborY[r] >= 0 && neighborY[r] < Mines.length       // within y
+                && neighborX[r] >= 0 && neighborX[r] < Mines[r].length // within x
+                //&& Mines[subX[r]][subY[r]] == 0)           // is zero?
                 && "_".equals(display[neighborY[r]][neighborX[r]]))  // is operable?
             {
-                if(bombs[neighborY[r]][neighborX[r]] != 0)
+                if(Mines[neighborY[r]][neighborX[r]] != 0)
                 {
-                    display[neighborY[r]][neighborX[r]] = Integer.toString(bombs[neighborY[r]][neighborX[r]]);
+                    display[neighborY[r]][neighborX[r]] = Integer.toString(Mines[neighborY[r]][neighborX[r]]);
                     //System.out.println(getDisplay()); // debug
                 }
                 else
@@ -303,32 +303,33 @@ public class Grid
     {
         if(dimension)
         {
-            return bombs.length;
+            return Mines.length;
         }
-        return bombs[1].length;
+        return Mines[1].length;
     }
 
 
     // debugging methods...
 
-    public String printBombs()
+    public String printMines()
     {
         String str = "";
-        for(int r = 0; r < bombs.length; r++)
+        for(int r = 0; r < Mines.length; r++)
         {
-            for(int c = 0; c < bombs[r].length; c++)
+            for(int c = 0; c < Mines[r].length; c++)
             {
-                str += Integer.toString(bombs[r][c]) + " ";
+                str += Integer.toString(Mines[r][c]) + " ";
             }
             str += "\n";
         }
         return str;
     }
 
-    public int getBombs(int r, int c)
+    public int getAdjacentMines(int r, int c)
     {
-        return bombs[r][c];
+        return Mines[r][c];
     }
+
 
 
     @Override
@@ -346,10 +347,10 @@ public class Grid
         return str;
     }
 
-
     public String getDisplay(int r, int c)
     {
         return display[r][c];
     }
+
 
 }// end class

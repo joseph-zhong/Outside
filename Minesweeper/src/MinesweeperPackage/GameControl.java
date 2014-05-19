@@ -39,7 +39,7 @@ public class GameControl
         Scanner scn = new Scanner(System.in);
 
         Grid g = new Grid("easy");
-        System.out.println(g.printBombs());
+        System.out.println(g.printMines());
         System.out.println(g.toString());
 
         int y = scn.nextInt();
