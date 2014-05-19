@@ -610,15 +610,15 @@ public class MinesweeperForm2 extends JFrame
 
                                     //safeButtonsLeft--;
                                     //System.out.println("Safe Buttons Left: " + safeButtonsLeft);
-                                    update();
+
                                     resetFont(displayText, r, c);
                                 }
                                 ButtonGrid[r][c].getModel().setArmed(false);
                                 ButtonGrid[r][c].getModel().setPressed(false);
                             }
                         }
-
-                        mainFrame.requestFocusInWindow();
+                        update();
+                        mainFrame.requestFocusInWindow(); // doesn't work
                     }
 
                     @Override
