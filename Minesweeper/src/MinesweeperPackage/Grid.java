@@ -211,7 +211,7 @@ public class Grid
      * @param _y
      * @param _x
      */
-    public void markBox(int _y, int _x)
+    public void flagBox(int _y, int _x)
     {
         if(display[_y][_x].equals("!"))
         {
@@ -330,7 +330,10 @@ public class Grid
         return Mines[r][c];
     }
 
-
+    public Setting getCurrentSetting(String difficulty)
+    {
+        return settings.get(difficulty);
+    }
 
     @Override
     public String toString()
