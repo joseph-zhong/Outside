@@ -678,7 +678,8 @@ public class MinesweeperForm2 extends JFrame
                     JLabel test1 = new JLabel(imageIcon);
 
                     ButtonGrid[r][c].add(test1);
-                    ButtonGrid[r][c].repaint();
+                    //ButtonGrid[r][c].repaint();
+                    resetFont("", r, c);
                 }
                 //ButtonGrid[r][c].setSelected(true);
 
