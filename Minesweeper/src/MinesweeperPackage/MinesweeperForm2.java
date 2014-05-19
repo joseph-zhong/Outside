@@ -67,6 +67,7 @@ public class MinesweeperForm2 extends JFrame
 
     // winning stuff
     private int safeButtonsLeft;
+    private int counter;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,7 +79,6 @@ public class MinesweeperForm2 extends JFrame
     private void initComponents()
     {
         mainFrame = new JFrame();
-
 
         sb = new StringBuilder(64);
         /*
@@ -341,7 +341,7 @@ public class MinesweeperForm2 extends JFrame
                     public void mouseDragged(MouseEvent e)
                     {
                         //throw new UnsupportedOperationException("Not supported yet.");
-                        System.out.println("Button detected dragging: " + e.getX() + ", " + e.getY());
+                        //System.out.println("Button detected dragging: " + e.getX() + ", " + e.getY());
                         //if ( /* if pointer leaves field where mouse was pressed */)
                         {
                             // some other code
@@ -354,7 +354,7 @@ public class MinesweeperForm2 extends JFrame
                     public void mouseMoved(MouseEvent e)
                     {
                         //throw new UnsupportedOperationException("Not supported yet.");
-                        System.out.println("Button detected movement: " + e.getX() + ", " + e.getY());
+                        //System.out.println("Button detected movement: " + e.getX() + ", " + e.getY());
                     }
 
                 };
@@ -511,7 +511,7 @@ public class MinesweeperForm2 extends JFrame
                                 {
 
                                     MainManager.getMainGrid().selectBox(row_neighbor[s], col_neighbor[s]);
-                                    safeButtonsLeft--;
+                                    //safeButtonsLeft--;
                                     System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                                     String displayText = MainManager.getMainGrid().getDisplay(row_neighbor[s], col_neighbor[s]);
                                     if(displayText.equals("9"))
@@ -547,12 +547,16 @@ public class MinesweeperForm2 extends JFrame
                                 abstractButton.add(iconLabel);
                                 ButtonGrid[y][x].setIsFlagged(true);
                                 MainManager.getMainGrid().flagBox(y, x);
+                                //safeButtonsLeft--;
+                                System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                                 resetFont("", y, x);
                             }
                             else
                             {
                                 ButtonGrid[y][x].setIsFlagged(false);
                                 MainManager.getMainGrid().flagBox(y, x);
+                                //safeButtonsLeft--;
+                                System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                                 ButtonGrid[y][x].removeAll();
                                 resetFont("", y, x);
                             }
@@ -563,7 +567,7 @@ public class MinesweeperForm2 extends JFrame
                         {
                             // leftClick
                             MainManager.getMainGrid().selectBox(y, x);
-                            safeButtonsLeft--;
+                            //safeButtonsLeft--;
                             System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                             String displayText = MainManager.getMainGrid().getDisplay(y, x);
                             if(displayText.equals("9"))
@@ -604,6 +608,9 @@ public class MinesweeperForm2 extends JFrame
                                     ButtonGrid[r][c].setText(displayText);
 
 
+                                    //safeButtonsLeft--;
+                                    //System.out.println("Safe Buttons Left: " + safeButtonsLeft);
+                                    update();
                                     resetFont(displayText, r, c);
                                 }
                                 ButtonGrid[r][c].getModel().setArmed(false);
@@ -763,8 +770,23 @@ public class MinesweeperForm2 extends JFrame
              ButtonGrid[_r][_c].setForeground(new Color(0, 130, 200)); // 0,130,200 is a pretty and solid cyan blue
          }
 
-
          ButtonGrid[_r][_c].repaint();
+     }
+
+     private void update()
+     {
+         counter = 0;
+         for(int r = 0; r < ButtonGrid.length; r++)
+         {
+             for(int c = 0; c < ButtonGrid[1].length; c++)
+             {
+                 if(ButtonGrid[r][c].isSelected())
+                 {
+                     counter++;
+                 }
+                 System.out.println("Safe Buttons: " + (safeButtonsLeft - counter));
+             }
+         }
      }
 
     private void MediumButtonMouseReleased(MouseEvent evt) {
