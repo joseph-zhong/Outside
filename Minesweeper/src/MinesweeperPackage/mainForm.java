@@ -20,7 +20,7 @@ import javax.swing.*;
  *
  */
 
-public class MinesweeperForm2 extends JFrame
+public class mainForm extends JFrame
 {
     // GUI Variables declaration
     private JMenuItem EasyButton;
@@ -260,7 +260,7 @@ public class MinesweeperForm2 extends JFrame
     /**
      * Creates new form MinesweeperGUI
      */
-    public MinesweeperForm2()
+    public mainForm()
     {
         isGridConstructed = false;
         bothWereDown = false;
@@ -890,21 +890,9 @@ public class MinesweeperForm2 extends JFrame
                 }
             }
         }
-        catch (ClassNotFoundException ex)
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex)
         {
-            Logger.getLogger(MinesweeperForm2.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (InstantiationException ex)
-        {
-            Logger.getLogger(MinesweeperForm2.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (IllegalAccessException ex)
-        {
-            Logger.getLogger(MinesweeperForm2.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (UnsupportedLookAndFeelException ex)
-        {
-            Logger.getLogger(MinesweeperForm2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(mainForm.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -914,7 +902,7 @@ public class MinesweeperForm2 extends JFrame
             @Override
             public void run()
             {
-                new MinesweeperForm2().setVisible(true);
+                new mainForm().setVisible(true);
             }
         });
     }
