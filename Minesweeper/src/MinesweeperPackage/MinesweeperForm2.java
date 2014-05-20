@@ -34,11 +34,10 @@ public class MinesweeperForm2 extends JFrame
     private JMenu NewGameMenu;
     private JMenuItem QuitButton;
     private JFrame mainFrame;
-    private JMenu jMenu2;
-    private JMenu jMenu3;
-    private JMenu jMenu4;
+    private JMenu HelpMenu;
+    private JMenu FileMenu;
     private JMenuBar jMenuBar1;
-    private JPanel jPanel1;
+    private JPanel mainPanel;
     // End of GUI variables declaration
 
     // visual stuff
@@ -81,11 +80,7 @@ public class MinesweeperForm2 extends JFrame
         mainFrame = new JFrame();
 
         sb = new StringBuilder(64);
-        /*
-        sb.append("<html>I have something to say, it's beter to burn out then to fade away.").
-                        append("<br>  This is a very long String to see if you can wrap with in").
-                        append("<br>the available space</html>");
-        */
+
         sb.append("<html>"
                 + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
                 + "Welcome to MiArcade (v0.0.2)! "
@@ -96,16 +91,15 @@ public class MinesweeperForm2 extends JFrame
 
         MessageLabel = new JLabel(sb.toString());
 
-
-        jPanel1 = new JPanel();
+        mainPanel = new JPanel();
         jMenuBar1 = new JMenuBar();
-        JMenu FileMenu = new JMenu();
+        FileMenu = new JMenu();
         NewGameMenu = new JMenu();
         EasyButton = new JMenuItem();
         MediumButton = new JMenuItem();
         HardButton = new JMenuItem();
         QuitButton = new JMenuItem();
-        jMenu2 = new JMenu();
+        HelpMenu = new JMenu();
 
         // frame things
         GroupLayout mainFrameLayout = new GroupLayout(mainFrame.getContentPane());
@@ -118,8 +112,6 @@ public class MinesweeperForm2 extends JFrame
             mainFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
         );
-
-
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -140,40 +132,33 @@ public class MinesweeperForm2 extends JFrame
             }
         });
 
-        jPanel1.addKeyListener(new KeyAdapter()
+        mainPanel.addKeyListener(new KeyAdapter()
         {
             @Override
             public void keyPressed(KeyEvent evt)
             {
-                jPanel1KeyPressed(evt);
+                mainPanelKeyPressed(evt);
             }
         });
 
-        //MessageLabel.setText(sb.toString());
-
         // label things
 
-
-
-        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        GroupLayout mainPanelLayout = new GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
                 .addGap(40, 60, 80)
                 .addComponent(MessageLabel)
                 .addContainerGap(50, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addComponent(MessageLabel)
                 .addContainerGap(200, Short.MAX_VALUE))
         );
-
-
-
 
         FileMenu.setText("File");
         FileMenu.addMouseListener(new MouseAdapter()
@@ -238,8 +223,8 @@ public class MinesweeperForm2 extends JFrame
 
         jMenuBar1.add(FileMenu);
 
-        jMenu2.setText("Help");
-        jMenuBar1.add(jMenu2);
+        HelpMenu.setText("Help");
+        jMenuBar1.add(HelpMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -247,11 +232,11 @@ public class MinesweeperForm2 extends JFrame
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addComponent(mainPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -306,13 +291,13 @@ public class MinesweeperForm2 extends JFrame
     {
         if(isGridConstructed)
         {
-            jPanel1.removeAll();
+            mainPanel.removeAll();
             constructMinesweeper("easy");
         }
         else
         {
             isGridConstructed = true;
-            jPanel1.removeAll();
+            mainPanel.removeAll();
             constructMinesweeper("easy");
         }
     }
@@ -618,7 +603,7 @@ public class MinesweeperForm2 extends JFrame
                             }
                         }
                         update();
-                        mainFrame.requestFocusInWindow(); // doesn't work
+                        requestFocusInWindow(); // doesn't work
                     }
 
                     @Override
@@ -641,7 +626,7 @@ public class MinesweeperForm2 extends JFrame
 
                 ButtonGrid[y][x].addMouseListener(MouseClick);
                 ButtonGrid[y][x].addMouseMotionListener(MouseMove);
-                jPanel1.add(ButtonGrid[y][x]);
+                mainPanel.add(ButtonGrid[y][x]);
 
                 System.out.println(y + ", " + x); // debug
             }
@@ -656,9 +641,9 @@ public class MinesweeperForm2 extends JFrame
         this.setSize(FrameSize);
         this.setLocation(300, 100);
 
-        jPanel1.setPreferredSize(PanelSize);
+        mainPanel.setPreferredSize(PanelSize);
 
-        jPanel1.setLayout(new GridLayout(MainManager.getMainGrid().getLength(true), MainManager.getMainGrid().getLength(false)));
+        mainPanel.setLayout(new GridLayout(MainManager.getMainGrid().getLength(true), MainManager.getMainGrid().getLength(false)));
         this.setVisible(true);
 
         this.pack();
@@ -698,7 +683,17 @@ public class MinesweeperForm2 extends JFrame
             }
         }
 
-        JOptionPane.showMessageDialog(rootPane, "asdfasdf", "asdf", JOptionPane.YES_NO_CANCEL_OPTION);
+        JOptionPane.showMessageDialog(rootPane, "You lose. Sorry."
+                + "\n╔╦╦╦╦╦╦╦╦╦╦╦╦╗"
+                + "\n╠╬╬╬╬╬╬╬╬╬╬╬╬╣"
+                + "\n╠╬╬╬╬╬╬╬╬╬╬╬╬╣"
+                + "\n╠╬╬█╬╬╬╬╬╬█╬╬╣"
+                + "\n╠╬╬╬╬╬╬╬╬╬╬╬╬╣"
+                + "\n╠╬╬╬╬╬╬╬╬╬╬╬╬╣"
+                + "\n╠╬╬╬╬╬╬╬╬╬╬╬╬╣"
+                + "\n╠╬██████████╬╣"
+                + "\n╠╬█╬╬╬╬╬╬╬╬█╬╣"
+                + "\n╚╩╩╩╩╩╩╩╩╩╩╩╩╝", "☹", JOptionPane.YES_NO_CANCEL_OPTION);
         //System.out.println("You lost by flagging incorrectly");
         System.out.println("You lose");
     }
@@ -787,6 +782,15 @@ public class MinesweeperForm2 extends JFrame
                  System.out.println("Safe Buttons: " + (safeButtonsLeft - counter));
              }
          }
+
+         if(counter == safeButtonsLeft)
+         {
+             JOptionPane.showMessageDialog(rootPane, "You won!"
+                     + "\n╔══╗░░░░╔╦╗░░╔═════╗"
+                     + "\n║╚═╬════╬╣╠═╗║░▀░▀░║"
+                     + "\n╠═╗║╔╗╔╗║║║╩╣║╚═══╝║"
+                     + "\n╚══╩╝╚╝╚╩╩╩═╝╚═════╝", "Smileys  ☺  ☻  ت ヅ  ツ  ッ  シ Ü  ϡ  ﭢ", JOptionPane.YES_NO_CANCEL_OPTION);
+         }
      }
 
     private void MediumButtonMouseReleased(MouseEvent evt) {
@@ -823,7 +827,7 @@ public class MinesweeperForm2 extends JFrame
         System.out.println("Mouse Click Coordinates: " + evt.getX() + ", " + evt.getY());
     }
 
-    private void jPanel1KeyPressed(KeyEvent evt) {
+    private void mainPanelKeyPressed(KeyEvent evt) {
         // TODO add your handling code here:
         //checkF2Key(evt);
         //checkTestCMD(evt);
@@ -850,7 +854,7 @@ public class MinesweeperForm2 extends JFrame
         if(evt.getKeyCode() == 114)
         {
             System.out.println(evt.getKeyCode());
-            jPanel1.removeAll();
+            mainPanel.removeAll();
             constructMinesweeper("test");
         }
     }
