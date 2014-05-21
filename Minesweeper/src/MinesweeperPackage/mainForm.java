@@ -13,9 +13,9 @@ import javax.swing.*;
 /**
  *
  *  Joseph Zhong
- *  Minesweeper - Java (v2.85)
- *  This program is the GUI Object for my overall Minesweeper Project
- *  Minesweeper - GUI Object
+ *  Arcade - Java (v3)
+ *  This program is the GUI Object for my overall Arcade Project
+ *  Arcade - GUI Object
  *  1 April 2014
  *
  */
@@ -40,6 +40,22 @@ public class mainForm extends JFrame
     private JPanel mainPanel;
     // End of GUI variables declaration
 
+    private enum SizeSettings
+    {
+        EASY(500, 500, "easy"), MEDIUM(700, 700, "medium"), HARD(700, 640, "hard");
+
+        private int x;
+        private int y;
+        private String difficulty;
+
+        private SizeSettings(int _x, int _y, String _d)
+        {
+            x = _x;
+            y = _y;
+            difficulty = _d;
+        }
+    };
+
     // visual stuff
     private static final int EASY_X = 500;
     private static final int EASY_Y = 500;
@@ -55,8 +71,6 @@ public class mainForm extends JFrame
 
     private static GameControl MainManager;
     private static MinesweeperButton[][] ButtonGrid;
-
-    private static boolean isGridConstructed;
 
     // simul clicky stuff
     private static final int B1DM = MouseEvent.BUTTON1_DOWN_MASK;
@@ -182,7 +196,6 @@ public class mainForm extends JFrame
         });
         NewGameMenu.add(EasyButton);
 
-
         MediumButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
         MediumButton.setText("Medium");
         MediumButton.addMouseListener(new MouseAdapter()
@@ -262,10 +275,9 @@ public class mainForm extends JFrame
      */
     public mainForm()
     {
-        isGridConstructed = false;
         bothWereDown = false;
         initComponents();
-        this.setTitle("Minesweeper v2");
+        this.setTitle("Arcade");
 
         JLabel label = new JLabel(sb.toString());
         add(label);
@@ -282,15 +294,14 @@ public class mainForm extends JFrame
         return instructions;
     }
 
-
-
     /**
      * Exit method.
      *  Exits the program as does Alt+F4 or Clicking the Red X in the upper right
      *  corner.
      * @param evt User Mouse Click release.
      */
-    private void QuitButtonMouseReleased(MouseEvent evt) {
+    private void QuitButtonMouseReleased(MouseEvent evt)
+    {
         // TODO add your handling code here:
         this.dispose();
     }
@@ -300,20 +311,10 @@ public class mainForm extends JFrame
      * Constructs the easy grid.
      * @param evt
      */
-
     private void EasyButtonMouseReleased(MouseEvent evt)
     {
-        if(isGridConstructed)
-        {
-            mainPanel.removeAll();
-            constructMinesweeper("easy");
-        }
-        else
-        {
-            isGridConstructed = true;
-            mainPanel.removeAll();
-            constructMinesweeper("easy");
-        }
+        mainPanel.removeAll();
+        constructMinesweeper("easy");
     }
 
     private void constructMinesweeper(String difficulty)
@@ -337,59 +338,48 @@ public class mainForm extends JFrame
                 MouseMove = new MouseMotionListener()
                 {
                     @Override
-                    public void mouseDragged(MouseEvent e)
+                    public void mouseDragged(MouseEvent evt)
                     {
                         //throw new UnsupportedOperationException("Not supported yet.");
                         //System.out.println("Button detected dragging: " + e.getX() + ", " + e.getY());
-                        //if ( /* if pointer leaves field where mouse was pressed */)
-                        {
-                            // some other code
-                            bothWereDown = false;
-                            // some other code
-                        }
+                        bothWereDown = false;
                     }
 
                     @Override
-                    public void mouseMoved(MouseEvent e)
+                    public void mouseMoved(MouseEvent evt)
                     {
                         //throw new UnsupportedOperationException("Not supported yet.");
                         //System.out.println("Button detected movement: " + e.getX() + ", " + e.getY());
                     }
-
                 };
 
-                MouseClick =  new MouseListener()
+                MouseClick = new MouseListener()
                 {
                     @Override
-                    public void mouseClicked(MouseEvent e)
+                    public void mouseClicked(MouseEvent evt)
                     {
-                        if(SwingUtilities.isLeftMouseButton(e))
+                        if(SwingUtilities.isLeftMouseButton(evt))
                         {
                             System.out.println("Left click Successful");
                         }
-                        else if(SwingUtilities.isRightMouseButton(e))
+                        else if(SwingUtilities.isRightMouseButton(evt))
                         {
                             System.out.println("Right click Succesfful");
                         }
                     }
 
                     @Override
-                    public void mousePressed(MouseEvent e)
+                    public void mousePressed(MouseEvent evt)
                     {
-                        /*
-                        AbstractButton abstractButton = (AbstractButton) e.getSource();
-                        abstractButton.getModel().setArmed(true);
-                        abstractButton.getModel().setPressed(true);
-                        * */
                         System.out.println("Press Successful");
                         int both = B1DM | B3DM;
-                        bothWereDown = (e.getModifiersEx() & both) == both;
+                        bothWereDown = (evt.getModifiersEx() & both) == both;
 
                         if (bothWereDown)
                         {
                             // action if both buttons pressed
-                            int r = getButtonCoordinates(e)[0];
-                            int c = getButtonCoordinates(e)[1];
+                            int r = getButtonCoordinates(evt)[0];
+                            int c = getButtonCoordinates(evt)[1];
 
                             //makeNeighborCoordinates(r, c);
                             int [] row_neighbor = new int [8];
@@ -438,9 +428,9 @@ public class mainForm extends JFrame
                     }
 
                     @Override
-                    public void mouseReleased(MouseEvent e)
+                    public void mouseReleased(MouseEvent evt)
                     {
-                        AbstractButton abstractButton = (AbstractButton) e.getSource();
+                        AbstractButton abstractButton = (AbstractButton) evt.getSource();
 
                         int y = 0; int x = 0;
                         outerloop:
@@ -476,8 +466,8 @@ public class mainForm extends JFrame
                         if (bothWereDown)
                         {
                             System.out.println("Both down");
-                            int row = getButtonCoordinates(e)[0];
-                            int col = getButtonCoordinates(e)[1];
+                            int row = getButtonCoordinates(evt)[0];
+                            int col = getButtonCoordinates(evt)[1];
 
                             int [] row_neighbor = new int [8];
                             int [] col_neighbor = new int [8];
@@ -534,8 +524,8 @@ public class mainForm extends JFrame
                         }
 
                         // right click flag
-                        if(SwingUtilities.isRightMouseButton(e)
-                                && !SwingUtilities.isLeftMouseButton(e)
+                        if(SwingUtilities.isRightMouseButton(evt)
+                                && !SwingUtilities.isLeftMouseButton(evt)
                                 && !abstractButton.isSelected())
                         {
                             if(!ButtonGrid[y][x].getIsFlagged())
@@ -560,8 +550,8 @@ public class mainForm extends JFrame
                                 resetFont("", y, x);
                             }
                         }
-                        else if(SwingUtilities.isLeftMouseButton(e)
-                                && !SwingUtilities.isRightMouseButton(e)
+                        else if(SwingUtilities.isLeftMouseButton(evt)
+                                && !SwingUtilities.isRightMouseButton(evt)
                                 && !ButtonGrid[y][x].getIsFlagged())
                         {
                             // leftClick
@@ -621,18 +611,18 @@ public class mainForm extends JFrame
                     }
 
                     @Override
-                    public void mouseEntered(MouseEvent e)
+                    public void mouseEntered(MouseEvent evt)
                     {
                         //throw new UnsupportedOperationException("Not supported yet.");
-                        AbstractButton abstractButton = (AbstractButton) e.getSource();
+                        AbstractButton abstractButton = (AbstractButton) evt.getSource();
                         abstractButton.getModel().setArmed(true);
                     }
 
                     @Override
-                    public void mouseExited(MouseEvent e)
+                    public void mouseExited(MouseEvent evt)
                     {
                         //throw new UnsupportedOperationException("Not supported yet.");
-                        AbstractButton abstractButton = (AbstractButton) e.getSource();
+                        AbstractButton abstractButton = (AbstractButton) evt.getSource();
                         //abstractButton.getModel().setArmed(false);
                         //abstractButton.getModel().setPressed(false);
                     }
@@ -649,8 +639,8 @@ public class mainForm extends JFrame
         // sets panel and frame
         this.setResizable(false); // MUST PUT THIS LINE BEFORE BOUNDS AND SIZES ARE SET
 
-        FrameSize = new Dimension(EASY_X, EASY_Y);
-        PanelSize = new Dimension(EASY_X, EASY_Y);
+        FrameSize = new Dimension(SizeSettings.valueOf(difficulty.toUpperCase()).x, SizeSettings.valueOf(difficulty.toUpperCase()).y);
+        PanelSize = new Dimension(SizeSettings.valueOf(difficulty.toUpperCase()).x, SizeSettings.valueOf(difficulty.toUpperCase()).y);
 
         this.setSize(FrameSize);
         this.setLocation(300, 100);
@@ -735,9 +725,9 @@ public class mainForm extends JFrame
         col_neighbor[7] = col-1;
     }
 
-    private int[] getButtonCoordinates(MouseEvent e)
+    private int[] getButtonCoordinates(MouseEvent evt)
     {
-        AbstractButton abstractButton = (AbstractButton) e.getSource();
+        AbstractButton abstractButton = (AbstractButton) evt.getSource();
         ArrayList<Object> MouseClickCollection = new ArrayList<>();
 
         int y; int x = 0;
@@ -758,7 +748,7 @@ public class mainForm extends JFrame
         return coordinates;
     }
 
-    private void leftClick(MouseEvent e)
+    private void leftClick(MouseEvent evt)
     {
 
     }
@@ -807,8 +797,11 @@ public class mainForm extends JFrame
          }
      }
 
-    private void MediumButtonMouseReleased(MouseEvent evt) {
+    private void MediumButtonMouseReleased(MouseEvent evt)
+    {
         // TODO add your handling code here:
+        mainPanel.removeAll();
+        constructMinesweeper("medium");
     }
 
     private void MediumButtonActionPerformed(ActionEvent evt)
@@ -823,7 +816,8 @@ public class mainForm extends JFrame
 
     private void HardButtonMouseReleased(MouseEvent evt) {
         // TODO add your handling code here:
-        MainManager = new GameControl("hard");
+        mainPanel.removeAll();
+        constructMinesweeper("hard");
     }
 
     private void formKeyPressed(KeyEvent evt)
@@ -841,13 +835,15 @@ public class mainForm extends JFrame
         System.out.println("Mouse Click Coordinates: " + evt.getX() + ", " + evt.getY());
     }
 
-    private void mainPanelKeyPressed(KeyEvent evt) {
+    private void mainPanelKeyPressed(KeyEvent evt)
+    {
         // TODO add your handling code here:
         //checkF2Key(evt);
         //checkTestCMD(evt);
     }
 
-    private void FileMenuMouseClicked(MouseEvent evt) {
+    private void FileMenuMouseClicked(MouseEvent evt)
+    {
         // TODO add your handling code here:
 
         System.out.println("FileMenu Clicked");

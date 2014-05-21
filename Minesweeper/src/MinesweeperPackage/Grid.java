@@ -53,7 +53,7 @@ public class Grid
         settings = new HashMap<String, Setting>();
         settings.put("easy", new Setting(10, 9, 9));
         settings.put("medium", new Setting(40, 16, 16));
-        settings.put("hard", new Setting(99, 16, 30));
+        settings.put("hard", new Setting(99, 16, 15));
         settings.put("test", new Setting(1, 3, 3));
 
         if(choice.equals("easy") || choice.equals("medium") || choice.equals("hard") || choice.equals("test"))
