@@ -669,7 +669,7 @@ public class MinesweeperForm2 extends JFrame
         {
             for(int c = 0; c < ButtonGrid[1].length; c++)
             {
-                if(MainManager.getMainGrid().getAdjacentMines(r, c) == 9)
+                if(MainManager.getMainGrid().getMines(r, c) == 9)
                 {
                     ButtonGrid[r][c].setSelected(true);
                      // prepare special icons

@@ -44,16 +44,20 @@ public class Grid
      */
     private HashMap<String, Setting> settings;
 
+    private String UserChoice;
+
     /**
      * Constructor.
      * @param choice is a user input that chooses which grid size to use
      */
     public Grid(String choice)
     {
+        UserChoice = choice;
+
         settings = new HashMap<String, Setting>();
         settings.put("easy", new Setting(10, 9, 9));
-        settings.put("medium", new Setting(40, 16, 16));
-        settings.put("hard", new Setting(99, 16, 15));
+        settings.put("medium", new Setting(25, 14, 14));
+        settings.put("hard", new Setting(40, 17, 17));
         settings.put("test", new Setting(1, 3, 3));
 
         if(choice.equals("easy") || choice.equals("medium") || choice.equals("hard") || choice.equals("test"))
@@ -325,14 +329,19 @@ public class Grid
         return str;
     }
 
-    public int getAdjacentMines(int r, int c)
+    public int getMines(int r, int c)
     {
         return Mines[r][c];
     }
 
-    public Setting getCurrentSetting(String difficulty)
+    public Setting getCurrentSetting()
     {
-        return settings.get(difficulty);
+        return settings.get(UserChoice);
+    }
+
+    public String getDifficulty()
+    {
+        return UserChoice;
     }
 
     @Override

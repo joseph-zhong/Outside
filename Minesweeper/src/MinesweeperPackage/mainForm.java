@@ -42,29 +42,18 @@ public class mainForm extends JFrame
 
     private enum SizeSettings
     {
-        EASY(500, 500, "easy"), MEDIUM(700, 700, "medium"), HARD(700, 640, "hard");
+        EASY(500, 500), MEDIUM(680, 680), HARD(700, 640);
 
         private int x;
         private int y;
-        private String difficulty;
 
-        private SizeSettings(int _x, int _y, String _d)
+
+        private SizeSettings(int _x, int _y)
         {
             x = _x;
             y = _y;
-            difficulty = _d;
         }
     };
-
-    // visual stuff
-    private static final int EASY_X = 500;
-    private static final int EASY_Y = 500;
-
-    private static final int MEDIUM_X = 700;
-    private static final int MEDIUM_Y = 700;
-
-    private static final int HARD_X = 1024;
-    private static final int HARD_Y = 640;
 
     private static Dimension FrameSize;
     private static Dimension PanelSize;
@@ -320,9 +309,6 @@ public class mainForm extends JFrame
     private void constructMinesweeper(String difficulty)
     {
         MainManager = new GameControl(difficulty);
-        safeButtonsLeft = MainManager.getMainGrid().getLength(true)
-                * MainManager.getMainGrid().getLength(false)
-                - MainManager.getMainGrid().getCurrentSetting(difficulty).getMines();
 
         ButtonGrid = new MinesweeperButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
        // produce a GUI grid
@@ -371,6 +357,20 @@ public class mainForm extends JFrame
                     @Override
                     public void mousePressed(MouseEvent evt)
                     {
+                        int y = 0; int x = 0;
+                        outerloop:
+                        for(y = 0; y < ButtonGrid.length; y++)
+                        {
+                            for(x = 0; x < ButtonGrid[1].length; x++)
+                            {
+                                if(((MinesweeperButton) evt.getSource()).equals(ButtonGrid[y][x]))
+                                {
+                                    break outerloop;
+                                    // coordinates saved
+                                }
+                            }
+                        }
+
                         System.out.println("Press Successful");
                         int both = B1DM | B3DM;
                         bothWereDown = (evt.getModifiersEx() & both) == both;
@@ -425,6 +425,7 @@ public class mainForm extends JFrame
                             System.out.println("Flagged Neighbors: " + flaggedNeighbors);
                             System.out.println("Simultaneous click successful");
                         }
+
                     }
 
                     @Override
@@ -463,7 +464,7 @@ public class mainForm extends JFrame
                         ImageIcon imageIcon;
 
                         int bothMask = MouseEvent.BUTTON1_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK;
-                        if (bothWereDown)
+                        if (bothWereDown && !MainManager.getMainGrid().getDisplay(y, x).equals("_"))
                         {
                             System.out.println("Both down");
                             int row = getButtonCoordinates(evt)[0];
@@ -584,6 +585,10 @@ public class mainForm extends JFrame
                         }
 
                         // update everything
+                        safeButtonsLeft = MainManager.getMainGrid().getLength(true)
+                            * MainManager.getMainGrid().getLength(false)
+                            - MainManager.getMainGrid().getCurrentSetting().getMines();
+
                         for(int r = 0; r < ButtonGrid.length; r++)
                         {
                             for(int c = 0; c < ButtonGrid[1].length; c++)
@@ -596,17 +601,25 @@ public class mainForm extends JFrame
                                     ButtonGrid[r][c].setSelected(true);
                                     ButtonGrid[r][c].setText(displayText);
 
-
-                                    //safeButtonsLeft--;
-                                    //System.out.println("Safe Buttons Left: " + safeButtonsLeft);
-
+                                    if(!MainManager.getMainGrid().getDisplay(r, c).equals("9"))
+                                    {
+                                        safeButtonsLeft--;
+                                        System.out.println("Safe Buttons Left: " + safeButtonsLeft);
+                                    }
                                     resetFont(displayText, r, c);
                                 }
                                 ButtonGrid[r][c].getModel().setArmed(false);
                                 ButtonGrid[r][c].getModel().setPressed(false);
                             }
                         }
-                        update();
+                        if(0 == safeButtonsLeft)
+                        {
+                            JOptionPane.showMessageDialog(rootPane, "You won!"
+                                    + "\n╔══╗░░░░╔╦╗░░╔═════╗"
+                                    + "\n║╚═╬════╬╣╠═╗║░▀░▀░║"
+                                    + "\n╠═╗║╔╗╔╗║║║╩╣║╚═══╝║"
+                                    + "\n╚══╩╝╚╝╚╩╩╩═╝╚═════╝", "Smileys  c:  ☺  ☻  ت ヅ  ツ  ッ  シ Ü  ϡ  ﭢ", JOptionPane.YES_NO_CANCEL_OPTION);
+                        }
                         requestFocusInWindow(); // doesn't work
                     }
 
@@ -643,7 +656,7 @@ public class mainForm extends JFrame
         PanelSize = new Dimension(SizeSettings.valueOf(difficulty.toUpperCase()).x, SizeSettings.valueOf(difficulty.toUpperCase()).y);
 
         this.setSize(FrameSize);
-        this.setLocation(300, 100);
+        this.setLocation(300, 0);
 
         mainPanel.setPreferredSize(PanelSize);
 
@@ -659,7 +672,7 @@ public class mainForm extends JFrame
         {
             for(int c = 0; c < ButtonGrid[1].length; c++)
             {
-                if(MainManager.getMainGrid().getAdjacentMines(r, c) == 9)
+                if(MainManager.getMainGrid().getMines(r, c) == 9)
                 {
                     ButtonGrid[r][c].setSelected(true);
                      // prepare special icons
@@ -779,7 +792,7 @@ public class mainForm extends JFrame
          {
              for(int c = 0; c < ButtonGrid[1].length; c++)
              {
-                 if(ButtonGrid[r][c].isSelected())
+                 if(ButtonGrid[r][c].isSelected() && MainManager.getMainGrid().getMines(r, c) != 9)
                  {
                      counter++;
                  }
