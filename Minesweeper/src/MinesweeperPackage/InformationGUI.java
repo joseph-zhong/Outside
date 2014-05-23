@@ -4,6 +4,7 @@
  */
 package MinesweeperPackage;
 
+import java.awt.Font;
 import javax.swing.JFrame;
 
 /**
@@ -38,6 +39,10 @@ public class InformationGUI extends JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        int height = label1.getHeight() * 2;
+        Font Label1Font = new Font("HelveticaNeueLT Pro 55", Font.PLAIN, height);
+
+        label1.setFont(Label1Font);
         label1.setText("label1");
 
         label2.setText("label2");

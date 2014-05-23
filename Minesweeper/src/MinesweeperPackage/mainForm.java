@@ -795,7 +795,7 @@ public class mainForm extends JFrame
      private void resetFont(String displayNumber, int _r, int _c)
      {
          int height = ButtonGrid[_r][_c].getHeight() / 2;
-         Font numberFont = (new Font("sansserif", Font.BOLD, height));
+         Font numberFont = new Font("sansserif", Font.BOLD, height);
 
          ButtonGrid[_r][_c].setFont(numberFont);
 
