@@ -321,7 +321,7 @@ public class MinesweeperForm2 extends JFrame
         MainManager = new GameControl(difficulty);
         safeButtonsLeft = MainManager.getMainGrid().getLength(true)
                 * MainManager.getMainGrid().getLength(false)
-                - MainManager.getMainGrid().getCurrentSetting(difficulty).getMines();
+                - MainManager.getMainGrid().getCurrentSetting().getMines();
 
         ButtonGrid = new MinesweeperButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
        // produce a GUI grid
