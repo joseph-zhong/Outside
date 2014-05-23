@@ -40,6 +40,8 @@ public class mainForm extends JFrame
     private JPanel mainPanel;
     // End of GUI variables declaration
 
+    private TimerGUI asdfasdfasdf;
+
     private enum SizeSettings
     {
         EASY(500, 500), MEDIUM(680, 680), HARD(700, 640);
@@ -309,6 +311,11 @@ public class mainForm extends JFrame
     private void constructMinesweeper(String difficulty)
     {
         MainManager = new GameControl(difficulty);
+        if(asdfasdfasdf == null)
+        {
+            asdfasdfasdf = new TimerGUI();
+        }
+
 
         ButtonGrid = new MinesweeperButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
        // produce a GUI grid
@@ -350,7 +357,7 @@ public class mainForm extends JFrame
                         }
                         else if(SwingUtilities.isRightMouseButton(evt))
                         {
-                            System.out.println("Right click Succesfful");
+                            System.out.println("Right click Succesful");
                         }
                     }
 
@@ -502,7 +509,7 @@ public class mainForm extends JFrame
 
                                     MainManager.getMainGrid().selectBox(row_neighbor[s], col_neighbor[s]);
                                     //safeButtonsLeft--;
-                                    System.out.println("Safe Buttons Left: " + safeButtonsLeft);
+                                    //System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                                     String displayText = MainManager.getMainGrid().getDisplay(row_neighbor[s], col_neighbor[s]);
                                     if(displayText.equals("9"))
                                     {
@@ -538,7 +545,7 @@ public class mainForm extends JFrame
                                 ButtonGrid[y][x].setIsFlagged(true);
                                 MainManager.getMainGrid().flagBox(y, x);
                                 //safeButtonsLeft--;
-                                System.out.println("Safe Buttons Left: " + safeButtonsLeft);
+                                //System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                                 resetFont("", y, x);
                             }
                             else
@@ -546,7 +553,7 @@ public class mainForm extends JFrame
                                 ButtonGrid[y][x].setIsFlagged(false);
                                 MainManager.getMainGrid().flagBox(y, x);
                                 //safeButtonsLeft--;
-                                System.out.println("Safe Buttons Left: " + safeButtonsLeft);
+                                //System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                                 ButtonGrid[y][x].removeAll();
                                 resetFont("", y, x);
                             }
@@ -558,7 +565,7 @@ public class mainForm extends JFrame
                             // leftClick
                             MainManager.getMainGrid().selectBox(y, x);
                             //safeButtonsLeft--;
-                            System.out.println("Safe Buttons Left: " + safeButtonsLeft);
+                            //System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                             String displayText = MainManager.getMainGrid().getDisplay(y, x);
                             if(displayText.equals("9"))
                             {
@@ -588,6 +595,7 @@ public class mainForm extends JFrame
                         safeButtonsLeft = MainManager.getMainGrid().getLength(true)
                             * MainManager.getMainGrid().getLength(false)
                             - MainManager.getMainGrid().getCurrentSetting().getMines();
+                        int count = 0;
 
                         for(int r = 0; r < ButtonGrid.length; r++)
                         {
@@ -600,19 +608,34 @@ public class mainForm extends JFrame
                                 {
                                     ButtonGrid[r][c].setSelected(true);
                                     ButtonGrid[r][c].setText(displayText);
-
+                                    /*
                                     if(!MainManager.getMainGrid().getDisplay(r, c).equals("9"))
                                     {
                                         safeButtonsLeft--;
                                         System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                                     }
+                                    * */
+                                    //System.out.println("Safe Squares: " + MainManager.getMainGrid().getSafeSquares());
+                                    //count++;
+                                    //System.out.println("Count: " + count);
                                     resetFont(displayText, r, c);
                                 }
+
+                                //if(ButtonGrid[r][c].isSelected())
+                                if(!MainManager.getMainGrid().getDisplay(r, c).equals("_") && !MainManager.getMainGrid().getDisplay(r, c).equals("!"))
+                                {
+                                    count++;
+                                }
+                                System.out.println("Count: " + count);
                                 ButtonGrid[r][c].getModel().setArmed(false);
                                 ButtonGrid[r][c].getModel().setPressed(false);
                             }
                         }
-                        if(0 == safeButtonsLeft)
+
+
+                        if(MainManager.getMainGrid().getLength(true)
+                            * MainManager.getMainGrid().getLength(false)
+                            - MainManager.getMainGrid().getCurrentSetting().getMines() == count)
                         {
                             JOptionPane.showMessageDialog(rootPane, "You won!"
                                     + "\n╔══╗░░░░╔╦╗░░╔═════╗"
@@ -620,7 +643,10 @@ public class mainForm extends JFrame
                                     + "\n╠═╗║╔╗╔╗║║║╩╣║╚═══╝║"
                                     + "\n╚══╩╝╚╝╚╩╩╩═╝╚═════╝", "Smileys  c:  ☺  ☻  ت ヅ  ツ  ッ  シ Ü  ϡ  ﭢ", JOptionPane.YES_NO_CANCEL_OPTION);
                         }
-                        requestFocusInWindow(); // doesn't work
+
+
+
+                        requestFocusInWindow(); // works now
                     }
 
                     @Override
@@ -777,6 +803,10 @@ public class mainForm extends JFrame
          {
              ButtonGrid[_r][_c].setForeground(new Color(255, 0, 0)); // red
          }
+         else if(ButtonGrid[_r][_c].getIsFlagged() && MainManager.getMainGrid().getMines(_r, _c) == 9)
+         {
+             ButtonGrid[_r][_c].setForeground(new Color(0, 0, 0));
+         }
          else
          {
              ButtonGrid[_r][_c].setForeground(new Color(0, 130, 200)); // 0,130,200 is a pretty and solid cyan blue
@@ -868,6 +898,7 @@ public class mainForm extends JFrame
         {
             System.out.println(evt.getKeyCode());
             EasyButtonMouseReleased(null);
+            //HardButtonMouseReleased(null);
             //FileMenuMouseClicked(null);
         }
     }
