@@ -46,6 +46,8 @@ public class Grid
 
     private String UserChoice;
 
+    private int safeSquares;
+
     /**
      * Constructor.
      * @param choice is a user input that chooses which grid size to use
@@ -65,6 +67,7 @@ public class Grid
             Mines = new int[settings.get(choice).getX()][settings.get(choice).getY()];
             generateMines(settings.get((choice)).getMines(), settings.get(choice).getX(),
                     settings.get(choice).getY());
+            safeSquares = settings.get(choice).getX() * settings.get(choice).getY() - settings.get(choice).getMines() + 1;
         }
 
         addBombInformation();
@@ -189,24 +192,32 @@ public class Grid
      */
     public void selectBox(int _y, int _x)
     {
-        // first check for special cases 0 and 9
-        if(Mines[_y][_x] == 0)
+        if(display[_y][_x].equals("_"))
         {
-            // display blank (inside recursive process)
-            // call recursive selection process
-            adjacentBoxes(_y, _x);
-        }
-        else if(Mines[_y][_x] == 9)
-        {
-            // display bomb
-            // lose game
-            display[_y][_x] = "9";
-            System.out.println("You lose"); // for now
-        }
-        else
-        {
-            // display Mines
-            display[_y][_x] = Integer.toString(Mines[_y][_x]);
+            // first check for special cases 0 and 9
+            if(Mines[_y][_x] == 0)
+            {
+                // display blank (inside recursive process)
+                // call recursive selection process
+                adjacentBoxes(_y, _x);
+            }
+            else if(Mines[_y][_x] == 9)
+            {
+                // display bomb
+                // lose game
+                display[_y][_x] = "9";
+                System.out.println("MESSAGE FROM INTERNAL LOGIC: You lose."); // for now
+            }
+            else
+            {
+                // display Mines
+                display[_y][_x] = Integer.toString(Mines[_y][_x]);
+                safeSquares--;
+                if(safeSquares == 0)
+                {
+                    System.out.println("MESSAGE FROM INTERNAL LOGIC: You Win.");
+                }
+            }
         }
     }
 
@@ -237,6 +248,7 @@ public class Grid
         // if the integer is not 0, return
             // display -> subs -> recursive
             display[_y][_x] = " ";
+            safeSquares--;
             //System.out.println(getDisplay()); // debug
             // create neighbor sub-grid
             // ** REPEATED CODE HERE
@@ -287,9 +299,11 @@ public class Grid
                 //&& Mines[subX[r]][subY[r]] == 0)           // is zero?
                 && "_".equals(display[neighborY[r]][neighborX[r]]))  // is operable?
             {
-                if(Mines[neighborY[r]][neighborX[r]] != 0)
+                if(Mines[neighborY[r]][neighborX[r]] != 0
+                        && display[neighborY[r]][neighborX[r]].equals("_"))
                 {
                     display[neighborY[r]][neighborX[r]] = Integer.toString(Mines[neighborY[r]][neighborX[r]]);
+                    safeSquares--;
                     //System.out.println(getDisplay()); // debug
                 }
                 else
@@ -312,6 +326,10 @@ public class Grid
         return Mines[1].length;
     }
 
+    public int getSafeSquares()
+    {
+        return safeSquares;
+    }
 
     // debugging methods...
 
