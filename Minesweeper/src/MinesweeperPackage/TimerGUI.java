@@ -35,6 +35,7 @@ public class TimerGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        label1.setFont(new java.awt.Font("Champagne & Limousines", 0, 24)); // NOI18N
         label1.setText("label1");
 
         label2.setText("label2");
