@@ -6,9 +6,27 @@ package MinesweeperPackage;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.*;
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
+//import javax.swing.*;
+
 
 /**
  *
@@ -41,6 +59,8 @@ public class mainForm extends JFrame
     // End of GUI variables declaration
 
     private TimerGUI asdfasdfasdf;
+    private boolean timeStart;
+    private Timer t;
 
     private enum SizeSettings
     {
@@ -266,6 +286,8 @@ public class mainForm extends JFrame
      */
     public mainForm()
     {
+        t = new Timer();
+        timeStart = false;
         bothWereDown = false;
         initComponents();
         this.setTitle("Arcade");
@@ -438,6 +460,21 @@ public class mainForm extends JFrame
                     @Override
                     public void mouseReleased(MouseEvent evt)
                     {
+                        /*
+                        if(!timeStart)
+                        {
+                            timeStart = true;
+                            t.schedule(new TimerTask()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    System.out.println("asdf");
+                                }
+                            }, 0);
+                        }
+                        */
+
                         AbstractButton abstractButton = (AbstractButton) evt.getSource();
 
                         int y = 0; int x = 0;
