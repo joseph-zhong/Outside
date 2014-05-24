@@ -5,6 +5,12 @@
 package MinesweeperPackage;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+//import java.util.Timer;
+import javax.swing.Timer;
 import javax.swing.JFrame;
 
 /**
@@ -13,16 +19,49 @@ import javax.swing.JFrame;
  */
 public class InformationGUI extends JFrame
 {
+    /*
+    private static Timer t;
+    private static SimpleDateFormat sdf;
+    private static Date start;
+    * */
 
     /**
      * Creates new form TimerGUI
      */
+    private final int minute = 60;
+    private final ClockListener cl = new ClockListener();
+    private final Timer t = new Timer(1000, cl);
+
     public InformationGUI()
     {
         initComponents();
+        t.setInitialDelay(0);
+
         //main(null);
+        /*
+        t = new Timer();
+        sdf = new SimpleDateFormat("hh:mm:ss");
+        start = new Date();
+        */
         this.setLocation(300, 550);
         setVisible(true);
+    }
+
+    private class ClockListener implements ActionListener
+    {
+        private int count;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            count %= minute;
+            label1.setText(String.valueOf(count));
+            count++;
+        }
+    }
+
+    public void startClock()
+    {
+        t.start();
     }
 
     /**
@@ -32,7 +71,10 @@ public class InformationGUI extends JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
-    private void initComponents() {
+    private void initComponents()
+    {
+
+
 
         label1 = new java.awt.Label();
         label2 = new java.awt.Label();
@@ -102,8 +144,14 @@ public class InformationGUI extends JFrame
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable()
         {
+            @Override
             public void run()
             {
+                /*
+                Date now = new Date();
+                sdf.format(now.getTime() - start.getTime());
+                System.out.println(sdf);
+                * */
                 new InformationGUI().setVisible(true);
             }
         });
