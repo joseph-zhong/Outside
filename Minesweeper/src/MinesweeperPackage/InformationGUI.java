@@ -17,7 +17,7 @@ import javax.swing.JFrame;
  *
  * @author Joseph
  */
-public class InformationGUI extends JFrame
+public class InformationGUI extends JFrame implements ActionListener
 {
     /*
     private static Timer t;
@@ -29,13 +29,17 @@ public class InformationGUI extends JFrame
      * Creates new form TimerGUI
      */
     private final int minute = 60;
-    private final ClockListener cl = new ClockListener();
-    private final Timer t = new Timer(1000, cl);
+    private ClockListener clock = new ClockListener();
+    private final Timer timerObject = new Timer(1000, clock);
+
+    private int seconds;
+
+    private int mineCount;
 
     public InformationGUI()
     {
         initComponents();
-        t.setInitialDelay(0);
+        timerObject.setInitialDelay(0);
 
         //main(null);
         /*
@@ -47,22 +51,73 @@ public class InformationGUI extends JFrame
         setVisible(true);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        //throw new UnsupportedOperationException("Not supported yet.");
+        seconds %= minute;
+        label1.setText(String.valueOf(seconds));
+        seconds++;
+    }
+
+
     private class ClockListener implements ActionListener
     {
-        private int count;
+        private int count = 0;
 
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e)
+        {
             count %= minute;
             label1.setText(String.valueOf(count));
             count++;
+        }
+
+        public void resetCounter()
+        {
+            count = 0;
         }
     }
 
     public void startClock()
     {
-        t.start();
+        timerObject.start();
     }
+
+    public void stopClock()
+    {
+        timerObject.stop();
+    }
+
+    public void resetClock()
+    {
+        timerObject.restart();
+        //count = 0;
+        clock.resetCounter();
+        timerObject.stop();
+    }
+
+    public int getTime()
+    {
+        return seconds;
+    }
+
+    public int getMines()
+    {
+        return Integer.parseInt(label2.getText());
+    }
+
+    public void setMines(int mines)
+    {
+        label2.setText("" + mines);
+    }
+
+    /*
+    public ClockListener getClockListener()
+    {
+        return cl;
+    }
+    */
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -79,15 +134,15 @@ public class InformationGUI extends JFrame
         label1 = new java.awt.Label();
         label2 = new java.awt.Label();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         int height = label1.getHeight() * 2;
         Font Label1Font = new Font("HelveticaNeueLT Pro 55", Font.PLAIN, height);
 
         label1.setFont(Label1Font);
-        label1.setText("label1");
+        label1.setText("0");
 
-        label2.setText("label2");
+        //label2.setText("label2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
