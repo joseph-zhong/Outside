@@ -323,6 +323,7 @@ public class mainForm extends JFrame
         timerStart = false;
 
         minesLeft = MainManager.getMainGrid().getCurrentSetting().getMines();
+        asdfasdfasdf.setMines(minesLeft);
 
         ButtonGrid = new MinesweeperButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
        // produce a GUI grid
