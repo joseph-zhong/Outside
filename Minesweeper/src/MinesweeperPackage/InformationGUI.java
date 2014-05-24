@@ -128,7 +128,7 @@ public class InformationGUI extends JFrame implements ActionListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents()
     {
-
+        setResizable(false);
 
 
         label1 = new java.awt.Label();
@@ -136,13 +136,15 @@ public class InformationGUI extends JFrame implements ActionListener
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
-        int height = label1.getHeight() * 2;
-        Font Label1Font = new Font("HelveticaNeueLT Pro 55", Font.PLAIN, height);
+        int height = label1.getHeight();
+        //Font LabelFont = new Font("sansserif", Font.BOLD, height);
+        Font LabelFont = new Font("Champagne & Limousines", 0, 36);
 
-        label1.setFont(Label1Font);
+        label1.setFont(LabelFont);
         label1.setText("0");
 
         //label2.setText("label2");
+        label2.setFont(LabelFont);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
