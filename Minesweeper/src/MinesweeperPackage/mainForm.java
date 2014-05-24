@@ -6,27 +6,9 @@ package MinesweeperPackage;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.logging.*;
-import javax.swing.AbstractButton;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.WindowConstants;
-//import javax.swing.*;
-
+import javax.swing.*;
 
 /**
  *
@@ -58,9 +40,7 @@ public class mainForm extends JFrame
     private JPanel mainPanel;
     // End of GUI variables declaration
 
-    private TimerGUI asdfasdfasdf;
-    private boolean timeStart;
-    private Timer t;
+    private InformationGUI asdfasdfasdf;
 
     private enum SizeSettings
     {
@@ -91,7 +71,10 @@ public class mainForm extends JFrame
 
     // winning stuff
     private int safeButtonsLeft;
+    private int minesLeft;
     private int counter;
+
+    private boolean timerStart;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -286,8 +269,7 @@ public class mainForm extends JFrame
      */
     public mainForm()
     {
-        t = new Timer();
-        timeStart = false;
+        timerStart = false;
         bothWereDown = false;
         initComponents();
         this.setTitle("Arcade");
@@ -335,9 +317,12 @@ public class mainForm extends JFrame
         MainManager = new GameControl(difficulty);
         if(asdfasdfasdf == null)
         {
-            asdfasdfasdf = new TimerGUI();
+            asdfasdfasdf = new InformationGUI();
         }
+        asdfasdfasdf.resetClock();
+        timerStart = false;
 
+        minesLeft = MainManager.getMainGrid().getCurrentSetting().getMines();
 
         ButtonGrid = new MinesweeperButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
        // produce a GUI grid
@@ -460,20 +445,11 @@ public class mainForm extends JFrame
                     @Override
                     public void mouseReleased(MouseEvent evt)
                     {
-                        /*
-                        if(!timeStart)
+                        if(!timerStart)
                         {
-                            timeStart = true;
-                            t.schedule(new TimerTask()
-                            {
-                                @Override
-                                public void run()
-                                {
-                                    System.out.println("asdf");
-                                }
-                            }, 0);
+                            timerStart = true;
+                            asdfasdfasdf.startClock();
                         }
-                        */
 
                         AbstractButton abstractButton = (AbstractButton) evt.getSource();
 
@@ -584,6 +560,8 @@ public class mainForm extends JFrame
                                 //safeButtonsLeft--;
                                 //System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                                 resetFont("", y, x);
+                                minesLeft--;
+                                asdfasdfasdf.setMines(minesLeft);
                             }
                             else
                             {
@@ -593,6 +571,8 @@ public class mainForm extends JFrame
                                 //System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                                 ButtonGrid[y][x].removeAll();
                                 resetFont("", y, x);
+                                minesLeft++;
+                                asdfasdfasdf.setMines(minesLeft);
                             }
                         }
                         else if(SwingUtilities.isLeftMouseButton(evt)
@@ -674,6 +654,7 @@ public class mainForm extends JFrame
                             * MainManager.getMainGrid().getLength(false)
                             - MainManager.getMainGrid().getCurrentSetting().getMines() == count)
                         {
+                            asdfasdfasdf.stopClock();
                             JOptionPane.showMessageDialog(rootPane, "You won!"
                                     + "\n╔══╗░░░░╔╦╗░░╔═════╗"
                                     + "\n║╚═╬════╬╣╠═╗║░▀░▀░║"
@@ -731,6 +712,9 @@ public class mainForm extends JFrame
 
     private void losing()
     {
+        asdfasdfasdf.stopClock();
+        timerStart = false;
+
         for(int r = 0; r < ButtonGrid.length; r++)
         {
             for(int c = 0; c < ButtonGrid[1].length; c++)
