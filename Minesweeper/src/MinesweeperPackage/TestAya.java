@@ -1,8 +1,10 @@
 package MinesweeperPackage;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.IOException;
@@ -14,6 +16,8 @@ public class TestAya
 
    public static void main(String[] args) throws Exception
    {
+
+       /*
        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
        Font[] allFonts = ge.getAllFonts();
        for (int i = 0; i < allFonts.length; i++)
@@ -21,8 +25,13 @@ public class TestAya
            Font f = allFonts[i].deriveFont(10.0f);
            System.out.println(f);
        }
+        */
 
-
+       Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+        System.out.println("width:" + width);
+        System.out.println("height: " + height);
 
    }
 
