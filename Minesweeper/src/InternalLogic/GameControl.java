@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package MinesweeperPackage;
+package InternalLogic;
 
 import java.util.Scanner;
 
