@@ -2,12 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package MinesweeperPackage;
+package GUI;
 
+import InternalLogic.GameControl;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 import java.util.logging.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 /**
@@ -23,32 +31,88 @@ import javax.swing.*;
 public class mainForm extends JFrame
 {
     // GUI Variables declaration
+    /**
+     * GUI. Menu Item which triggers the easy minesweeper construction option.
+     * EasyButton JMenuItem binded to JMenuBar FileMenu
+     */
     private JMenuItem EasyButton;
+
+    /**
+     * GUI. Menu Item which triggers the medium minesweeper construction option.
+     * EasyButton JMenuItem binded to JMenuBar FileMenu
+     */
     private JMenuItem HardButton;
+
+    /**
+     * GUI. Menu Item which triggers the hard minesweeper construction option.
+     * EasyButton JMenuItem binded to JMenuBar FileMenu
+     */
     private JMenuItem MediumButton;
 
+    /**
+     * GUI. Message Label which holds content for the win/loss dialog box to
+     *  display to the user
+     * MessageLabel is a JLabel with Strings later set
+     */
     private JLabel MessageLabel;
 
+    /**
+     * String Builder using HTML to format with more flexibility.
+     *
+     * sb is later built with a String, and put into MessageLabel
+     */
     private StringBuilder sb;
 
+    /**
+     * NewGameMenu is a submenu with options for constructing different
+     *  minesweeper difficulties.
+     */
     private JMenu NewGameMenu;
+
+    /**
+     * QuitButton is another close option button.
+     */
     private JMenuItem QuitButton;
-    private JFrame mainFrame;
+
+    /**
+     * HelpMenu is the Help-Menu in the Toolbar.
+     */
     private JMenu HelpMenu;
+
+    /**
+     * FileMenu is the File Sub-Menu in the Toolbar.
+     */
     private JMenu FileMenu;
-    private JMenuBar jMenuBar1;
-    private JPanel mainPanel;
-    // End of GUI variables declaration
 
-    private InformationGUI asdfasdfasdf;
+    /**
+     * MainMenuBar contains all the buttons in the Toolbar.
+     */
+    private JMenuBar MainMenuBar;
 
+    /**
+     * MainPanel is the main JPanel object in this.
+     * this is a Jframe. NetBeans likes to do it that way for some reason.
+     */
+    private JPanel MainPanel;
+    // End of GUI variables declaration -- yes. Thanks NetBeans.
+
+    /**
+     * InformationFrame is the secondary Frame which contains the panels for
+     *  timer and mines left information.
+     */
+    private InformationGUI InformationFrame;
+
+    /**
+     * Enumerated values appended with String names. Helped with avoiding magic
+     *  numbers and with making the constructGrid method more robust, getting
+     *  access to the string values.
+     */
     private enum SizeSettings
     {
-        EASY(500, 500), MEDIUM(680, 680), HARD(700, 640);
+        EASY(500, 500), MEDIUM(680, 680), HARD(800, 680);
 
         private int x;
         private int y;
-
 
         private SizeSettings(int _x, int _y)
         {
@@ -57,16 +121,57 @@ public class mainForm extends JFrame
         }
     };
 
+    /**
+     * Helper Dimension Object for setting the main Frame size.
+     */
     private static Dimension FrameSize;
+
+    /**
+     * Helper Dimension Object for setting the main panel size.
+     */
     private static Dimension PanelSize;
 
+    /**
+     * Helper Dimension Object for setting the main Frame size.
+     * Not implemented yet.
+     */
+    private final static Dimension ScreenSize = Toolkit.getDefaultToolkit()
+            .getScreenSize();
+
+    /**
+     * Internal Game Controller Object.
+     */
     private static GameControl MainManager;
+
+    /**
+     * External Button Controller array. Contains a grid of each external button.
+     */
     private static MinesweeperButton[][] ButtonGrid;
 
     // simul clicky stuff
+    /**
+     * Part 1 of calculating simul-click boolean.
+     * Saves typing from MouseEv... to just B1DM
+     * Resembles Left Click
+     */
     private static final int B1DM = MouseEvent.BUTTON1_DOWN_MASK;
+
+    /**
+     * Part 2 of calculating simul-click boolean.
+     * Saves typing.
+     * Resembles Right Click
+     */
     private static final int B3DM = MouseEvent.BUTTON3_DOWN_MASK;
+
+    /**
+     * boolean that resembles the result of the comparison between B2DM and B3DM.
+     *  Is true if both clicks are true.
+     */
     private boolean bothWereDown;
+
+    /**
+     * Counter int for helping with simul-click selection of buttons.
+     */
     private int flaggedNeighbors;
 
     // winning stuff
@@ -77,30 +182,24 @@ public class mainForm extends JFrame
     private boolean timerStart;
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Modified "Generated Code".
+     * Initialize the GUI Components of the program.
+     *  THIS PART GETS EXTREMELY CONFUSING.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Bull Excrements Code">
     private void initComponents()
     {
-        mainFrame = new JFrame();
+        //MainFrame = new JFrame();
 
         sb = new StringBuilder(64);
 
-        sb.append("<html>"
-                + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                + "Welcome to MiArcade (v0.0.2)! "
-                + "<br>Click on File to get started, or Help for more information."
-                + "<br><br>"
-                + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                + "Keyboard Shortcuts: F2 for New Game</html>");
+        sb.append(instructions2());
 
         MessageLabel = new JLabel(sb.toString());
 
-        mainPanel = new JPanel();
-        jMenuBar1 = new JMenuBar();
+        MainPanel = new JPanel();
+        MainMenuBar = new JMenuBar();
         FileMenu = new JMenu();
         NewGameMenu = new JMenu();
         EasyButton = new JMenuItem();
@@ -109,9 +208,10 @@ public class mainForm extends JFrame
         QuitButton = new JMenuItem();
         HelpMenu = new JMenu();
 
-        // frame things
-        GroupLayout mainFrameLayout = new GroupLayout(mainFrame.getContentPane());
-        mainFrame.getContentPane().setLayout(mainFrameLayout);
+        // frame things -- useless!
+        /*
+        GroupLayout mainFrameLayout = new GroupLayout(MainFrame.getContentPane());
+        MainFrame.getContentPane().setLayout(mainFrameLayout);
         mainFrameLayout.setHorizontalGroup(
             mainFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGap(0, 400, Short.MAX_VALUE)
@@ -120,7 +220,7 @@ public class mainForm extends JFrame
             mainFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
         );
-
+        */
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         addMouseListener(new MouseAdapter()
@@ -140,7 +240,7 @@ public class mainForm extends JFrame
             }
         });
 
-        mainPanel.addKeyListener(new KeyAdapter()
+        MainPanel.addKeyListener(new KeyAdapter()
         {
             @Override
             public void keyPressed(KeyEvent evt)
@@ -149,8 +249,8 @@ public class mainForm extends JFrame
             }
         });
 
-        GroupLayout mainPanelLayout = new GroupLayout(mainPanel);
-        mainPanel.setLayout(mainPanelLayout);
+        GroupLayout mainPanelLayout = new GroupLayout(MainPanel);
+        MainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
@@ -243,35 +343,25 @@ public class mainForm extends JFrame
         });
         FileMenu.add(QuitButton);
 
-        jMenuBar1.add(FileMenu);
+        MainMenuBar.add(FileMenu);
 
         HelpMenu.setText("Help");
-        jMenuBar1.add(HelpMenu);
+        MainMenuBar.add(HelpMenu);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(MainMenuBar);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addComponent(MainPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addComponent(MainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         );
 
-        pack();
-    }// </editor-fold>
-
-    /**
-     * Creates new form MinesweeperGUI
-     */
-    public mainForm()
-    {
-        timerStart = false;
-        bothWereDown = false;
-        initComponents();
+        //post everything
         this.setTitle("Arcade");
 
         JLabel label = new JLabel(sb.toString());
@@ -279,14 +369,45 @@ public class mainForm extends JFrame
 
         setVisible(true);
         repaint();
+        pack();
+    }// </editor-fold>
+
+    /**
+     * Main Constructor.
+     * Creates new form MinesweeperGUI
+     */
+    public mainForm()
+    {
+        timerStart = false;
+        bothWereDown = false;
+        initComponents();
     }
 
+    /**
+     * Instructions String. Replaced by a StringBuilder object using HTML appending.
+     *  Intended to use for Displaying instructions to the user.
+     * @return String for instructions.
+     */
     private String instructions()
     {
-        String instructions = "\t\tWelcome to MiArcade (v0.0.2)! "
+        String instructions =
+                "\t\tWelcome to MiArcade (v0.0.2)! "
                 + "\nClick on File to get started, or Help for more information."
                 + "\n\n\t Keyboard Shortcuts: F2 for New Game";
         return instructions;
+    }
+
+    private String instructions2()
+    {
+        String instructions2 =
+            "<html>"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "Welcome to MiArcade (v0.0.2)! "
+            + "<br>Click on File to get started, or Help for more information."
+            + "<br><br>"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "Keyboard Shortcuts: F2 for New Game</html>";
+        return instructions2;
     }
 
     /**
@@ -298,32 +419,38 @@ public class mainForm extends JFrame
     private void QuitButtonMouseReleased(MouseEvent evt)
     {
         // TODO add your handling code here:
-        this.dispose();
+        //this.dispose(); old way
+        System.exit(0);
     }
 
     /**
      * Constructor Method.
      * Constructs the easy grid.
-     * @param evt
+     * @param evt User Mouse Click release.
      */
     private void EasyButtonMouseReleased(MouseEvent evt)
     {
-        mainPanel.removeAll();
+        MainPanel.removeAll();
         constructMinesweeper("easy");
     }
 
+    /**
+     * Semi-Robust constructor helper method.
+     * Initializes and constructs the grid based on the difficulty setting.
+     * @param difficulty is the difficulty level
+     */
     private void constructMinesweeper(String difficulty)
     {
         MainManager = new GameControl(difficulty);
-        if(asdfasdfasdf == null)
+        if(InformationFrame == null)
         {
-            asdfasdfasdf = new InformationGUI();
+            InformationFrame = new InformationGUI();
         }
-        asdfasdfasdf.resetClock();
+        InformationFrame.resetClock();
         timerStart = false;
 
         minesLeft = MainManager.getMainGrid().getCurrentSetting().getMines();
-        asdfasdfasdf.setMines(minesLeft);
+        InformationFrame.setMines(minesLeft);
 
         ButtonGrid = new MinesweeperButton[MainManager.getMainGrid().getLength(false)][MainManager.getMainGrid().getLength(true)];
        // produce a GUI grid
@@ -449,7 +576,7 @@ public class mainForm extends JFrame
                         if(!timerStart)
                         {
                             timerStart = true;
-                            asdfasdfasdf.startClock();
+                            InformationFrame.startClock();
                         }
 
                         AbstractButton abstractButton = (AbstractButton) evt.getSource();
@@ -562,7 +689,7 @@ public class mainForm extends JFrame
                                 //System.out.println("Safe Buttons Left: " + safeButtonsLeft);
                                 resetFont("", y, x);
                                 minesLeft--;
-                                asdfasdfasdf.setMines(minesLeft);
+                                InformationFrame.setMines(minesLeft);
                             }
                             else
                             {
@@ -573,7 +700,7 @@ public class mainForm extends JFrame
                                 ButtonGrid[y][x].removeAll();
                                 resetFont("", y, x);
                                 minesLeft++;
-                                asdfasdfasdf.setMines(minesLeft);
+                                InformationFrame.setMines(minesLeft);
                             }
                         }
                         else if(SwingUtilities.isLeftMouseButton(evt)
@@ -655,7 +782,7 @@ public class mainForm extends JFrame
                             * MainManager.getMainGrid().getLength(false)
                             - MainManager.getMainGrid().getCurrentSetting().getMines() == count)
                         {
-                            asdfasdfasdf.stopClock();
+                            InformationFrame.stopClock();
                             JOptionPane.showMessageDialog(rootPane, "You won!"
                                     + "\n╔══╗░░░░╔╦╗░░╔═════╗"
                                     + "\n║╚═╬════╬╣╠═╗║░▀░▀░║"
@@ -688,7 +815,7 @@ public class mainForm extends JFrame
 
                 ButtonGrid[y][x].addMouseListener(MouseClick);
                 ButtonGrid[y][x].addMouseMotionListener(MouseMove);
-                mainPanel.add(ButtonGrid[y][x]);
+                MainPanel.add(ButtonGrid[y][x]);
 
                 System.out.println(y + ", " + x); // debug
             }
@@ -703,17 +830,22 @@ public class mainForm extends JFrame
         this.setSize(FrameSize);
         this.setLocation(300, 0);
 
-        mainPanel.setPreferredSize(PanelSize);
+        MainPanel.setPreferredSize(PanelSize);
 
-        mainPanel.setLayout(new GridLayout(MainManager.getMainGrid().getLength(true), MainManager.getMainGrid().getLength(false)));
+        MainPanel.setLayout(new GridLayout(MainManager.getMainGrid().getLength(true), MainManager.getMainGrid().getLength(false)));
         this.setVisible(true);
 
         this.pack();
     }
 
+    /**
+     * Losing Function.
+     * This method contains everything required to end a game, and also give the
+     *  user options afterwards.
+     */
     private void losing()
     {
-        asdfasdfasdf.stopClock();
+        InformationFrame.stopClock();
         timerStart = false;
 
         for(int r = 0; r < ButtonGrid.length; r++)
@@ -726,17 +858,20 @@ public class mainForm extends JFrame
                      // prepare special icons
 
                     ImageIcon MineIcon;
-                    MineIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/Outside/2013/Minesweeper/src/Images/MineImage.png");
+                    MineIcon = new ImageIcon("C://Users/Joseph/Downloads/GitHub/"
+                            + "Outside/2013/Minesweeper/src/Images/MineImage.png");
 
                     // prepare resize
                     Image MineImage = MineIcon.getImage(); // transform it
 
-                    int maxSize = Math.max(ButtonGrid[r][c].getHeight(), ButtonGrid[r][c].getWidth()) / 2;
+                    int maxSize = Math.max(ButtonGrid[r][c].getHeight(),
+                            ButtonGrid[r][c].getWidth()) / 2;
 
                     Image rescaledImage;
                     ImageIcon imageIcon;
 
-                    rescaledImage = MineImage.getScaledInstance(maxSize, maxSize, Image.SCALE_SMOOTH); // scale it the smooth way
+                    rescaledImage = MineImage.getScaledInstance(maxSize, maxSize,
+                            Image.SCALE_SMOOTH); // scale it the smooth way
                     imageIcon = new ImageIcon(rescaledImage);  // transform it back
 
                     JLabel test1 = new JLabel(imageIcon);
@@ -748,6 +883,7 @@ public class mainForm extends JFrame
             }
         }
 
+        /*
         JOptionPane.showMessageDialog(rootPane, "You lose. Sorry."
                 + "\n╔╦╦╦╦╦╦╦╦╦╦╦╦╗"
                 + "\n╠╬╬╬╬╬╬╬╬╬╬╬╬╣"
@@ -759,7 +895,41 @@ public class mainForm extends JFrame
                 + "\n╠╬██████████╬╣"
                 + "\n╠╬█╬╬╬╬╬╬╬╬█╬╣"
                 + "\n╚╩╩╩╩╩╩╩╩╩╩╩╩╝", "☹", JOptionPane.YES_NO_CANCEL_OPTION);
-        //System.out.println("You lost by flagging incorrectly");
+                * */
+        //Custom button text
+        String[] options = {"Try again", "Go back to Start", "Quit"};
+        int n = JOptionPane.showOptionDialog(rootPane, "You lose. Sorry."
+                + "\n╔╦╦╦╦╦╦╦╦╦╦╦╦╗"
+                + "\n╠╬╬╬╬╬╬╬╬╬╬╬╬╣"
+                + "\n╠╬╬╬╬╬╬╬╬╬╬╬╬╣"
+                + "\n╠╬╬█╬╬╬╬╬╬█╬╬╣"
+                + "\n╠╬╬╬╬╬╬█╬╬╬╬╬╣"
+                + "\n╠╬╬╬╬╬╬╬╬╬╬╬╬╣"
+                + "\n╠╬╬╬╬╬╬╬╬╬╬╬╬╣"
+                + "\n╠╬██████████╬╣"
+                + "\n╠╬█╬╬╬╬╬╬╬╬█╬╣"
+                + "\n╚╩╩╩╩╩╩╩╩╩╩╩╩╝"
+                + "\n What would you like to do?", "☹",
+            JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[2]);
+
+        if(n == 2)
+        {
+            System.out.println("n = " + n);
+            System.exit(0);
+        }
+
+        for(int y = 0; y < ButtonGrid.length; y++)
+        {
+            for(int x = 0; x < ButtonGrid[1].length; x++)
+            {
+                ButtonGrid[y][x].setFocusable(false);
+            }
+        }
+
         System.out.println("You lose");
     }
 
@@ -865,7 +1035,7 @@ public class mainForm extends JFrame
     private void MediumButtonMouseReleased(MouseEvent evt)
     {
         // TODO add your handling code here:
-        mainPanel.removeAll();
+        MainPanel.removeAll();
         constructMinesweeper("medium");
     }
 
@@ -881,7 +1051,7 @@ public class mainForm extends JFrame
 
     private void HardButtonMouseReleased(MouseEvent evt) {
         // TODO add your handling code here:
-        mainPanel.removeAll();
+        MainPanel.removeAll();
         constructMinesweeper("hard");
     }
 
@@ -930,17 +1100,19 @@ public class mainForm extends JFrame
         if(evt.getKeyCode() == 114)
         {
             System.out.println(evt.getKeyCode());
-            mainPanel.removeAll();
+            MainPanel.removeAll();
             constructMinesweeper("test");
         }
     }
 
     /**
+     * Main method.
+     * Begins the GUI, and the rest of the program.
      * @param args the command line arguments
      */
     public static void main(String args[])
     {
-        // Set Nimbus and Feel
+        //playSound();
         try
         {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
@@ -968,4 +1140,41 @@ public class mainForm extends JFrame
             }
         });
     }
+
+
+    /**
+     *  Sound playing thread.
+     *  This method begins a thread which is supposed to play a nice tune from the URL.
+     *  Commented as the URL finder doesn't work atm.
+     */
+    /*
+    public static synchronized void playSound()
+    {
+        new Thread(new Runnable()
+        {
+            // The wrapper thread is unnecessary, unless it blocks on the
+            // Clip finishing; see comments.
+            @Override
+            public void run()
+            {
+                try
+                {
+                    URL WavURL = this.getClass().getClassLoader().getResource("C:/Users/Joseph/Music/DJSmack/Made in NZ.wav");
+                    //AudioInputStream inputStream = AudioSystem.getAudioInputStream("C:/Users/Joseph/Music/DJSmack/Made in NZ.wav");
+                    AudioInputStream inputStream;
+
+                    inputStream = AudioSystem.getAudioInputStream(WavURL);
+                    Clip audioClip = AudioSystem.getClip();
+                    audioClip.open(inputStream);
+                    audioClip.start();
+                }
+                catch (LineUnavailableException | UnsupportedAudioFileException | IOException e)
+                {
+                    //System.err.println(e.getMessage());
+                    System.out.println("Audio file not found.");
+                }
+            }
+        }).start();
+    }
+    * */
 }
