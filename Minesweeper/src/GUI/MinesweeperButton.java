@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package MinesweeperPackage;
+package GUI;
 
 import javax.swing.AbstractButton;
 import javax.swing.JToggleButton;

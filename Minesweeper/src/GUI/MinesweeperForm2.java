@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package MinesweeperPackage;
+package GUI;
 
+import InternalLogic.GameControl;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;

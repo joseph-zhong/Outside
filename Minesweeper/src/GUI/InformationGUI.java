@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package MinesweeperPackage;
+package GUI;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
