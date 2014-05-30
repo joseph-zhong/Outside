@@ -175,9 +175,18 @@ public class mainForm extends JFrame
     private int flaggedNeighbors;
 
     // winning stuff
+    /**
+     * safeButtonsLeft is a counter to count if the user has won or not.
+     */
     private int safeButtonsLeft;
+
+    /**
+     * minesLeft is a helper counter for the InformationGUI
+     */
     private int minesLeft;
-    private int counter;
+
+
+    private int buttonsSelectedCounter;
 
     private boolean timerStart;
 
@@ -240,15 +249,6 @@ public class mainForm extends JFrame
             }
         });
 
-        MainPanel.addKeyListener(new KeyAdapter()
-        {
-            @Override
-            public void keyPressed(KeyEvent evt)
-            {
-                mainPanelKeyPressed(evt);
-            }
-        });
-
         GroupLayout mainPanelLayout = new GroupLayout(MainPanel);
         MainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -300,14 +300,6 @@ public class mainForm extends JFrame
                 MediumButtonMouseReleased(evt);
             }
         });
-        MediumButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent evt)
-            {
-                MediumButtonActionPerformed(evt);
-            }
-        });
         NewGameMenu.add(MediumButton);
 
         HardButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
@@ -318,14 +310,6 @@ public class mainForm extends JFrame
             public void mouseReleased(MouseEvent evt)
             {
                 HardButtonMouseReleased(evt);
-            }
-        });
-        HardButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent evt)
-            {
-                HardButtonActionPerformed(evt);
             }
         });
         NewGameMenu.add(HardButton);
@@ -388,6 +372,7 @@ public class mainForm extends JFrame
      *  Intended to use for Displaying instructions to the user.
      * @return String for instructions.
      */
+    /*
     private String instructions()
     {
         String instructions =
@@ -396,7 +381,13 @@ public class mainForm extends JFrame
                 + "\n\n\t Keyboard Shortcuts: F2 for New Game";
         return instructions;
     }
+    * */
 
+    /**
+     * Instructions String.
+     * Uses HTML to format the string.
+     * @return String for instructions.
+     */
     private String instructions2()
     {
         String instructions2 =
@@ -933,6 +924,14 @@ public class mainForm extends JFrame
         System.out.println("You lose");
     }
 
+    /**
+     * Update Helper Method.
+     * Creates the neighbor sub-grid.
+     * Not yet fully implemented.
+     * @param row center row int
+     * @param col center col int
+     */
+    /*
     private void makeNeighborCoordinates(int row, int col)
     {
         int [] row_neighbor = new int [8];
@@ -955,11 +954,17 @@ public class mainForm extends JFrame
         row_neighbor[7] = row+1;
         col_neighbor[7] = col-1;
     }
+    * */
 
+    /**
+     * Update helper method.
+     * Gets the coordinates of the selected button.
+     * @param evt User mouse event.
+     * @return int[] of two integers, y and x, or row and col.
+     */
     private int[] getButtonCoordinates(MouseEvent evt)
     {
         AbstractButton abstractButton = (AbstractButton) evt.getSource();
-        ArrayList<Object> MouseClickCollection = new ArrayList<>();
 
         int y; int x = 0;
         outerloop:
@@ -979,19 +984,22 @@ public class mainForm extends JFrame
         return coordinates;
     }
 
-    private void leftClick(MouseEvent evt)
-    {
-
-    }
-
-     private void resetFont(String displayNumber, int _r, int _c)
+    /**
+     * Update helper method.
+     * Resets the fonts and repaints the buttons after the updates.
+     * @param displayString is a String resembling the internal contents of the
+     *  button
+     * @param _r row integer of the button
+     * @param _c col integer of the button
+     */
+     private void resetFont(String displayString, int _r, int _c)
      {
          int height = ButtonGrid[_r][_c].getHeight() / 2;
          Font numberFont = new Font("sansserif", Font.BOLD, height);
 
          ButtonGrid[_r][_c].setFont(numberFont);
 
-         if(displayNumber.equals("9"))
+         if(displayString.equals("9"))
          {
              ButtonGrid[_r][_c].setForeground(new Color(255, 0, 0)); // red
          }
@@ -1007,22 +1015,27 @@ public class mainForm extends JFrame
          ButtonGrid[_r][_c].repaint();
      }
 
+     /**
+      * Manual Update method. Manually updates every button after changes.
+      * Not implemented.
+      */
+     /*
      private void update()
      {
-         counter = 0;
+         buttonsSelectedCounter = 0;
          for(int r = 0; r < ButtonGrid.length; r++)
          {
              for(int c = 0; c < ButtonGrid[1].length; c++)
              {
                  if(ButtonGrid[r][c].isSelected() && MainManager.getMainGrid().getMines(r, c) != 9)
                  {
-                     counter++;
+                     buttonsSelectedCounter++;
                  }
-                 System.out.println("Safe Buttons: " + (safeButtonsLeft - counter));
+                 System.out.println("Safe Buttons: " + (safeButtonsLeft - buttonsSelectedCounter));
              }
          }
 
-         if(counter == safeButtonsLeft)
+         if(buttonsSelectedCounter == safeButtonsLeft)
          {
              JOptionPane.showMessageDialog(rootPane, "You won!"
                      + "\n╔══╗░░░░╔╦╗░░╔═════╗"
@@ -1031,7 +1044,13 @@ public class mainForm extends JFrame
                      + "\n╚══╩╝╚╝╚╩╩╩═╝╚═════╝", "Smileys  ☺  ☻  ت ヅ  ツ  ッ  シ Ü  ϡ  ﭢ", JOptionPane.YES_NO_CANCEL_OPTION);
          }
      }
+     * */
 
+    /**
+     * Event handler method.
+     * Runs constructor for Medium.
+     * @param evt User Mouse release
+     */
     private void MediumButtonMouseReleased(MouseEvent evt)
     {
         // TODO add your handling code here:
@@ -1039,22 +1058,23 @@ public class mainForm extends JFrame
         constructMinesweeper("medium");
     }
 
-    private void MediumButtonActionPerformed(ActionEvent evt)
+    /**
+     * Event handler method.
+     * Runs constructor for Hard.
+     * @param evt User Mouse release
+     */
+    private void HardButtonMouseReleased(MouseEvent evt)
     {
-        // ASDFASDF;ALSF;ALKDA;LSDFJA;SFD
-    }
-
-    private void HardButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-
-    }
-
-    private void HardButtonMouseReleased(MouseEvent evt) {
         // TODO add your handling code here:
         MainPanel.removeAll();
         constructMinesweeper("hard");
     }
 
+    /**
+     * Event handler method.
+     * Frame checks for user keyboard presses
+     * @param evt User Keyboard Press
+     */
     private void formKeyPressed(KeyEvent evt)
     {
         // TODO add your handling code here:
@@ -1064,26 +1084,34 @@ public class mainForm extends JFrame
 
     }
 
+    /**
+     * Event handler method.
+     * Frame checks for user mouse release
+     * Not very useful, just cool
+     * @param evt User Mouse release
+     */
     private void formMouseReleased(MouseEvent evt)
     {
         // TODO add your handling code here:
-        System.out.println("Mouse Click Coordinates: " + evt.getX() + ", " + evt.getY());
+        //System.out.println("Mouse Click Coordinates: " + evt.getX() + ", " + evt.getY());
     }
 
-    private void mainPanelKeyPressed(KeyEvent evt)
-    {
-        // TODO add your handling code here:
-        //checkF2Key(evt);
-        //checkTestCMD(evt);
-    }
-
+    /**
+     * Event handler method.
+     * File Menu click checker. Debugger method.
+     * @param evt User Mouse Click
+     */
     private void FileMenuMouseClicked(MouseEvent evt)
     {
         // TODO add your handling code here:
-
-        System.out.println("FileMenu Clicked");
+        //System.out.println("FileMenu Clicked");
     }
 
+    /**
+     * Event handler helper-method.
+     * Actionable F2-key check
+     * @param evt User Keyboard Press
+     */
     private void checkF2Key(KeyEvent evt)
     {
         if(evt.getKeyCode() == 113)
@@ -1095,6 +1123,13 @@ public class mainForm extends JFrame
         }
     }
 
+    /**
+     * Event handler method.
+     * Actionable F3-key check
+     * Not implemented.
+     * @param evt User Keyboard Press
+     */
+    /*
     private void checkTestCMD(KeyEvent evt)
     {
         if(evt.getKeyCode() == 114)
@@ -1104,6 +1139,7 @@ public class mainForm extends JFrame
             constructMinesweeper("test");
         }
     }
+    * */
 
     /**
      * Main method.
@@ -1140,7 +1176,6 @@ public class mainForm extends JFrame
             }
         });
     }
-
 
     /**
      *  Sound playing thread.
