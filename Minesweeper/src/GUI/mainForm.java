@@ -22,8 +22,8 @@ import javax.swing.*;
  *
  *  Joseph Zhong
  *  Arcade - Java (v3)
- *  This program is the GUI Object for my overall Arcade Project
- *  Arcade - GUI Object
+ *  This program is the Main GUI Object for my overall Arcade Project
+ *  Arcade - Main GUI Object
  *  1 April 2014
  *
  */
@@ -768,21 +768,12 @@ public class mainForm extends JFrame
                             }
                         }
 
-
                         if(MainManager.getMainGrid().getLength(true)
                             * MainManager.getMainGrid().getLength(false)
                             - MainManager.getMainGrid().getCurrentSetting().getMines() == count)
                         {
-                            InformationFrame.stopClock();
-                            JOptionPane.showMessageDialog(rootPane, "You won!"
-                                    + "\n╔══╗░░░░╔╦╗░░╔═════╗"
-                                    + "\n║╚═╬════╬╣╠═╗║░▀░▀░║"
-                                    + "\n╠═╗║╔╗╔╗║║║╩╣║╚═══╝║"
-                                    + "\n╚══╩╝╚╝╚╩╩╩═╝╚═════╝", "Smileys  c:  ☺  ☻  ت ヅ  ツ  ッ  シ Ü  ϡ  ﭢ", JOptionPane.YES_NO_CANCEL_OPTION);
+                            winning();
                         }
-
-
-
                         requestFocusInWindow(); // works now
                     }
 
@@ -827,6 +818,41 @@ public class mainForm extends JFrame
         this.setVisible(true);
 
         this.pack();
+    }
+
+    private void winning()
+    {
+        String[] options = {"Try again", "Go back to Start", "Quit"};
+        InformationFrame.stopClock();
+        int n = JOptionPane.showOptionDialog(rootPane, "You won!"
+                + "\n╔══╗░░░░╔╦╗░░╔═════╗"
+                + "\n║╚═╬════╬╣╠═╗║░▀░▀░║"
+                + "\n╠═╗║╔╗╔╗║║║╩╣║╚═══╝║"
+                + "\n╚══╩╝╚╝╚╩╩╩═╝╚═════╝", "Smileys  c:  ☺  ☻  ت ヅ  ツ  ッ  シ Ü  ϡ  ﭢ"
+                + "\nWhat would you like to do now?",
+        JOptionPane.YES_NO_CANCEL_OPTION,
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        options,
+        options[2]);
+
+        if(n == 2)
+        {
+            //System.out.println("n = " + n);
+            System.exit(0);
+        }
+        else if(n == 1)
+        {
+            InformationFrame.dispose();
+            main(null);
+            this.dispose();
+        }
+        else if(n == 0)
+        {
+            String difficulty = MainManager.getMainGrid().getDifficulty();
+            MainPanel.removeAll();
+            constructMinesweeper(difficulty.toLowerCase());
+        }
     }
 
     /**
@@ -909,8 +935,20 @@ public class mainForm extends JFrame
 
         if(n == 2)
         {
-            System.out.println("n = " + n);
+            //System.out.println("n = " + n);
             System.exit(0);
+        }
+        else if(n == 1)
+        {
+            InformationFrame.dispose();
+            main(null);
+            this.dispose();
+        }
+        else if(n == 0)
+        {
+            String difficulty = MainManager.getMainGrid().getDifficulty();
+            MainPanel.removeAll();
+            constructMinesweeper(difficulty.toLowerCase());
         }
 
         for(int y = 0; y < ButtonGrid.length; y++)
