@@ -19,20 +19,35 @@ import java.util.Scanner;
 
 public class GameControl
 {
+    /**
+     * MainGrid is the main Minesweeper Grid.
+     */
     private Grid MainGrid;
     //private String settingKey;
 
-
+    /**
+     * Constructor Method.
+     * @param settingKey the difficulty level to build the minesweeper grid.
+     */
     public GameControl(String settingKey)
     {
         MainGrid = new Grid(settingKey);
     }
 
+    /**
+     * Default Constructor Method.
+     * Does nothing and leaves MainGrid to be constructed later.
+     */
     public GameControl()
     {
 
     }
 
+    /**
+     * Main Method.
+     * Can run to play in text.
+     * @param args cmd prompt stuff
+     */
     public static void main(String[] args)
     {
         //Testing Methods in console
@@ -60,6 +75,10 @@ public class GameControl
         MainGrid = new Grid(_settingKey);
     }
 
+    /**
+     * Getter method.
+     * @return the main minesweeper grid.
+     */
     public Grid getMainGrid()
     {
         return MainGrid;

@@ -14,31 +14,63 @@ import javax.swing.Timer;
 import javax.swing.JFrame;
 
 /**
- *
- * @author Joseph
+  *  Joseph Zhong
+ *  Arcade - Java (v3)
+ *  This program is the Information GUI Object for my overall Arcade Project
+ *  Arcade - Information GUI Object
+ *  1 April 2014
  */
 public class InformationGUI extends JFrame implements ActionListener
 {
-    /*
-    private static Timer t;
-    private static SimpleDateFormat sdf;
-    private static Date start;
-    * */
 
     /**
-     * Creates new form TimerGUI
+     * secondsLabel is the label which contains the seconds
      */
-    private final int minute = 60;
-    private ClockListener clock = new ClockListener();
-    private final Timer timerObject = new Timer(1000, clock);
+    private java.awt.Label secondsLabel;
 
+    /**
+     * minesLabel is the label which contains the mines left to mark
+     */
+    private java.awt.Label minesLabel;
+
+    // End of variables declaration
+    /**
+     * Minute int.
+     * Used for separating seconds and minutes.
+     * Not yet implemented.
+     */
+    //private final int minute = 60;
+
+    /**
+     * ClockListener Object.
+     * Used to track second ticks.
+     */
+    private ClockListener clockListener;
+
+    /**
+     * Timer Object.
+     * Used for displaying seconds lapsed.
+     */
+    private final Timer timerObject;
+
+
+    /**
+     * Integer.
+     * Keeps track of seconds lapsed.
+     */
     private int seconds;
 
+    /**
+     * Integer.
+     * Keeps track of Mines.
+     */
     private int mineCount;
 
     public InformationGUI()
     {
         initComponents();
+        clockListener = new ClockListener();
+        timerObject = new Timer(1000, clockListener);
         timerObject.setInitialDelay(0);
 
         //main(null);
@@ -52,72 +84,103 @@ public class InformationGUI extends JFrame implements ActionListener
     }
 
     @Override
+    /**
+     * ActionListener method.
+     * Listens for any events performed
+     * Mainly for tracking seconds lapsed.
+     * @param e is any ActionEvent.
+     */
     public void actionPerformed(ActionEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");
-        seconds %= minute;
-        label1.setText(String.valueOf(seconds));
+        //seconds %= minute;
+        secondsLabel.setText(String.valueOf(seconds));
         seconds++;
     }
 
-
+    /**
+     * Nested Class ClockListener.
+     * This class implements ActionListener and updates the seconds label based
+     *  on the clock ticks.
+     */
     private class ClockListener implements ActionListener
     {
-        private int count = 0;
+        /**
+         * secondsCounter is an integer resembling seconds passed thus far.
+         */
+        private int secondsCounter = 0;
 
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            count %= minute;
-            label1.setText(String.valueOf(count));
-            count++;
+            //count %= minute;
+            secondsLabel.setText(String.valueOf(secondsCounter));
+            secondsCounter++;
         }
 
         public void resetCounter()
         {
-            count = 0;
+            secondsCounter = 0;
         }
-    }
+    }// end clock class
 
+    /**
+     * Helper method.
+     * This method is called outside to start the clock.
+     */
     public void startClock()
     {
         timerObject.start();
     }
 
+    /**
+     * Helper method.
+     * This method is called outside to stop the clock.
+     */
     public void stopClock()
     {
         timerObject.stop();
     }
 
+    /**
+     * Helper method.
+     * this method is called outside to restart the clock.
+     */
     public void resetClock()
     {
         timerObject.restart();
         //count = 0;
-        clock.resetCounter();
+        clockListener.resetCounter();
         timerObject.stop();
     }
 
+
+    /**
+     * Getter method.
+     * @return time in seconds.
+     */
     public int getTime()
     {
         return seconds;
     }
 
+    /**
+     * Getter method.
+     * @return mines left to mark in integer.
+     */
     public int getMines()
     {
-        return Integer.parseInt(label2.getText());
+        return Integer.parseInt(minesLabel.getText());
     }
 
+    /**
+     * Setter method.
+     * @param mines integer left to mark.
+     */
     public void setMines(int mines)
     {
-        label2.setText("" + mines);
+        minesLabel.setText("" + mines);
     }
-
-    /*
-    public ClockListener getClockListener()
-    {
-        return cl;
-    }
-    */
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -131,20 +194,20 @@ public class InformationGUI extends JFrame implements ActionListener
         setResizable(false);
 
 
-        label1 = new java.awt.Label();
-        label2 = new java.awt.Label();
+        secondsLabel = new java.awt.Label();
+        minesLabel = new java.awt.Label();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
-        int height = label1.getHeight();
+        int height = secondsLabel.getHeight();
         //Font LabelFont = new Font("sansserif", Font.BOLD, height);
         Font LabelFont = new Font("Champagne & Limousines", 0, 36);
 
-        label1.setFont(LabelFont);
-        label1.setText("0");
+        secondsLabel.setFont(LabelFont);
+        secondsLabel.setText("0");
 
         //label2.setText("label2");
-        label2.setFont(LabelFont);
+        minesLabel.setFont(LabelFont);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -152,9 +215,9 @@ public class InformationGUI extends JFrame implements ActionListener
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(secondsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(minesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -162,8 +225,8 @@ public class InformationGUI extends JFrame implements ActionListener
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(label2, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
-                    .addComponent(label1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(minesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+                    .addComponent(secondsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -171,6 +234,8 @@ public class InformationGUI extends JFrame implements ActionListener
     }// </editor-fold>
 
     /**
+     * Main Method.
+     * Main test entry for this Specific frame.
      * @param args the command line arguments
      */
     public static void main(String args[])
@@ -213,8 +278,4 @@ public class InformationGUI extends JFrame implements ActionListener
             }
         });
     }
-    // Variables declaration - do not modify
-    private java.awt.Label label1;
-    private java.awt.Label label2;
-    // End of variables declaration
 }
