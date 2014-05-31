@@ -21,14 +21,14 @@ import java.util.Random;
 public class Grid
 {
     /**
-     * @Mines is a two dimensional integer array which acts as the actual grid which
+     * Mines is a two dimensional integer array which acts as the actual grid which
      *  holds values of integers resembling the field
      * 0 is an empty slot, while 9 resembles the bomb
      */
     private int[][] Mines;
 
     /**
-     * @display is a two dimensional char array which acts as the field which the
+     * display is a two dimensional char array which acts as the field which the
      *  user sees - a bunch of x that hide the actual values of the grid
      *      Character that is initially all empty - displays the true integer
      *      value after selection
@@ -36,7 +36,7 @@ public class Grid
     private String[][] display;
 
     /**
-     * @setting is a map of grid specs, accessed by a string key - resembling a
+     * setting is a map of grid specs, accessed by a string key - resembling a
      *  game-mode difficulty level.
      * easy - 10 mines, 9 * 9 grid
      * medium - 40 m, 16*16 grid
@@ -44,8 +44,16 @@ public class Grid
      */
     private HashMap<String, Setting> settings;
 
+    /**
+     * String of User's difficulty choice.
+     */
     private String UserChoice;
 
+
+    /**
+     * integer tracking safesqures left to click.
+     * Used in winning
+     */
     private int safeSquares;
 
     /**
@@ -78,7 +86,7 @@ public class Grid
     /**
      * Constructor Helper-Method (v2: Modified from v1.2).
      *  This method produces the Mines for the integer array.
-     * PRECONDITION: @Mines is null
+     * PRECONDITION: @int Mines is null
      * @param maxMines is an integer value - resembles the maximum number of Mines
      *  for the given grid
      * @param maxX is an integer value - resembles the maximum horizontal size
@@ -88,12 +96,15 @@ public class Grid
     {
         Random gen;
         gen = new Random();
-        int _y;
-        int _x;
+        int _y = gen.nextInt(maxX);
+        int _x = gen.nextInt(maxY);
         for (int i = 0; i < maxMines; i++) // for Easy_M -> 10 Mines; etc
         {
-            _y = gen.nextInt(maxX);
-            _x = gen.nextInt(maxY);
+            while(Mines[_y][_x] == 9)
+            {
+                _y = gen.nextInt(maxX);
+                _x = gen.nextInt(maxY);
+            }
             Mines[_y][_x] = 9;
         }
     }
@@ -168,6 +179,10 @@ public class Grid
         }
     }
 
+    /**
+     * Modifier helper method.
+     * Method initializes each display as a "_" string
+     */
     private void generateDisplay()
     {
         display = new String[Mines.length][Mines[1].length];
@@ -222,9 +237,10 @@ public class Grid
     }
 
     /**
-     *
-     * @param _y
-     * @param _x
+     * Modifier method.
+     * "flags" a square marked by the user.
+     * @param _y the row
+     * @param _x the column
      */
     public void flagBox(int _y, int _x)
     {
@@ -239,9 +255,10 @@ public class Grid
     }
 
     /**
-     *
-     * @param _y
-     * @param _x
+     * Helper method.
+     * Recursive function to call zero-clicks
+     * @param _y row
+     * @param _x column
      */
     private void adjacentBoxes(int _y, int _x)
     {
@@ -317,6 +334,12 @@ public class Grid
     }
 
     // get methods
+    /**
+     * Getter method.
+     * @param dimension is a one or zero value, meant to represent either dimension
+     *  of the grid to return the length of that dimension
+     * @return the length of the dimension of the grid
+     */
     public int getLength(boolean dimension)
     {
         if(dimension)
@@ -326,6 +349,10 @@ public class Grid
         return Mines[1].length;
     }
 
+    /**
+     * Getter method.
+     * @return integer safe squares left
+     */
     public int getSafeSquares()
     {
         return safeSquares;
@@ -333,6 +360,10 @@ public class Grid
 
     // debugging methods...
 
+    /**
+     * Getter Method.
+     * @return String of the entire array of integer values.
+     */
     public String printMines()
     {
         String str = "";
@@ -347,22 +378,40 @@ public class Grid
         return str;
     }
 
+    /**
+     * Getter method.
+     * @param r row
+     * @param c column
+     * @return the integer value at the given row and column
+     */
     public int getMines(int r, int c)
     {
         return Mines[r][c];
     }
 
+    /**
+     * Getter method.
+     * @return Current setting previously choosen.
+     */
     public Setting getCurrentSetting()
     {
         return settings.get(UserChoice);
     }
 
+    /**
+     * Getter Method.
+     * @return difficulty previously choosen.
+     */
     public String getDifficulty()
     {
         return UserChoice;
     }
 
     @Override
+    /**
+     * ToString method.
+     * Returns the current display array.
+     */
     public String toString()
     {
         String str = "";
@@ -377,6 +426,12 @@ public class Grid
         return str;
     }
 
+    /**
+     * Getter method.
+     * @param r row
+     * @param c column
+     * @return the display string at the row and col
+     */
     public String getDisplay(int r, int c)
     {
         return display[r][c];
